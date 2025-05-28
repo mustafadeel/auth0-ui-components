@@ -3,24 +3,45 @@
   "version": "1.0.0",
   "description": "Core utilities for Auth0 UI components",
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build",
+    "dev": "tsc --watch",
     "test": "jest",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
   },
-  "keywords": ["i18n", "auth0", "core"],
+  "keywords": [
+    "i18n",
+    "auth0",
+    "core",
+    "utilities"
+  ],
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": ">=18"
+  },
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "@types/node": "^20.17.51",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
     "typescript": "^5.0.0"
   }
 }

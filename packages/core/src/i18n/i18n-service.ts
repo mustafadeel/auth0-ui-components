@@ -6,13 +6,12 @@ import {
   TranslationKey,
   LanguageCode,
   NamespaceId,
-  CacheableValue
 } from './types';
 
 export class I18nService {
   private static readonly MAX_CACHE_SIZE = 1000;
-  private readonly logger: Console;
-  private readonly cache: Map<string, CacheableValue> = new Map();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private readonly cache: Map<string, any> = new Map();
   private readonly translations: TranslationStore = {};
   private readonly userTranslations: TranslationStore = {};
   private currentLanguage: LanguageCode;
@@ -22,8 +21,7 @@ export class I18nService {
    * Initializes the I18n service with optional configuration
    * @param options - Configuration options for the service
    */
-  constructor(options?: I18nOptions, logger: Console = console) {
-    this.logger = logger;
+  constructor(options?: I18nOptions) {
     this.options = {
       defaultLanguage: 'en',
       fallbackLanguage: 'en',
@@ -72,7 +70,7 @@ export class I18nService {
     this.validate(namespace, 'namespace');
     const cacheKey = `translator:${namespace}:${this.currentLanguage}`;
     const cached = this.cache.get(cacheKey);
-    if (cached && typeof cached === 'object' && 't' in cached) return cached as Translator;
+    if (cached) return cached;
 
     const translator: Translator = {
       t: (key: TranslationKey, params?: Record<string, string>): string =>
@@ -129,7 +127,7 @@ export class I18nService {
   ): string {
     const cacheKey = `translation:${namespace}:${key}:${this.currentLanguage}:${params ? JSON.stringify(params) : ''}`;
     const cached = this.cache.get(cacheKey);
-    if (cached !== undefined) return typeof cached === 'string' ? cached : key;
+    if (cached !== undefined) return cached || key;
 
     const translation = this.findTranslation(namespace, key);
     const result = translation
@@ -185,10 +183,7 @@ export class I18nService {
         this.setCache(cacheKey, regex);
       }
 
-      if (regex instanceof RegExp) {
-        return result.replace(regex, value);
-      }
-      throw new Error('Cached value is not a valid RegExp');
+      return result.replace(regex, value);
     }, text);
   }
 
@@ -227,10 +222,8 @@ export class I18nService {
     }
   }
 
-  /**
-   * Sets a value in cache with size management
-   */
-  private setCache(key: string, value: CacheableValue): void {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private setCache(key: string, value: any): void {
     if (this.cache.size >= I18nService.MAX_CACHE_SIZE) {
       const keys = Array.from(this.cache.keys());
       keys
@@ -240,12 +233,7 @@ export class I18nService {
     this.cache.set(key, value);
   }
 
-  /**
-   * Logs debug messages when debug mode is enabled
-   */
   private logDebug(message: string): void {
-    if (this.options.debug) {
-      this.logger.log(`[I18n] ${message}`);
-    }
+    if (this.options.debug) console.log(`[I18n] ${message}`);
   }
 }

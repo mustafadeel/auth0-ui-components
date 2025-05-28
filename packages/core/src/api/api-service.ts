@@ -1,4 +1,5 @@
 import { ApiError } from './api-error';
+import type { ApiErrorData } from './types';
 import { delay } from './utils/delay';
 import type { HttpMethod, RequestOptions } from './types';
 
@@ -20,16 +21,16 @@ const STATUS_MESSAGES: Readonly<Record<number, string>> = {
 
 /**
  * Service for making HTTP requests with retry logic and error handling
- * 
+ *
  * @example
  * ```ts
  * const api = new APIService();
- * 
+ *
  * // Enable logging for development
  * api.setLogging(process.env.NODE_ENV === 'development');
- * 
+ *
  * // Make authenticated request
- * const data = await api.get('/users/me', { 
+ * const data = await api.get('/users/me', {
  *   token: 'jwt_token',
  *   retryCount: 3
  * });
@@ -47,7 +48,7 @@ export class APIService {
 
   /**
    * Makes an HTTP request with retry logic and error handling
-   * 
+   *
    * @param endpoint - API endpoint URL
    * @param method - HTTP method
    * @param options - Request configuration
@@ -57,15 +58,10 @@ export class APIService {
   private async request<T>(
     endpoint: string,
     method: HttpMethod,
-    { 
-      body, 
-      headers = {}, 
-      retryCount = 2, 
-      token 
-    }: RequestOptions = {}
+    { body, headers = {}, retryCount = 2, token }: RequestOptions = {},
   ): Promise<T> {
     // Prepare request configuration
-    const requestInit: RequestInit = {
+    const requestInit = {
       method,
       headers: {
         'Content-Type': 'application/json',
@@ -83,12 +79,11 @@ export class APIService {
       const data = await this.parseResponse(response);
 
       if (!response.ok) {
-        throw this.createError(response.status, data);
+        throw this.createError(response.status, data as ApiErrorData);
       }
 
       this.log(`Response from ${endpoint}`, data);
       return data as T;
-
     } catch (error) {
       if (error instanceof ApiError) throw error;
 
@@ -96,11 +91,11 @@ export class APIService {
       if (retryCount > 0) {
         const delayMs = 2 ** (2 - retryCount) * 1000;
         await delay(delayMs);
-        return this.request<T>(endpoint, method, { 
-          body, 
-          headers, 
-          retryCount: retryCount - 1, 
-          token 
+        return this.request<T>(endpoint, method, {
+          body,
+          headers,
+          retryCount: retryCount - 1,
+          token,
         });
       }
 
@@ -113,9 +108,9 @@ export class APIService {
    */
   private async parseResponse(response: Response): Promise<unknown> {
     const contentType = response.headers.get('content-type') ?? '';
-    
+
     try {
-      return contentType.includes('application/json') 
+      return contentType.includes('application/json')
         ? await response.json()
         : await response.text();
     } catch {
@@ -126,11 +121,11 @@ export class APIService {
   /**
    * Create ApiError from response data
    */
-  private createError(status: number, data: any): ApiError {
-    const message = data?.message || 
-                   data?.error || 
-                   STATUS_MESSAGES[status] || 
-                   'Request failed';
+  private createError(status: number, data: ApiErrorData): ApiError {
+    const rawMessage = data?.message ?? data?.error;
+    const message =
+      typeof rawMessage === 'string' ? rawMessage : (STATUS_MESSAGES[status] ?? 'Request failed');
+
     return new ApiError(message, status, data);
   }
 
@@ -153,21 +148,33 @@ export class APIService {
   /**
    * Make POST request
    */
-  post<T = unknown>(endpoint: string, body: unknown, options?: Omit<RequestOptions, 'body'>): Promise<T> {
+  post<T = unknown>(
+    endpoint: string,
+    body: unknown,
+    options?: Omit<RequestOptions, 'body'>,
+  ): Promise<T> {
     return this.request<T>(endpoint, 'POST', { ...options, body });
   }
 
   /**
    * Make PUT request
    */
-  put<T = unknown>(endpoint: string, body: unknown, options?: Omit<RequestOptions, 'body'>): Promise<T> {
+  put<T = unknown>(
+    endpoint: string,
+    body: unknown,
+    options?: Omit<RequestOptions, 'body'>,
+  ): Promise<T> {
     return this.request<T>(endpoint, 'PUT', { ...options, body });
   }
 
   /**
    * Make PATCH request
    */
-  patch<T = unknown>(endpoint: string, body: unknown, options?: Omit<RequestOptions, 'body'>): Promise<T> {
+  patch<T = unknown>(
+    endpoint: string,
+    body: unknown,
+    options?: Omit<RequestOptions, 'body'>,
+  ): Promise<T> {
     return this.request<T>(endpoint, 'PATCH', { ...options, body });
   }
 

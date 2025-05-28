@@ -2,6 +2,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface RequestOptions {
   headers?: Record<string, string>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any;
   retryCount?: number;
   token?: string; // auth token to be sent in Authorization header
@@ -17,7 +18,7 @@ export interface HttpRequest {
  * Type for structured API error data
  */
 export interface ApiErrorData {
-    code?: string; 
-    message?: string;
-    [key: string]: unknown;
-  }
+  code?: string;
+  message?: string;
+  [key: string]: unknown;
+}
