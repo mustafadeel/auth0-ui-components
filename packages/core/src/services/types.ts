@@ -18,8 +18,18 @@ export interface FactorMeta {
  */
 export interface Authenticator {
   id: string;
-  authenticator_type: string;
+  authenticator_type: MFAType;
   oob_channels?: string[];
   name?: string;
   active: boolean;
 }
+
+export type MFAType =
+  | 'sms'
+  | 'push-notification'
+  | 'otp'
+  | 'email'
+  | 'duo'
+  | 'webauthn-roaming'
+  | 'webauthn-platform'
+  | 'recovery-code';

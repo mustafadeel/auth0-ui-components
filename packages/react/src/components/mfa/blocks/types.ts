@@ -2,14 +2,26 @@
  * Represents the type of an MFA authenticator.
  *
  * Common values include:
- * - 'otp' (One-Time Password)
- * - 'oob' (Out-of-Band: SMS, email, push)
- * - 'webauthn' (Web Authentication: biometrics, security keys)
- * - 'push' (Push notification via Auth0 Guardian)
- * - 'sms' (SMS-based verification)
- * - 'email' (Email-based verification)
+ * - 'sms' — Phone Message: Users receive a phone message with a verification code.
+ * - 'push-notification' — Push Notification using Auth0 Guardian: Provides push notifications for authentication.
+ * - 'otp' — One-time Password: Uses apps like Google Authenticator for OTP codes.
+ * - 'email' — Email: Sends a verification code via email.
+ * - 'duo' — Duo Security: Uses Duo Security for MFA.
+ * - 'webauthn-roaming' — WebAuthn with FIDO Security Keys: Supports external security keys (e.g., FIDO2).
+ * - 'webauthn-platform' — WebAuthn with FIDO Device Biometrics: Uses device biometrics compliant with WebAuthn.
+ * - 'recovery-code' — Recovery Code: Uses unique recovery codes to regain access.
+ *
+ * This type can also be extended with custom string values for other authenticators.
  */
-export type MFAType = 'otp' | 'oob' | 'webauthn' | 'push' | 'sms' | 'email' | string;
+export type MFAType =
+  | 'sms'
+  | 'push-notification'
+  | 'otp'
+  | 'email'
+  | 'duo'
+  | 'webauthn-roaming'
+  | 'webauthn-platform'
+  | 'recovery-code';
 
 /**
  * Represents an MFA authenticator linked to a user.
@@ -41,6 +53,12 @@ export interface ManageMfaProps {
   disableEnroll?: boolean;
   disableDelete?: boolean;
   readOnly?: boolean;
+  factorConfig?: {
+    [key in MFAType]?: {
+      visible?: boolean;
+      enabled?: boolean;
+    };
+  };
   onEnroll?: () => void;
   onDelete?: () => void;
   onFetch?: () => void;

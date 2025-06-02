@@ -1,3 +1,5 @@
+import { MFAType } from '../blocks';
+
 /**
  * Metadata describing an MFA factor type.
  * @property {string} title - Display title of the factor.
@@ -18,7 +20,7 @@ export interface FactorMeta {
  */
 export interface Authenticator extends FactorMeta {
   id: string;
-  authenticator_type: string;
+  authenticator_type: MFAType;
   oob_channels?: string[];
   name?: string;
   active: boolean;
@@ -58,7 +60,7 @@ export interface DeleteMfaResult {
  */
 export interface EnrollMfaParams {
   client_id: string;
-  authenticator_types: ('otp' | 'oob')[];
+  authenticator_types: MFAType[];
   oob_channels?: ('auth0' | 'sms' | 'voice')[];
   phone_number?: string;
 }
