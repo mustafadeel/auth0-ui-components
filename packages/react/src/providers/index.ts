@@ -1,2 +1,1 @@
-export * from './ComponentProvider';
-export * from './I18nProvider';
+export * from './component-provider';

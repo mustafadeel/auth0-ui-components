@@ -3,19 +3,34 @@ import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import reactPlugin from 'eslint-plugin-react';
 
+/**
+ * Shared browser globals
+ */
+const browserGlobals = {
+  window: 'readonly',
+  document: 'readonly',
+  navigator: 'readonly',
+  location: 'readonly',
+  console: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  fetch: 'readonly',
+  Request: 'readonly',
+  Response: 'readonly',
+  Headers: 'readonly',
+};
+
 export default [
+  {
+    ignores: ['dist/', 'build/', '**/dist/', '**/build/'],
+  },
   {
     ...js.configs.recommended,
     languageOptions: {
       ...js.configs.recommended.languageOptions,
       globals: {
         ...js.configs.recommended.languageOptions?.globals,
-        setTimeout: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        Request: 'readonly',
-        Response: 'readonly',
-        Headers: 'readonly',
+        ...browserGlobals,
       },
     },
   },
@@ -27,12 +42,7 @@ export default [
         project: './tsconfig.json',
       },
       globals: {
-        setTimeout: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        Request: 'readonly',
-        Response: 'readonly',
-        Headers: 'readonly',
+        ...browserGlobals,
       },
     },
     plugins: {
@@ -49,7 +59,7 @@ export default [
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
-      'react/react-in-jsx-scope': 'off',
+      'react/react-in-jsx-scope': 'off', // Not needed in React 17+
     },
     settings: {
       react: {

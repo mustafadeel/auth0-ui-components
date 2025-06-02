@@ -1,11 +1,6 @@
-import { ApiError } from './api-error';
-import type { ApiErrorData } from './types';
-import { delay } from './utils/delay';
-import type { HttpMethod, RequestOptions } from './types';
+import type { RequestOptions, HttpMethod } from './types';
+import { createApiError, isApiError } from './api-error';
 
-/**
- * HTTP status codes mapped to their default messages
- */
 const STATUS_MESSAGES: Readonly<Record<number, string>> = {
   400: 'Bad Request',
   401: 'Unauthorized',
@@ -19,169 +14,100 @@ const STATUS_MESSAGES: Readonly<Record<number, string>> = {
   504: 'Gateway Timeout',
 } as const;
 
-/**
- * Service for making HTTP requests with retry logic and error handling
- *
- * @example
- * ```ts
- * const api = new APIService();
- *
- * // Enable logging for development
- * api.setLogging(process.env.NODE_ENV === 'development');
- *
- * // Make authenticated request
- * const data = await api.get('/users/me', {
- *   token: 'jwt_token',
- *   retryCount: 3
- * });
- * ```
- */
-export class APIService {
-  private enableLogging = false;
+async function request<T>(
+  endpoint: string,
+  method: HttpMethod,
+  options: RequestOptions = {},
+  enableLogging = false,
+): Promise<T> {
+  const { body, accessToken } = options;
 
-  /**
-   * Enable or disable request/response logging
-   */
-  setLogging(enabled: boolean): void {
-    this.enableLogging = enabled;
+  const reqHeaders = {
+    'Content-Type': 'application/json',
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+  };
+
+  const requestInit: RequestInit = {
+    method,
+    headers: reqHeaders,
+    ...(body !== undefined ? { body: JSON.stringify(body) } : {}),
+  };
+
+  if (enableLogging) {
+    console.log(`[APIService] ${method} ${endpoint}`, requestInit);
   }
 
-  /**
-   * Makes an HTTP request with retry logic and error handling
-   *
-   * @param endpoint - API endpoint URL
-   * @param method - HTTP method
-   * @param options - Request configuration
-   * @returns Promise resolving to the response data
-   * @throws {ApiError} On network or HTTP errors
-   */
-  private async request<T>(
-    endpoint: string,
-    method: HttpMethod,
-    { body, headers = {}, retryCount = 2, token }: RequestOptions = {},
-  ): Promise<T> {
-    // Prepare request configuration
-    const requestInit = {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      ...(body && { body: JSON.stringify(body) }),
-    };
-
-    // Log request if enabled
-    this.log(`${method} ${endpoint}`, requestInit);
-
-    try {
-      const response = await fetch(endpoint, requestInit);
-      const data = await this.parseResponse(response);
-
-      if (!response.ok) {
-        throw this.createError(response.status, data as ApiErrorData);
-      }
-
-      this.log(`Response from ${endpoint}`, data);
-      return data as T;
-    } catch (error) {
-      if (error instanceof ApiError) throw error;
-
-      // Retry failed requests
-      if (retryCount > 0) {
-        const delayMs = 2 ** (2 - retryCount) * 1000;
-        await delay(delayMs);
-        return this.request<T>(endpoint, method, {
-          body,
-          headers,
-          retryCount: retryCount - 1,
-          token,
-        });
-      }
-
-      throw new ApiError('Network error', 0);
-    }
-  }
-
-  /**
-   * Parse response based on content type
-   */
-  private async parseResponse(response: Response): Promise<unknown> {
+  try {
+    const response = await fetch(endpoint, requestInit);
     const contentType = response.headers.get('content-type') ?? '';
 
-    try {
-      return contentType.includes('application/json')
-        ? await response.json()
-        : await response.text();
-    } catch {
-      return null;
+    const data = contentType.includes('application/json')
+      ? await response.json()
+      : await response.text();
+
+    if (!response.ok) {
+      const maybeData = data as Record<string, unknown> | undefined;
+      const rawMessage = maybeData?.message ?? maybeData?.error;
+
+      const message =
+        typeof rawMessage === 'string'
+          ? rawMessage
+          : STATUS_MESSAGES[response.status] || 'Request failed';
+
+      throw createApiError(message, response.status, data);
     }
-  }
 
-  /**
-   * Create ApiError from response data
-   */
-  private createError(status: number, data: ApiErrorData): ApiError {
-    const rawMessage = data?.message ?? data?.error;
-    const message =
-      typeof rawMessage === 'string' ? rawMessage : (STATUS_MESSAGES[status] ?? 'Request failed');
-
-    return new ApiError(message, status, data);
-  }
-
-  /**
-   * Log messages if logging is enabled
-   */
-  private log(message: string, data?: unknown): void {
-    if (this.enableLogging) {
-      console.log(`[APIService] ${message}`, data);
+    if (enableLogging) {
+      console.log(`[APIService] Response from ${endpoint}`, data);
     }
-  }
 
-  /**
-   * Make GET request
-   */
-  get<T = unknown>(endpoint: string, options?: Omit<RequestOptions, 'body'>): Promise<T> {
-    return this.request<T>(endpoint, 'GET', options);
-  }
+    return data as T;
+  } catch (error) {
+    if (isApiError(error)) throw error;
 
-  /**
-   * Make POST request
-   */
-  post<T = unknown>(
-    endpoint: string,
-    body: unknown,
-    options?: Omit<RequestOptions, 'body'>,
-  ): Promise<T> {
-    return this.request<T>(endpoint, 'POST', { ...options, body });
+    throw createApiError('Network error', 0);
   }
+}
 
-  /**
-   * Make PUT request
-   */
-  put<T = unknown>(
-    endpoint: string,
-    body: unknown,
-    options?: Omit<RequestOptions, 'body'>,
-  ): Promise<T> {
-    return this.request<T>(endpoint, 'PUT', { ...options, body });
-  }
+export function get<T = unknown>(
+  endpoint: string,
+  options?: Omit<RequestOptions, 'body'>,
+  enableLogging = false,
+): Promise<T> {
+  return request<T>(endpoint, 'GET', options, enableLogging);
+}
 
-  /**
-   * Make PATCH request
-   */
-  patch<T = unknown>(
-    endpoint: string,
-    body: unknown,
-    options?: Omit<RequestOptions, 'body'>,
-  ): Promise<T> {
-    return this.request<T>(endpoint, 'PATCH', { ...options, body });
-  }
+export function post<T = unknown>(
+  endpoint: string,
+  body: unknown,
+  options?: Omit<RequestOptions, 'body'>,
+  enableLogging = false,
+): Promise<T> {
+  return request<T>(endpoint, 'POST', { ...options, body }, enableLogging);
+}
 
-  /**
-   * Make DELETE request
-   */
-  delete<T = unknown>(endpoint: string, options?: Omit<RequestOptions, 'body'>): Promise<T> {
-    return this.request<T>(endpoint, 'DELETE', options);
-  }
+export function put<T = unknown>(
+  endpoint: string,
+  body: unknown,
+  options?: Omit<RequestOptions, 'body'>,
+  enableLogging = false,
+): Promise<T> {
+  return request<T>(endpoint, 'PUT', { ...options, body }, enableLogging);
+}
+
+export function patch<T = unknown>(
+  endpoint: string,
+  body: unknown,
+  options?: Omit<RequestOptions, 'body'>,
+  enableLogging = false,
+): Promise<T> {
+  return request<T>(endpoint, 'PATCH', { ...options, body }, enableLogging);
+}
+
+export function del<T = unknown>(
+  endpoint: string,
+  options?: Omit<RequestOptions, 'body'>,
+  enableLogging = false,
+): Promise<T> {
+  return request<T>(endpoint, 'DELETE', options, enableLogging);
 }

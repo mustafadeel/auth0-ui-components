@@ -1,7 +1,7 @@
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface RequestOptions {
-  headers?: Record<string, string>;
+  accessToken?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body?: any;
   retryCount?: number;
