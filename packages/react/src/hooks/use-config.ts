@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Auth0ComponentContext } from '@/providers/component-provider';
+import { Auth0ComponentContext } from '@/providers/context';
 import type { Auth0ComponentConfig } from '@/providers/types';
 
 /**
