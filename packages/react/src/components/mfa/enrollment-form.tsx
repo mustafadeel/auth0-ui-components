@@ -159,8 +159,8 @@ export function EnrollmentForm({
 
   // Automatically initiate OTP enrollment when factorType is 'totp'
   React.useEffect(() => {
-    setPhase('showOtp');
     if (factorType === 'totp' && !otpData.secret) {
+      setPhase('showOtp');
       setLoading(true);
       const fetchOtpEnrollment = async () => {
         try {
