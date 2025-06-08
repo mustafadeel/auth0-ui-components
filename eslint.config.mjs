@@ -20,6 +20,15 @@ const browserGlobals = {
   Headers: 'readonly',
 };
 
+/**
+ * Shared Node.js globals
+ */
+const nodeGlobals = {
+  module: 'readonly',
+  require: 'readonly',
+  exports: 'readonly',
+};
+
 export default [
   {
     ignores: ['dist/', 'build/', '**/dist/', '**/build/'],
@@ -64,6 +73,15 @@ export default [
     settings: {
       react: {
         version: 'detect',
+      },
+    },
+  },
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      globals: {
+        ...browserGlobals,
+        ...nodeGlobals, // Add Node.js globals for JS files
       },
     },
   },

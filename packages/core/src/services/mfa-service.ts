@@ -1,46 +1,16 @@
 import { get, del, isApiError, post } from '../api';
-import type {
-  Authenticator,
-  FactorMeta,
-  EnrollMfaParams,
-  EnrollMfaResponse,
-  AuthenticatorType,
-} from './types';
+import type { Authenticator, EnrollMfaParams, EnrollMfaResponse, AuthenticatorType } from './types';
 
-export const factorsMeta: Record<string, FactorMeta> = {
-  sms: {
-    title: 'Phone Message',
-    description: 'Users will receive a phone message with a verification code',
-  },
-  'push-notification': {
-    title: 'Push Notification using Auth0 Guardian',
-    description: 'Provide a push notification using Auth0 Guardian.',
-  },
-  totp: {
-    title: 'One-time Password',
-    description: 'Provide a one-time password using Google Authenticator or similar.',
-  },
-  email: {
-    title: 'Email',
-    description: 'Users will receive an email message containing a verification code.',
-  },
-  duo: {
-    title: 'Duo Security',
-    description: 'Use your DUO account for Multi-factor Authentication.',
-  },
-  'webauthn-roaming': {
-    title: 'WebAuthn with FIDO Security Keys',
-    description: 'Use WebAuthn-compliant security keys (e.g., FIDO2) as a second factor.',
-  },
-  'webauthn-platform': {
-    title: 'WebAuthn with FIDO Device Biometrics',
-    description: 'Use WebAuthn-compliant device biometrics as a second factor.',
-  },
-  'recovery-code': {
-    title: 'Recovery Code',
-    description: 'Use a unique recovery code to regain account access.',
-  },
-};
+export const factorsMetaKeys = new Set([
+  'sms',
+  'push-notification',
+  'totp',
+  'email',
+  'duo',
+  'webauthn-roaming',
+  'webauthn-platform',
+  'recovery-code',
+]);
 
 /**
  * fetchMfaFactors
@@ -57,38 +27,28 @@ export async function fetchMfaFactors(
   apiBaseUrl: string,
   accessToken?: string,
   onlyActive = false,
-): Promise<(Authenticator & FactorMeta & { factorName: string })[]> {
+): Promise<Authenticator[]> {
   const response = await get<Authenticator[]>(`${apiBaseUrl}mfa/authenticators`, { accessToken });
-  const map = new Map<AuthenticatorType, Authenticator>(
-    response.map((f) => [f.authenticator_type, f]),
-  );
 
-  return (Object.entries(factorsMeta) as [AuthenticatorType, FactorMeta][]).reduce(
-    (acc, [type, meta]) => {
-      const factor = map.get(type);
+  const map = new Map<string, Authenticator>(response.map((f) => [f.id.split('|')[0], f]));
 
-      // If onlyActive=true, skip if not active
-      const isActive = factor?.active ?? false;
-      if (onlyActive && !isActive) {
-        return acc;
-      }
+  return Array.from(factorsMetaKeys).reduce<Authenticator[]>((acc, type) => {
+    const factor = map.get(type);
 
-      // factorName from factor id or fallback
-      const factorName = factor?.id?.split('|')[0] ?? type;
+    if (onlyActive && !factor?.active) return acc;
 
-      acc.push({
-        id: factor?.id ?? '', // empty string if dummy
-        authenticator_type: factor?.authenticator_type ?? type, // from API or fallback
-        oob_channels: factor?.oob_channels ?? [], // from API or empty
-        active: isActive,
-        ...meta,
-        factorName, // extra prop
-      });
+    const factorName = factor?.id?.split('|')[0] ?? type;
 
-      return acc;
-    },
-    [] as (Authenticator & FactorMeta & { factorName: string })[],
-  );
+    acc.push({
+      id: factor?.id ?? '',
+      authenticator_type: (factor?.authenticator_type ?? type) as AuthenticatorType,
+      oob_channels: factor?.oob_channels ?? [],
+      active: factor?.active ?? false,
+      factorName,
+    });
+
+    return acc;
+  }, []);
 }
 
 /**
@@ -127,14 +87,39 @@ export async function deleteMfaFactor(
  *
  * @param baseUrl - The base API URL (e.g. Auth0 domain or proxy).
  * @param params - Enrollment parameters.
- * @param token - Access token or mfa_token.
+ * @param accessToken - Access token.
  * @returns EnrollMfaResponse from Auth0.
  */
 export async function enrollMfaRequest(
   baseUrl: string,
   params: EnrollMfaParams,
-  token: string,
+  accessToken?: string,
 ): Promise<EnrollMfaResponse> {
   const url = `${baseUrl}mfa/associate`;
-  return await post<EnrollMfaResponse>(url, params, { accessToken: token });
+  return await post<EnrollMfaResponse>(url, params, { accessToken });
+}
+
+/**
+ * Performs the MFA confirmation API call.
+ *
+ * @param baseUrl - The base API URL (e.g. Auth0 domain or proxy).
+ * @param data - Data needed to confirm MFA enrollment (depending on MFA type).
+ * @param accessToken - Access token.
+ * @returns Response from Auth0.
+ */
+export async function confirmMfaEnrollmentRequest(
+  baseUrl: string,
+  data: {
+    grant_type: string;
+    oob_code: string;
+    otp?: string;
+    binding_code?: string;
+    client_id?: string;
+    client_secret?: string;
+  },
+  accessToken?: string,
+): Promise<unknown> {
+  const url = `${baseUrl}oauth/token`;
+
+  return await post<unknown>(url, data, { accessToken });
 }

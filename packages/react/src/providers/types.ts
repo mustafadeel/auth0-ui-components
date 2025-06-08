@@ -46,8 +46,8 @@ export interface I18nOptions {
  */
 export interface AuthDetails {
   accessToken: string | undefined;
-  domain: string | null;
-  clientId: string | null;
+  domain: string | undefined;
+  clientId: string | undefined;
   scopes: string | undefined;
   loading: boolean;
   error?: Error;

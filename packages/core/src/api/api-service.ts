@@ -1,5 +1,5 @@
 import type { RequestOptions, HttpMethod, ErrorResponse } from './types';
-import { createApiError, isApiError } from './api-error';
+import { createApiError, isApiError, normalizeError } from './api-error';
 
 const STATUS_MESSAGES: Readonly<Record<number, string>> = {
   400: 'Bad Request',
@@ -85,12 +85,16 @@ async function request<T>(
 
     return data as T;
   } catch (err) {
-    // Re-throw if already a known API error
+    // If already a structured ApiError, just rethrow
     if (isApiError(err)) throw err;
 
-    const message = err instanceof Error ? err.message : 'Unexpected network error';
+    // Normalize any unknown error to an Error instance
+    const normalizedError = normalizeError(err, {
+      fallbackMessage: 'Unexpected network or API error',
+    });
 
-    throw createApiError(message, 0, undefined, err);
+    // Wrap normalized error into ApiError for consistent error shape
+    throw createApiError(normalizedError.message, 0, undefined);
   }
 }
 

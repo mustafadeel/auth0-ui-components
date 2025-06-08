@@ -16,8 +16,11 @@ export default {
       entries: [{ find: '@core', replacement: '../../core/src' }],
     }),
     postcss({
-      extract: false,
-      inject: true,
+      extract: true,  // Extracts the CSS into a separate file
+      inject: true,   // Injects CSS into the HTML
+      config: {
+        path: './postcss.config.mjs', // Pointing to your PostCSS config
+      },
     }),
     typescript({ tsconfig: './tsconfig.json' }),
   ],

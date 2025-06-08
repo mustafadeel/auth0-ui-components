@@ -1,8 +1,9 @@
-import type { LangTranslations } from './types';
+import { LangTranslations } from './types';
 
+// This map will load translations for various languages dynamically
 const translationsMap: Record<string, () => Promise<{ default: LangTranslations }>> = {
   en: () => import('./translations/en.json'),
-  // Add other supported languages here
+  // Add other languages here
 };
 
 const cache = new Map<string, LangTranslations | null>();
@@ -10,8 +11,7 @@ const pendingLoads = new Map<string, Promise<LangTranslations | null>>();
 
 /**
  * Dynamically loads and caches a language JSON file.
- *
- * @param {string} code - Language code to load (e.g. 'en-US')
+ * @param {string} code - Language code to load (e.g., 'en-US')
  * @returns {Promise<LangTranslations | null>}
  */
 async function loadLangFile(code: string): Promise<LangTranslations | null> {
@@ -46,7 +46,6 @@ async function loadLangFile(code: string): Promise<LangTranslations | null> {
 /**
  * Extracts the base language code from a full language code.
  * E.g. 'en-US' => 'en'
- *
  * @param {string} langCode - The full language code
  * @returns {string} The base language code
  */
@@ -57,7 +56,6 @@ function getBaseLang(langCode: string): string {
 /**
  * Loads translations for a given language with fallback logic.
  * Tries the full language code first, then the base language code.
- *
  * @param {string} langCode - Language code to load
  * @returns {Promise<{ data: LangTranslations; usedLang: string } | null>} Loaded translations and the code used or null
  */
@@ -79,13 +77,12 @@ async function tryLoadWithFallbacks(
 
 /**
  * Safely retrieves a nested string value from an object given a dot-separated path.
- * Returns `undefined` if any key is missing or final value is not a string.
- *
+ * Returns `null` if any key is missing or final value is not a string.
  * @param obj - The object to query.
  * @param path - Dot-separated path to the nested property.
- * @returns The string value at the path or undefined.
+ * @returns The string value at the path or null.
  */
-function getNestedValue<T extends object>(obj: T, path: string): string | undefined {
+function getNestedValue<T extends object>(obj: T, path: string): string | null {
   const keys = path.split('.');
 
   let current: unknown = obj;
@@ -93,11 +90,43 @@ function getNestedValue<T extends object>(obj: T, path: string): string | undefi
     if (typeof current === 'object' && current !== null && key in current) {
       current = (current as Record<string, unknown>)[key];
     } else {
-      return undefined;
+      return null;
     }
   }
 
-  return typeof current === 'string' ? current : undefined;
+  return typeof current === 'string' ? current : null;
+}
+
+/**
+ * Replaces the variables in the translation string with the corresponding values.
+ * @param translation - The translation string to substitute variables in.
+ * @param vars - An object containing variables to substitute.
+ * @returns The translation string with substituted values.
+ */
+function substituteVariables(translation: string, vars?: Record<string, unknown>): string {
+  if (!vars) return translation;
+
+  return translation.replace(/\$\{(\w+)\}/g, (_, varName) => {
+    const value = vars[varName];
+    return value !== undefined ? String(value) : '';
+  });
+}
+
+/**
+ * The final `t` function that either returns the translated value or the key itself.
+ * @param langData - The language data to fetch the translation from.
+ * @param key - The translation key to look for.
+ * @param vars - Optional variables for substitution in the translation string.
+ * @returns The translated string or the key if translation is missing.
+ */
+function t(langData: LangTranslations, key: string, vars?: Record<string, unknown>): string {
+  const translation = getNestedValue(langData, key);
+
+  if (!translation) {
+    return key; // If translation is missing, return the key itself.
+  }
+
+  return substituteVariables(translation, vars); // Return the translation with substituted variables.
 }
 
 /**
@@ -110,15 +139,14 @@ function getNestedValue<T extends object>(obj: T, path: string): string | undefi
  * @param component Component name (e.g., 'Header')
  * @param fallbackLang Fallback language code (default 'en')
  * @param overrides Optional overrides keyed by language code
- *
- * @returns Promise of a function `t(key)` returning localized string or undefined, or undefined if missing.
+ * @returns Promise of a function `t(key)` returning localized string or null, or null if missing.
  */
 export async function getLocalizedComponentAsync<T = unknown>(
   lang: string,
   component: string,
   fallbackLang = 'en',
   overrides?: Record<string, Partial<T>>,
-): Promise<((key: string) => string | undefined) | undefined> {
+): Promise<((key: string, vars?: Record<string, unknown>) => string | null) | null> {
   try {
     const langResult = await tryLoadWithFallbacks(lang);
     const fallbackResult = langResult ?? (await tryLoadWithFallbacks(fallbackLang));
@@ -127,7 +155,7 @@ export async function getLocalizedComponentAsync<T = unknown>(
       console.warn(
         `[getLocalizedComponentAsync] No translations found for "${lang}" or fallback "${fallbackLang}".`,
       );
-      return undefined;
+      return null;
     }
 
     const { data: langData, usedLang } = fallbackResult;
@@ -137,7 +165,7 @@ export async function getLocalizedComponentAsync<T = unknown>(
       console.warn(
         `[getLocalizedComponentAsync] Component "${component}" missing in language "${usedLang}".`,
       );
-      return undefined;
+      return null;
     }
 
     // Merge overrides if present
@@ -147,16 +175,11 @@ export async function getLocalizedComponentAsync<T = unknown>(
     };
 
     // Return the lookup function t(key)
-    return (key: string, vars?: Record<string, unknown>): string | undefined => {
-      const val = getNestedValue(mergedData, key);
-      if (typeof val !== 'string') return undefined;
-
-      return val.replace(/\$\{(\w+)\}/g, (_, varName) =>
-        vars?.[varName] != null ? String(vars[varName]) : '',
-      );
+    return (key: string, vars?: Record<string, unknown>): string | null => {
+      return t(mergedData, key, vars); // Use the final t function
     };
   } catch (error) {
     console.error('[getLocalizedComponentAsync] Unexpected error:', error);
-    return undefined;
+    return null;
   }
 }

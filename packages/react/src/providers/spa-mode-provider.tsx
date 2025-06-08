@@ -44,8 +44,8 @@ function SpaModeProvider({
 
   const [authDetails, setAuthDetails] = React.useState<AuthDetails>({
     accessToken: undefined,
-    domain: null,
-    clientId: null,
+    domain: undefined,
+    clientId: undefined,
     scopes: undefined,
     loading: true,
     error: undefined,
@@ -61,9 +61,9 @@ function SpaModeProvider({
         const claims = await getIdTokenClaims();
 
         setAuthDetails({
-          accessToken: tokenRes.access_token ?? null,
-          domain: claims?.iss ?? null,
-          clientId: claims?.aud ?? null,
+          accessToken: tokenRes.access_token,
+          domain: claims?.iss,
+          clientId: claims?.aud,
           scopes: tokenRes.scope,
           loading: false,
           error: undefined,
@@ -71,8 +71,8 @@ function SpaModeProvider({
       } catch (err) {
         setAuthDetails({
           accessToken: undefined,
-          domain: null,
-          clientId: null,
+          domain: undefined,
+          clientId: undefined,
           scopes: undefined,
           loading: false,
           error: err instanceof Error ? err : new Error(String(err)),

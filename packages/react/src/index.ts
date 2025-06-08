@@ -1,3 +1,5 @@
 import './styles/globals.css';
 export * from './providers';
-export * from './components';
+export * from './blocks';
+export * from './hooks';
+export * from './types';

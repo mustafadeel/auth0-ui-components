@@ -20,8 +20,12 @@
     "removeFactor": "Enrollment removed successfully.",
     "enrollFactor": "Enrolled successfully.",
     "errors": {
-      "factorsLoadingError": "Error loading MFA factors: ${error}",
-      "accessTokenError": "Access token error: ${error}"
+      "factorsLoadingError": "Error loading MFA factors!",
+      "accessTokenError": "Access token error: ${error}",
+      "unKnownError": "Unknown error occurred",
+      "unsupported_challenge_type": {
+        "sms": "SMS Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"SMS\" on Guardian MFA section."
+      }
     },
     "sms": {
       "title": "Phone Message",

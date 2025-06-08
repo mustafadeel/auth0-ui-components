@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useComponentConfig } from './use-config';
-import { useI18n } from './use-i8n';
+import { useI18n } from './use-i18n';
 
 interface UseAccessTokenResult {
   token: string | null;
@@ -15,19 +15,6 @@ interface UseAccessTokenResult {
  *
  * React hook to retrieve Auth0 access tokens with shared in-memory caching.
  *
- * ## Requirements:
- * - Must be used within an Auth0ComponentProvider.
- * - Auth0 domain should be configured via `useAuth0ComponentConfig`.
- * - `getAccessTokenSilently` and `getAccessTokenWithPopup` must be available.
- *
- * ## Features:
- * - Shared in-memory token cache across hook instances, keyed by audience + scope.
- * - Automatically constructs the audience as `https://${domain}/${audiencePath}`.
- * - Falls back to popup flow when silent token acquisition fails due to consent errors.
- * - Handles loading and error states gracefully.
- * - Provides manual `refreshToken()` trigger to bypass cache.
- * - Supports concurrent requests for the same token without duplication.
- *
  * @param {string} scope - Space-separated scopes to request.
  * @param {string} audiencePath - Path segment appended to `https://${domain}/` to form the audience.
  *
@@ -37,17 +24,7 @@ interface UseAccessTokenResult {
  *   error: Error | null;
  *   refreshToken: () => Promise<void>;
  * }} Token state and refresh utility.
- *
- * @example
- * ```tsx
- * const { token, loading, error, refreshToken } = useAccessToken('read:authenticators', 'api');
- *
- * if (loading) return <p>Loading token...</p>;
- * if (error) return <p>Error: {error.message}</p>;
- * return <p>Token: {token}</p>;
- * ```
  */
-
 export function useAccessToken(scope: string, audiencePath: string): UseAccessTokenResult {
   const { getAccessTokenSilently, getAccessTokenWithPopup } = useAuth0();
   const {
@@ -56,28 +33,37 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
   const t = useI18n('common');
   const domain = authDetails?.domain;
 
+  // Constructing audience URL
   const audience = domain ? `${domain}${audiencePath}/` : '';
   const cacheKey = `${audience}|${scope}`;
 
+  // Using refs to avoid re-creating the cache and promises on each render
   const staticCache = React.useRef(new Map<string, string>());
   const pendingPromises = React.useRef(new Map<string, Promise<string>>());
 
+  // State setup, including cached token and loading/error state
   const [state, setState] = React.useState(() => {
     const cachedToken = staticCache.current.get(cacheKey) ?? null;
     return { token: cachedToken, loading: !cachedToken, error: null as Error | null };
   });
 
+  // Function to fetch token, with cache and error handling
   const fetchToken = React.useCallback(
     async (ignoreCache = false): Promise<void> => {
       if (!scope) {
-        setState({ token: null, loading: false, error: new Error(t('errors.scopeRequired')) });
+        setState({
+          token: null,
+          loading: false,
+          error: new Error(t('errors.scopeRequired') ?? 'Scope required error'),
+        });
         return;
       }
+
       if (!domain) {
         setState({
           token: null,
           loading: false,
-          error: new Error(t('errors.domainNotConfigured')),
+          error: new Error(t('errors.domainNotConfigured') ?? 'Domain not configured error'),
         });
         return;
       }
@@ -90,6 +76,7 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
         }
       }
 
+      // If there's already a pending request for the same token, wait for it
       if (pendingPromises.current.has(cacheKey)) {
         try {
           const token = await pendingPromises.current.get(cacheKey)!;
@@ -98,12 +85,13 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
           setState({
             token: null,
             loading: false,
-            error: err instanceof Error ? err : new Error(String(err)),
+            error: new Error(err instanceof Error ? err.message : String(err)),
           });
         }
         return;
       }
 
+      // Otherwise, initiate a new token fetch
       setState((prev) => (prev.loading ? prev : { ...prev, loading: true, error: null }));
 
       const tokenPromise = (async (): Promise<string> => {
@@ -127,13 +115,14 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
                 redirect_uri: typeof window !== 'undefined' ? window.location.origin : '',
               },
             });
-            if (!token) throw new Error(t('errors.accessTokenError'));
+            if (!token) throw new Error(t('errors.accessTokenError') ?? 'Access token error');
             return token;
           }
           throw error;
         }
       })();
 
+      // Store the promise in case of concurrent requests
       pendingPromises.current.set(cacheKey, tokenPromise);
 
       try {
@@ -144,7 +133,7 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
         setState({
           token: null,
           loading: false,
-          error: err instanceof Error ? err : new Error(String(err)),
+          error: new Error(err instanceof Error ? err.message : String(err)),
         });
       } finally {
         pendingPromises.current.delete(cacheKey);
@@ -155,17 +144,21 @@ export function useAccessToken(scope: string, audiencePath: string): UseAccessTo
       audiencePath,
       domain,
       audience,
-      cacheKey,
       getAccessTokenSilently,
       getAccessTokenWithPopup,
+      cacheKey,
+      t,
     ],
   );
 
+  // Fetch token on mount or when relevant dependencies change
   React.useEffect(() => {
     fetchToken();
   }, [fetchToken]);
 
+  // Refresh token by bypassing cache
   const refreshToken = React.useCallback(() => fetchToken(true), [fetchToken]);
 
-  return React.useMemo(() => ({ ...state, refreshToken }), [state, refreshToken]);
+  // Return token state and refresh function
+  return { ...state, refreshToken };
 }
