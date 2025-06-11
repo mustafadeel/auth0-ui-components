@@ -27,9 +27,11 @@ function App() {
           Login
         </button>
       )}
-      <button className="auth-button" onClick={() => logoutWithRedirect()}>
-        Logout
-      </button>
+      {isAuthenticated && (
+        <button className="auth-button" onClick={() => logoutWithRedirect()}>
+          Logout
+        </button>
+      )}
 
       {isAuthenticated && (
         <div className="mfa-container">
