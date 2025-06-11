@@ -2,17 +2,24 @@
   "name": "@auth0-web-ui-components/core",
   "version": "1.0.0",
   "description": "Core utilities for Auth0 Web UI components",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "files": [
     "dist",
     "README.md"
   ],
   "scripts": {
     "clean": "rm -rf dist",
-    "build:js": "rollup -c",
-    "build:types": "tsc --project tsconfig.build.json",
-    "build": "pnpm run clean && pnpm run build:js && pnpm run build:types"
+    "build:ts": "tsup",
+    "build": "pnpm run clean && pnpm run build:ts"
   },
   "keywords": [
     "i18n",

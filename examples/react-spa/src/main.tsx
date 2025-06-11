@@ -4,6 +4,7 @@ import './index.css';
 import App from './App.tsx';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { Auth0ComponentProvider } from '@auth0-web-ui-components/react';
+import '@auth0-web-ui-components/react/dist/index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,1 +1,1 @@
-export * from './component-provider';
+export { Auth0ComponentProvider } from './component-provider';

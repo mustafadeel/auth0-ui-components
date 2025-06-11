@@ -1,3 +1,16 @@
-export * from './api';
-export * from './i18n';
-export * from './services';
+export { getLocalizedComponentAsync } from './i18n';
+
+export { del, post, get, patch, ApiError, normalizeError, createApiError } from './api';
+
+export {
+  deleteMfaFactor,
+  fetchMfaFactors,
+  confirmMfaEnrollmentRequest,
+  enrollMfaRequest,
+  EnrollMfaParams,
+  EnrollMfaResponse,
+  Authenticator,
+  MFAType,
+  AuthenticatorType,
+  OobChannel,
+} from './services';

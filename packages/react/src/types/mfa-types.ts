@@ -50,7 +50,7 @@ export interface MFAError {
 }
 
 export interface ManageMfaProps {
-  localization?: Record<string, MFALocaleContent>;
+  localization?: Partial<MFALocaleContent>;
   hideHeader?: boolean;
   showActiveOnly?: boolean;
   disableEnroll?: boolean;
@@ -172,7 +172,7 @@ export interface ConfirmEnrollmentResult {
   confirmEnrollment: (
     factorName: string,
     options: {
-      oobCode: string;
+      oobCode?: string;
       userOtpCode?: string;
       userEmailOtpCode?: string;
     },
@@ -190,7 +190,7 @@ export type EnrollOptions = {
 };
 
 export interface ConfirmEnrollmentOptions {
-  oobCode: string;
+  oobCode?: string;
   userOtpCode?: string;
   userEmailOtpCode?: string;
 }

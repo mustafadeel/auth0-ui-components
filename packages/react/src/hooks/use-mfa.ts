@@ -168,13 +168,13 @@ export function useMFA() {
   const confirmEnrollment = useCallback(
     async (
       factorName: MFAType,
-      options: { oobCode: string; userOtpCode?: string; userEmailOtpCode?: string },
+      options: { oobCode?: string; userOtpCode?: string; userEmailOtpCode?: string },
     ): Promise<unknown | null> => {
       // Validate prerequisites
       validatePrerequisites();
       const baseData: {
         grant_type: string;
-        oob_code: string;
+        oob_code?: string;
         otp?: string;
         binding_code?: string;
         client_id?: string | undefined;
@@ -184,7 +184,7 @@ export function useMFA() {
           factorName === 'totp'
             ? 'http://auth0.com/oauth/grant-type/mfa-otp'
             : 'http://auth0.com/oauth/grant-type/mfa-oob',
-        oob_code: options.oobCode,
+        oob_code: options?.oobCode,
         client_id: !isProxyMode ? authDetails?.clientId : undefined,
         mfa_token: accessToken ?? undefined,
       };

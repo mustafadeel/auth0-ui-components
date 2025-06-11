@@ -1,5 +1,11 @@
 import { get, del, isApiError, post } from '../api';
-import type { Authenticator, EnrollMfaParams, EnrollMfaResponse, AuthenticatorType } from './types';
+import type {
+  Authenticator,
+  EnrollMfaParams,
+  EnrollMfaResponse,
+  AuthenticatorType,
+  MFAType,
+} from './types';
 
 export const factorsMetaKeys = new Set([
   'sms',
@@ -37,7 +43,7 @@ export async function fetchMfaFactors(
 
     if (onlyActive && !factor?.active) return acc;
 
-    const factorName = factor?.id?.split('|')[0] ?? type;
+    const factorName = (factor?.id?.split('|')[0] ?? type) as MFAType;
 
     acc.push({
       id: factor?.id ?? '',
@@ -111,7 +117,7 @@ export async function confirmMfaEnrollmentRequest(
   baseUrl: string,
   data: {
     grant_type: string;
-    oob_code: string;
+    oob_code?: string;
     otp?: string;
     binding_code?: string;
     client_id?: string;

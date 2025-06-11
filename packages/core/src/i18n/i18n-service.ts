@@ -145,39 +145,28 @@ export async function getLocalizedComponentAsync<T = unknown>(
   lang: string,
   component: string,
   fallbackLang = 'en',
-  overrides?: Record<string, Partial<T>>,
+  overrides?: Partial<T>,
 ): Promise<((key: string, vars?: Record<string, unknown>) => string | null) | null> {
   try {
-    const langResult = await tryLoadWithFallbacks(lang);
-    const fallbackResult = langResult ?? (await tryLoadWithFallbacks(fallbackLang));
-
-    if (!fallbackResult) {
+    const result = (await tryLoadWithFallbacks(lang)) ?? (await tryLoadWithFallbacks(fallbackLang));
+    if (!result) {
       console.warn(
         `[getLocalizedComponentAsync] No translations found for "${lang}" or fallback "${fallbackLang}".`,
       );
       return null;
     }
 
-    const { data: langData, usedLang } = fallbackResult;
-    const componentData = langData[component] as T | undefined;
-
+    const componentData = result.data?.[component] as T | undefined;
     if (!componentData) {
       console.warn(
-        `[getLocalizedComponentAsync] Component "${component}" missing in language "${usedLang}".`,
+        `[getLocalizedComponentAsync] Component "${component}" missing in language "${result.usedLang}".`,
       );
       return null;
     }
 
-    // Merge overrides if present
-    const mergedData = {
-      ...componentData,
-      ...overrides?.[usedLang],
-    };
+    const mergedData = { ...componentData, ...overrides };
 
-    // Return the lookup function t(key)
-    return (key: string, vars?: Record<string, unknown>): string | null => {
-      return t(mergedData, key, vars); // Use the final t function
-    };
+    return (key, vars) => t(mergedData, key, vars);
   } catch (error) {
     console.error('[getLocalizedComponentAsync] Unexpected error:', error);
     return null;

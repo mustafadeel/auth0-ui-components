@@ -1,1 +1,1 @@
-export * from './manage-mfa';
+export { ManageMfa } from './manage-mfa';

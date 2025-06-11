@@ -27,7 +27,7 @@ import { getLocalizedComponentAsync } from '@auth0-web-ui-components/core';
  */
 export function useI18n<T extends object>(
   component: string,
-  overrides?: Record<string, Partial<T>>,
+  overrides?: Partial<T>,
 ): (key: string, vars?: Record<string, unknown>) => string | null {
   const { config } = useComponentConfig();
   const lang = config.i18n?.currentLanguage;

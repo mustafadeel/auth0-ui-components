@@ -36,3 +36,4 @@ Thumbs.db
 coverage/
 .cache/
 *.tgz
+.turbo

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useI18n, useMFA } from '@/hooks';
 import type { ManageMfaProps, MFAType, Authenticator } from '@/types';
-import { Badge } from '@/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/ui/card';
-import { Label } from '@/ui/label';
-import { Separator } from '@/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
-import { Button } from '@/ui/button';
-import { Toaster } from '@/ui/sonner';
+import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner';
 import { EnrollmentForm } from '@/components/mfa/enrollment-form';
 
 /**
@@ -27,32 +27,17 @@ import { EnrollmentForm } from '@/components/mfa/enrollment-form';
  * Example:
  * ```js
  * localization={{
- *   en: {
- *     title: 'Manage MFA Factors',
- *     description: 'Here you can manage your Multi-Factor Authentication (MFA) factors.',
- *     loading: 'Loading...',
- *     errors: {
- *       factorsLoadingError: 'An error occurred while loading MFA factors.',
- *     },
- *     noActiveMfa: 'No active MFA factors found.',
- *     enrollFactor: 'Successfully enrolled the MFA factor.',
- *     removeFactor: 'Successfully removed the MFA factor.',
- *     delete: 'Delete',
- *     enroll: 'Enroll',
+ *   title: 'Manage MFA Factors',
+ *   description: 'Here you can manage your Multi-Factor Authentication (MFA) factors.',
+ *   loading: 'Loading...',
+ *   errors: {
+ *     factorsLoadingError: 'An error occurred while loading MFA factors.',
  *   },
- *   fr: {
- *     title: 'Gérer les facteurs MFA',
- *     description: 'Ici, vous pouvez gérer vos facteurs d\'authentification à deux facteurs (MFA).',
- *     loading: 'Chargement...',
- *     errors: {
- *       factorsLoadingError: 'Une erreur est survenue lors du chargement des facteurs MFA.',
- *     },
- *     noActiveMfa: 'Aucun facteur MFA actif trouvé.',
- *     enrollFactor: 'Facteur MFA inscrit avec succès.',
- *     removeFactor: 'Facteur MFA supprimé avec succès.',
- *     delete: 'Supprimer',
- *     enroll: 'Inscrire',
- *   },
+ *   noActiveMfa: 'No active MFA factors found.',
+ *   enrollFactor: 'Successfully enrolled the MFA factor.',
+ *   removeFactor: 'Successfully removed the MFA factor.',
+ *   delete: 'Delete',
+ *   enroll: 'Enroll',
  * }}
  * ```
  * @param {boolean} [props.hideHeader=false] - Whether to hide the header.
@@ -124,7 +109,7 @@ export function ManageMfa({
    */
   const visibleFactors = React.useMemo(() => {
     return factors.filter((factor) => {
-      const config = factorConfig[factor.name as keyof typeof factorConfig];
+      const config = factorConfig[factor.factorName as keyof typeof factorConfig];
       return config?.visible !== false;
     });
   }, [factors, factorConfig]);
@@ -208,8 +193,9 @@ export function ManageMfa({
     [onErrorAction],
   );
 
+  //TODO
   if (loading) return <p>{t('loading')}</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="text-3xl font-bold underline">{error}</p>;
 
   return (
     <>
@@ -227,13 +213,14 @@ export function ManageMfa({
             <Label className="text-center text-muted-foreground">{t('noActiveMfa')}</Label>
           ) : (
             visibleFactors.map((factor, idx) => {
-              const isEnabled = factorConfig?.[factor.name as MFAType]?.enabled !== false;
+              const isEnabledFactor =
+                factorConfig?.[factor.factorName as MFAType]?.enabled !== false;
 
               return (
                 <div
                   key={`${factor.name}-${idx}`}
-                  className={`flex flex-col gap-6 ${!isEnabled ? 'opacity-50 pointer-events-none' : ''}`}
-                  aria-disabled={!isEnabled}
+                  className={`flex flex-col gap-6 ${!isEnabledFactor ? 'opacity-50 pointer-events-none' : ''}`}
+                  aria-disabled={!isEnabledFactor}
                 >
                   {idx > 0 && <Separator />}
                   <div className="flex flex-col items-center justify-between space-y-6 md:flex-row md:space-x-2 md:space-y-0">
@@ -257,7 +244,7 @@ export function ManageMfa({
                             <Button
                               type="submit"
                               onClick={() => handleDelete(factor.id, factor.factorName as MFAType)}
-                              disabled={disableDelete || deleting || !isEnabled}
+                              disabled={disableDelete || deleting || !isEnabledFactor}
                               aria-label={`Delete authenticator ${factor.factorName}`}
                             >
                               {t('delete')}
@@ -266,7 +253,7 @@ export function ManageMfa({
                         : !readOnly && (
                             <Button
                               onClick={() => handleEnrollClick(factor.factorName as MFAType)}
-                              disabled={disableEnroll || !isEnabled}
+                              disabled={disableEnroll || !isEnabledFactor}
                             >
                               {t('enroll')}
                             </Button>

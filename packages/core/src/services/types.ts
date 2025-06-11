@@ -12,7 +12,7 @@ export interface Authenticator {
   oob_channels?: OobChannel[];
   name?: string;
   active: boolean;
-  factorName?: string;
+  factorName?: MFAType;
 }
 
 export type MFAType =

@@ -1,9 +1,8 @@
 {
-  "name": "auth0-ui-components",
+  "name": "auth0-web-ui-components",
   "version": "1.0.0",
   "description": "Auth0 UI Components",
   "private": true,
-  "type": "module",
   "workspaces": [
     "packages/*"
   ],
@@ -42,12 +41,6 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^8.56.0",
-    "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "commitizen": "^4.3.1",
@@ -58,9 +51,11 @@
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.0",
-    "rollup": "^4.41.1",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "tsup": "^8.5.0",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "react-qr-barcode-scanner": "^2.1.6"
   }
 }

@@ -4,13 +4,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { MFAType, normalizeError } from '@auth0-web-ui-components/core';
-import { Button } from '@/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/ui/dialog';
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/ui/form';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/ui/input-otp';
-import { Input } from '@/ui/input';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+import { Input } from '@/components/ui/input';
 import { useI18n } from '@/hooks';
 import { EnrollMfaResponse } from '@auth0-web-ui-components/core';
+import QRCode from 'react-qr-code';
 
 const phoneRegex = /^\+?[0-9\s\-()]{8,}$/;
 
@@ -21,7 +29,7 @@ type EnrollmentFormProps = {
   enrollMfa: (factor: MFAType, options: Record<string, string>) => Promise<EnrollMfaResponse>;
   confirmEnrollment: (
     factor: MFAType,
-    options: { oobCode: string; userOtpCode?: string; userEmailOtpCode?: string },
+    options: { oobCode?: string; userOtpCode?: string; userEmailOtpCode?: string },
   ) => Promise<unknown | null>;
   onSuccess: () => void;
   onError: (error: Error, stage: 'enroll' | 'confirm') => void;
@@ -32,7 +40,7 @@ type ContactForm = {
 };
 
 type OtpForm = {
-  otp: string;
+  userOtp: string;
 };
 
 export function EnrollmentForm({
@@ -46,22 +54,18 @@ export function EnrollmentForm({
 }: EnrollmentFormProps) {
   const t = useI18n('mfa');
 
-  // UI flow state management
   const [phase, setPhase] = React.useState<'enterContact' | 'enterOtp' | 'showOtp'>('enterContact');
-  const [oobCode, setOobCode] = React.useState<string | null>(null);
+  const [oobCode, setOobCode] = React.useState<string | undefined>(undefined);
   const [otpData, setOtpData] = React.useState<{
-    secret: string | undefined;
-    barcodeUri: string | undefined;
-    recoveryCodes: string[] | null;
+    secret: string | null;
+    barcodeUri: string | null;
+    recoveryCodes: string[];
   }>({
-    secret: undefined,
-    barcodeUri: undefined,
+    secret: null,
+    barcodeUri: null,
     recoveryCodes: [],
   });
   const [loading, setLoading] = React.useState(false);
-
-  // OTP state
-  const [otpValue, setOtpValue] = React.useState<string>('');
 
   // Create schema for validating contact input based on MFA type
   const ContactSchema = React.useMemo(() => {
@@ -79,20 +83,17 @@ export function EnrollmentForm({
     mode: 'onChange',
   });
 
-  // Reset the state when the dialog is closed
   React.useEffect(() => {
     if (!open) {
       setPhase('enterContact');
-      setOobCode(null);
-      setOtpData({ secret: undefined, barcodeUri: undefined, recoveryCodes: [] });
+      setOobCode(undefined);
+      setOtpData({ secret: null, barcodeUri: null, recoveryCodes: [] });
       setLoading(false);
       formContact.reset();
       formOtp.reset();
-      setOtpValue('');
     }
   }, [open, formContact, formOtp]);
 
-  // Handle contact form submission (Email/SMS)
   const onSubmitContact = async (data: ContactForm) => {
     setLoading(true);
     try {
@@ -112,8 +113,8 @@ export function EnrollmentForm({
 
       if (response?.authenticator_type === 'otp') {
         setOtpData({
-          secret: response.secret,
-          barcodeUri: response.barcode_uri,
+          secret: response.secret ?? null,
+          barcodeUri: response.barcode_uri ?? null,
           recoveryCodes: response.recovery_codes || [],
         });
         setPhase('showOtp');
@@ -130,19 +131,16 @@ export function EnrollmentForm({
     }
   };
 
-  // Handle OTP verification when user submits the OTP code after scanning the barcode
   const onSubmitOtp = async (data: OtpForm) => {
-    if (!oobCode) {
-      onError(new Error('Missing enrollment code'), 'confirm');
-      return;
-    }
-
     setLoading(true);
 
     try {
+      //TODO
       const options = {
         oobCode,
-        ...(factorType === 'email' ? { userEmailOtpCode: data.otp } : { userOtpCode: data.otp }),
+        ...(factorType === 'email'
+          ? { userEmailOtpCode: data.userOtp }
+          : { userOtpCode: data.userOtp }),
       };
 
       const response = await confirmEnrollment(factorType, options);
@@ -151,7 +149,11 @@ export function EnrollmentForm({
         onClose();
       }
     } catch (err) {
-      onError(err as Error, 'confirm');
+      const normalizedError = normalizeError(err, {
+        resolver: (code) => (code === 'invalid_grant' ? t(`errors.${code}.${factorType}`) : null),
+        fallbackMessage: 'An unexpected error occurred during MFA enrollment.',
+      });
+      onError(normalizedError, 'confirm');
     } finally {
       setLoading(false);
     }
@@ -167,8 +169,8 @@ export function EnrollmentForm({
           const response = await enrollMfa(factorType, {});
           if (response?.authenticator_type === 'otp') {
             setOtpData({
-              secret: response.secret,
-              barcodeUri: response.barcode_uri,
+              secret: response.secret ?? null,
+              barcodeUri: response.barcode_uri ?? null,
               recoveryCodes: response.recovery_codes || [],
             });
           }
@@ -221,34 +223,47 @@ export function EnrollmentForm({
         );
       case 'showOtp':
         return (
-          <div className="space-y-6">
+          <div>
             <p>Scan the barcode with your authenticator app or enter the secret manually:</p>
-            <div>
-              <img src={otpData.barcodeUri || ''} alt="OTP Barcode" />
-              <p>Secret: {otpData.secret}</p>
+            <div className="flex justify-center items-center mt-6">
+              <div className="border border-gray-300 p-4 rounded-lg shadow-lg bg-white">
+                <QRCode
+                  size={150}
+                  style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+                  value={otpData.barcodeUri || ''}
+                  viewBox={`0 0 150 150`}
+                />
+              </div>
             </div>
-            <Button onClick={() => setPhase('enterOtp')}>I have scanned the barcode</Button>
+            <p>Secret: {otpData.secret}</p>
+            <Button onClick={() => setPhase('enterOtp')} className="mt-4">
+              I have scanned the barcode
+            </Button>
             <div className="mt-6">
               <p>
                 <strong>Recovery Codes:</strong>
               </p>
-              <ul>{otpData.recoveryCodes?.map((code, index) => <li key={index}>{code}</li>)}</ul>
+              <ul>
+                {otpData.recoveryCodes.map((code, index) => (
+                  <li key={index}>{code}</li>
+                ))}
+              </ul>
               <Form {...formOtp}>
-                <form onSubmit={formOtp.handleSubmit(onSubmitOtp)} className="space-y-6">
+                <form
+                  autoComplete="off"
+                  onSubmit={formOtp.handleSubmit(onSubmitOtp)}
+                  className="space-y-6 mt-4"
+                >
                   <FormField
                     control={formOtp.control}
-                    name="otp"
-                    render={() => (
+                    name="userOtp"
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel>
                           Enter the verification code from your authenticator app
                         </FormLabel>
                         <FormControl>
-                          <InputOTP
-                            maxLength={6}
-                            value={otpValue}
-                            onChange={(value) => setOtpValue(value)}
-                          >
+                          <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
                             <InputOTPGroup>
                               <InputOTPSlot index={0} />
                               <InputOTPSlot index={1} />
@@ -274,19 +289,19 @@ export function EnrollmentForm({
       case 'enterOtp':
         return (
           <Form {...formOtp}>
-            <form onSubmit={formOtp.handleSubmit(onSubmitOtp)} className="space-y-6">
+            <form
+              onSubmit={formOtp.handleSubmit(onSubmitOtp)}
+              autoComplete="off"
+              className="space-y-6"
+            >
               <FormField
                 control={formOtp.control}
-                name="otp"
-                render={() => (
+                name="userOtp"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Enter the verification code from your authenticator app</FormLabel>
+                    <FormLabel>Enter the verification code</FormLabel>
                     <FormControl>
-                      <InputOTP
-                        maxLength={6}
-                        value={otpValue}
-                        onChange={(value) => setOtpValue(value)}
-                      >
+                      <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
                         <InputOTPGroup>
                           <InputOTPSlot index={0} />
                           <InputOTPSlot index={1} />
