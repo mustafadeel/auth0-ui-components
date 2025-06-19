@@ -6,6 +6,7 @@ import { ProxyModeProvider } from './proxy-mode-provider';
 import type { TFactory } from '@auth0-web-ui-components/core';
 import { createI18n } from '@auth0-web-ui-components/core';
 import { I18nContext } from './i18n-provider';
+import { Spinner } from '@/components/ui/spinner';
 
 const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
 
@@ -100,7 +101,7 @@ export const Auth0ComponentProvider = ({
       {isProxyMode ? (
         <ProxyModeProvider {...props} authProxyUrl={authProxyUrl} />
       ) : (
-        <React.Suspense fallback={props.loader || 'Loading authentication...'}>
+        <React.Suspense fallback={props.loader || <Spinner />}>
           <SpaModeProvider {...props} />
         </React.Suspense>
       )}

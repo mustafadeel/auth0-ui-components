@@ -33,6 +33,5 @@ export const Auth0ComponentContext = React.createContext<{
     customOverrides: {},
     isProxyMode: false,
     apiBaseUrl: '',
-    loader: 'Loading..',
   },
 });

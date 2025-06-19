@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
 import { EnrollmentForm } from '@/components/mfa/enrollment-form';
 import { ENROLL, CONFIRM } from '@/lib/constants';
+import { Spinner } from '@/components/ui/spinner';
 
 /**
  * ManageMfa Component
@@ -207,11 +208,7 @@ export function ManageMfa({
     <>
       <Toaster position="top-right" />
       {loading ? (
-        loader || (
-          <div className="flex items-center justify-center p-4">
-            <Label className="text-center text-muted-foreground">{t('loading')}</Label>
-          </div>
-        )
+        loader || <Spinner />
       ) : error ? (
         <div className="flex items-center justify-center p-4">
           <Label className="text-center text-destructive">{error}</Label>
