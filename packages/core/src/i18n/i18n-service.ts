@@ -20,7 +20,8 @@ export async function createI18n(options: {
   const cache = new Map<string, LangTranslations | null>();
   let translations: LangTranslations | null = null;
 
-  const currentLanguage = options?.currentLanguage ?? 'en-US';
+  const defaultLanguage = 'en-US';
+  const currentLanguage = options?.currentLanguage ?? defaultLanguage;
   const fallbackLanguage = options?.fallbackLanguage;
 
   // Regex compile once
