@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import QRCode from 'react-qr-code';
+import { MailIcon, PhoneIcon } from 'lucide-react';
 
 import { MFAType, normalizeError, EnrollMfaResponse } from '@auth0-web-ui-components/core';
 
@@ -16,8 +17,8 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Input } from '@/components/ui/input';
+import { OTPField } from '@/components/ui/otp-field';
+import { TextField } from '@/components/ui/text-field';
 import { useI18n } from '@/hooks';
 import {
   SHOW_OTP,
@@ -236,12 +237,19 @@ export function EnrollmentForm({
                           : t('enrollment_form.phone_number')}
                       </FormLabel>
                       <FormControl>
-                        <Input
+                        <TextField
+                          type={factorType === FACTOR_TYPE_EMAIL ? 'email' : 'tel'}
+                          startAdornment={
+                            <div className="p-1.5">
+                              {factorType === FACTOR_TYPE_EMAIL ? <MailIcon /> : <PhoneIcon />}
+                            </div>
+                          }
                           placeholder={
                             factorType === FACTOR_TYPE_EMAIL
                               ? EMAIL_PLACEHOLDER
                               : PHONE_NUMBER_PLACEHOLDER
                           }
+                          error={Boolean(formContact.formState.errors.contact)}
                           {...field}
                         />
                       </FormControl>
@@ -307,16 +315,7 @@ export function EnrollmentForm({
                           </FormLabel>
                           <FormControl>
                             <div className="flex justify-center">
-                              <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
-                                <InputOTPGroup>
-                                  <InputOTPSlot index={0} />
-                                  <InputOTPSlot index={1} />
-                                  <InputOTPSlot index={2} />
-                                  <InputOTPSlot index={3} />
-                                  <InputOTPSlot index={4} />
-                                  <InputOTPSlot index={5} />
-                                </InputOTPGroup>
-                              </InputOTP>
+                              <OTPField length={6} onChange={field.onChange} className="max-w-xs" />
                             </div>
                           </FormControl>
                           <FormMessage className="text-left" />
@@ -354,16 +353,7 @@ export function EnrollmentForm({
                       </FormLabel>
                       <FormControl>
                         <div className="flex justify-center">
-                          <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
-                            <InputOTPGroup>
-                              <InputOTPSlot index={0} />
-                              <InputOTPSlot index={1} />
-                              <InputOTPSlot index={2} />
-                              <InputOTPSlot index={3} />
-                              <InputOTPSlot index={4} />
-                              <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                          </InputOTP>
+                          <OTPField length={6} onChange={field.onChange} className="max-w-xs" />
                         </div>
                       </FormControl>
                       <FormMessage className="text-left" />
