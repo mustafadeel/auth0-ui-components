@@ -18,9 +18,6 @@ export interface ThemeSettings {
  * Defines configuration for authentication, internationalization, and theming.
  * Also optionally includes runtime authentication state in SPA mode.
  *
- * @property {string} [authProxyUrl] - Optional URL for authentication proxy in RWA (proxy) mode.
- *                                      If provided, authentication is handled externally and no tokens are fetched.
- *
  * @property {I18nOptions} [i18n] - Internationalization settings including current and fallback languages.
  *
  *
@@ -37,7 +34,6 @@ export type Auth0ComponentConfig = Omit<
 };
 
 export interface Auth0ComponentProviderProps {
-  authProxyUrl?: string;
   i18n?: I18nOptions;
   themeSettings?: ThemeSettings;
   authDetails: AuthDetails;
@@ -54,7 +50,11 @@ export interface I18nOptions {
 /**
  * Auth0 authentication details fetched from SDK
  */
-export type AuthDetails = AuthDetailsCore;
+export type AuthDetails = Omit<AuthDetailsCore, 'accessToken' | 'scopes' | 'authProxyUrl'> & {
+  accessToken?: string;
+  scopes?: string;
+  authProxyUrl?: string;
+};
 
 /**
  * BrandingTheme

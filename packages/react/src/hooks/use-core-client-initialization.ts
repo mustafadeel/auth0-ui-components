@@ -4,7 +4,6 @@ import { CoreClient } from '@auth0-web-ui-components/core';
 
 interface UseCoreClientInitializationProps {
   authDetails: AuthDetailsCore;
-  authProxyUrl?: string;
   translator?: TFactory;
   i18nInitialized: boolean;
 }
@@ -14,7 +13,6 @@ interface UseCoreClientInitializationProps {
  */
 export const useCoreClientInitialization = ({
   authDetails,
-  authProxyUrl,
   translator,
   i18nInitialized,
 }: UseCoreClientInitializationProps) => {
@@ -27,13 +25,7 @@ export const useCoreClientInitialization = ({
 
     const initializeCoreClient = async () => {
       try {
-        // Combine authDetails with authProxyUrl
-        const authDetailsWithProxy = {
-          ...authDetails,
-          authProxyUrl,
-        };
-
-        const initializedCoreClient = await CoreClient.create(authDetailsWithProxy, translator);
+        const initializedCoreClient = await CoreClient.create(authDetails, translator);
 
         setCoreClient(initializedCoreClient);
       } catch (error) {
@@ -46,7 +38,6 @@ export const useCoreClientInitialization = ({
   }, [
     i18nInitialized,
     translator,
-    authProxyUrl,
     authDetails.contextInterface?.getAccessTokenSilently,
     authDetails.contextInterface?.getIdTokenClaims,
   ]);

@@ -8,6 +8,7 @@ import { CoreClientContext } from '@/hooks/use-core-client';
 import { Spinner } from '@/components/ui/spinner';
 import { useI18nInitialization } from '@/hooks/use-i18n-initialization';
 import { useCoreClientInitialization } from '@/hooks/use-core-client-initialization';
+import { AuthDetailsCore } from '@auth0-web-ui-components/core';
 
 const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
 
@@ -48,19 +49,28 @@ const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
  * ```
  */
 export const Auth0ComponentProvider = ({
-  authProxyUrl,
   i18n,
+  authDetails,
   ...props
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
-  const isProxyMode = Boolean(authProxyUrl);
+  const isProxyMode = Boolean(authDetails.authProxyUrl);
+
+  // Add default values if not provided
+  const authDetailsCore: AuthDetailsCore = {
+    clientId: authDetails.clientId,
+    domain: authDetails.domain,
+    accessToken: authDetails.accessToken ?? undefined,
+    scopes: authDetails.scopes ?? undefined,
+    authProxyUrl: authDetails.authProxyUrl ?? undefined,
+    contextInterface: authDetails.contextInterface,
+  };
 
   // Initialize i18n
   const i18nState = useI18nInitialization(i18n);
 
   // Initialize CoreClient
   const coreClient = useCoreClientInitialization({
-    authDetails: props.authDetails,
-    authProxyUrl,
+    authDetails: authDetailsCore,
     translator: i18nState.translator,
     i18nInitialized: i18nState.initialized,
   });
@@ -84,7 +94,7 @@ export const Auth0ComponentProvider = ({
     <CoreClientContext.Provider value={coreClientValue}>
       <I18nContext.Provider value={i18nValue}>
         {isProxyMode ? (
-          <ProxyModeProvider {...props} authProxyUrl={authProxyUrl} />
+          <ProxyModeProvider {...props} authProxyUrl={authDetails.authProxyUrl} />
         ) : (
           <React.Suspense fallback={props.loader || <Spinner />}>
             <SpaModeProvider {...props} />

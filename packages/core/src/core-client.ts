@@ -94,8 +94,9 @@ class TokenManager {
 export class CoreClient implements CoreClientInterface {
   public readonly auth: AuthDetailsCore;
   public readonly t: TranslationFunction;
-  public readonly authentication: AuthenticationAPIService;
   private readonly tokenManager: TokenManager;
+  // API services
+  public readonly authentication: AuthenticationAPIService;
 
   private constructor(auth: AuthDetailsCore, translator: TranslationFunction) {
     this.auth = auth;
