@@ -3,11 +3,11 @@
 import * as React from 'react';
 import type { Auth0ComponentProviderProps } from './types';
 import { ProxyModeProvider } from './proxy-mode-provider';
-import type { TFactory, CoreClientInterface } from '@auth0-web-ui-components/core';
-import { createI18n, CoreClient } from '@auth0-web-ui-components/core';
 import { I18nContext } from './i18n-provider';
 import { CoreClientContext } from '@/hooks/use-core-client';
 import { Spinner } from '@/components/ui/spinner';
+import { useI18nInitialization } from '@/hooks/use-i18n-initialization';
+import { useCoreClientInitialization } from '@/hooks/use-core-client-initialization';
 
 const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
 
@@ -53,78 +53,17 @@ export const Auth0ComponentProvider = ({
   ...props
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
   const isProxyMode = Boolean(authProxyUrl);
-  const [coreClient, setCoreClient] = React.useState<CoreClientInterface | null>(null);
-  const [i18nState, setI18nState] = React.useState<{
-    initialized: boolean;
-    translator: TFactory | undefined;
-  }>({
-    initialized: false,
-    translator: undefined,
-  });
 
-  // Initialize i18n first
-  React.useEffect(() => {
-    if (!i18n?.currentLanguage) {
-      setI18nState({ initialized: true, translator: undefined });
-      return;
-    }
+  // Initialize i18n
+  const i18nState = useI18nInitialization(i18n);
 
-    const initializeTranslations = async () => {
-      try {
-        const instance = await createI18n({
-          currentLanguage: i18n.currentLanguage,
-          fallbackLanguage: i18n.fallbackLanguage,
-        });
-
-        setI18nState({
-          initialized: true,
-          translator: instance.t,
-        });
-      } catch {
-        setI18nState({
-          initialized: true,
-          translator: undefined,
-        });
-      }
-    };
-
-    initializeTranslations();
-  }, [i18n?.currentLanguage, i18n?.fallbackLanguage]);
-
-  // Initialize CoreClient after i18n is ready
-  React.useEffect(() => {
-    if (!i18nState.initialized) {
-      return;
-    }
-
-    const initializeCoreClient = async () => {
-      try {
-        // Combine authDetails with authProxyUrl
-        const authDetailsWithProxy = {
-          ...props.authDetails,
-          authProxyUrl,
-        };
-
-        const initializedCoreClient = await CoreClient.create(
-          authDetailsWithProxy,
-          i18nState.translator,
-        );
-
-        setCoreClient(initializedCoreClient);
-      } catch (error) {
-        console.error('Failed to initialize CoreClient:', error);
-        setCoreClient(null);
-      }
-    };
-
-    initializeCoreClient();
-  }, [
-    i18nState.initialized,
-    i18nState.translator,
+  // Initialize CoreClient
+  const coreClient = useCoreClientInitialization({
+    authDetails: props.authDetails,
     authProxyUrl,
-    props.authDetails.contextInterface?.getAccessTokenSilently,
-    props.authDetails.contextInterface?.getIdTokenClaims,
-  ]);
+    translator: i18nState.translator,
+    i18nInitialized: i18nState.initialized,
+  });
 
   const i18nValue = React.useMemo(
     () => ({
