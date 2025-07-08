@@ -25,8 +25,6 @@ const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
  * This component abstracts the complexity of choosing the correct mode from the end user.
  *
  * @param {Object} props - Configuration props.
- * @param {string} [props.authProxyUrl] - Optional URL for proxy mode. When provided,
- *                                       enables proxy mode; otherwise, SPA mode is used.
  * @param {React.ReactNode} props.children - Child components that require authentication context.
  * @param {Object} [props.i18n] - Internationalization configuration (language, fallback).
  * @param {Object} [props.themeSettings] - Theme and branding settings.
@@ -94,7 +92,7 @@ export const Auth0ComponentProvider = ({
     <CoreClientContext.Provider value={coreClientValue}>
       <I18nContext.Provider value={i18nValue}>
         {isProxyMode ? (
-          <ProxyModeProvider {...props} authProxyUrl={authDetails.authProxyUrl} />
+          <ProxyModeProvider {...props} />
         ) : (
           <React.Suspense fallback={props.loader || <Spinner />}>
             <SpaModeProvider {...props} />

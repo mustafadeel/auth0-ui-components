@@ -34,22 +34,17 @@ import { ThemeProvider } from './theme-provider';
  */
 export function ProxyModeProvider({
   children,
-  i18n = { currentLanguage: 'en-US', fallbackLanguage: 'en-US' },
   themeSettings = { mode: 'light' },
   customOverrides = {},
-  authProxyUrl = '',
   loader,
-}: Auth0ComponentConfig & { children: React.ReactNode; authProxyUrl?: string }) {
+}: Auth0ComponentConfig & { children: React.ReactNode }) {
   const config = React.useMemo(
     () => ({
-      i18n,
       themeSettings,
       customOverrides,
-      isProxyMode: true,
-      apiBaseUrl: authProxyUrl,
       loader,
     }),
-    [i18n, themeSettings, customOverrides, authProxyUrl],
+    [themeSettings, customOverrides, loader],
   );
 
   return (

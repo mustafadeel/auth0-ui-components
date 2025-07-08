@@ -43,7 +43,6 @@ function SpaModeProvider({
     () => ({
       themeSettings,
       customOverrides,
-      isProxyMode: false,
       loader,
     }),
     [themeSettings, customOverrides, loader],

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AuthDetailsCore } from '@auth0-web-ui-components/core';
 
 /**
- * Theme configuration for the Auth0 components
+ * Theme configuration
  * @property {('light'|'dark')} [mode] - Theme mode
  * @property {string} [primaryColor] - Primary color for theming
  */
@@ -13,48 +13,37 @@ export interface ThemeSettings {
 }
 
 /**
- * Configuration options for Auth0ComponentProvider TODO: Regenerate docs
- *
- * Defines configuration for authentication, internationalization, and theming.
- * Also optionally includes runtime authentication state in SPA mode.
- *
- * @property {I18nOptions} [i18n] - Internationalization settings including current and fallback languages.
- *
- *
- * @property {ThemeSettings} [themeSettings] - UI theme configuration, such as light/dark mode and primary color.
- *
- * @property {AuthDetails} [authDetails] - Runtime authentication state, populated in SPA (non-proxy) mode.
- *                                         Includes access token, domain, client ID, scopes, loading, and error info.
+ * Internationalization configuration for Auth0 components.
  */
-export type Auth0ComponentConfig = Omit<
-  Auth0ComponentProviderProps,
-  'authDetails' | 'apiBaseUrl'
-> & {
-  isProxyMode?: boolean;
-};
-
-export interface Auth0ComponentProviderProps {
-  i18n?: I18nOptions;
-  themeSettings?: ThemeSettings;
-  authDetails: AuthDetails;
-  customOverrides?: CustomOverrides;
-  apiBaseUrl?: string;
-  loader?: React.ReactNode;
-}
-
 export interface I18nOptions {
   currentLanguage: string;
   fallbackLanguage?: string;
 }
 
 /**
- * Auth0 authentication details fetched from SDK
+ * Auth0 authentication details with optional React-specific properties.
  */
 export type AuthDetails = Omit<AuthDetailsCore, 'accessToken' | 'scopes' | 'authProxyUrl'> & {
   accessToken?: string;
   scopes?: string;
   authProxyUrl?: string;
 };
+
+/**
+ * Props for the Auth0ComponentProvider component.
+ */
+export interface Auth0ComponentProviderProps {
+  i18n?: I18nOptions;
+  themeSettings?: ThemeSettings;
+  authDetails: AuthDetails;
+  customOverrides?: CustomOverrides;
+  loader?: React.ReactNode;
+}
+
+/**
+ * Configuration for Auth0ComponentProvider excluding authentication details.
+ */
+export type Auth0ComponentConfig = Omit<Auth0ComponentProviderProps, 'authDetails'>;
 
 /**
  * BrandingTheme
