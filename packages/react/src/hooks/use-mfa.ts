@@ -1,12 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useComponentConfig } from './use-config';
 import { useAccessToken } from './use-access-token';
+import { useTranslator } from './use-translator';
 import {
   fetchMfaFactors,
   enrollMfaRequest,
   deleteMfaFactor,
   confirmMfaEnrollmentRequest,
-  createTranslator,
 } from '@auth0-web-ui-components/core';
 import type {
   MFAType,
@@ -74,7 +74,7 @@ export interface UseMfaResult {
  */
 export function useMFA(): UseMfaResult {
   const { authDetails, apiBaseUrl, isProxyMode } = useComponentConfig();
-  const t = useMemo(() => createTranslator('common'), []);
+  const t = useTranslator('common');
   const mfaScopes = ['read:authenticators', 'remove:authenticators', 'enroll'];
 
   const { getToken: getMfaToken } = useAccessToken(mfaScopes.join(' '), 'mfa');

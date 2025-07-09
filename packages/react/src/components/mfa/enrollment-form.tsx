@@ -30,12 +30,12 @@ import {
 } from '@/lib/constants';
 import QRCode from 'react-qr-code';
 import {
-  createTranslator,
   normalizeError,
   type MFAType,
   type EnrollMfaResponse,
 } from '@auth0-web-ui-components/core';
 import { MailIcon, PhoneIcon } from 'lucide-react';
+import { useTranslator } from '@/hooks';
 
 const phoneRegex = /^\+?[0-9\s\-()]{8,}$/;
 
@@ -71,7 +71,7 @@ export function EnrollmentForm({
   onSuccess,
   onError,
 }: EnrollmentFormProps) {
-  const t = React.useMemo(() => createTranslator('mfa'), []);
+  const t = useTranslator('mfa');
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);

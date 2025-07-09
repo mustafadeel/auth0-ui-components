@@ -5,4 +5,4 @@ export {
   getFallbackLanguage,
   getCurrentTranslations,
 } from './i18n-service';
-export type { LangTranslations, I18nInitOptions } from './types';
+export type { LangTranslations, I18nInitOptions, TranslationFunction } from './types';
