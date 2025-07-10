@@ -6,7 +6,7 @@ import { SafeAny } from '@core/types';
 export interface Authenticator {
   id: string;
   authenticator_type: AuthenticatorType;
-  oob_channels?: OobChannel[];
+  oob_channel?: OobChannel[];
   name?: string;
   active: boolean;
   factorName?: MFAType;

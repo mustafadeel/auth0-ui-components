@@ -37,7 +37,7 @@ export type MFAType =
 export interface MFAFactor {
   id: string;
   authenticator_type: AuthenticatorType;
-  oob_channels?: OobChannel[];
+  oob_channel?: OobChannel[];
   name?: string;
   active: boolean;
 }

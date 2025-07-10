@@ -91,7 +91,7 @@ export interface AuthDetailsCore {
 
 export interface CoreClientInterface {
   auth: AuthDetailsCore;
-  t: TranslationFunction;
+  translator: TranslationFunction;
   authentication: AuthenticationAPIServiceInterface;
   getToken: (
     scope: string,

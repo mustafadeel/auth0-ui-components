@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { TFactory } from '@auth0-web-ui-components/core';
-import { createI18n } from '@auth0-web-ui-components/core';
+import { initializeI18n } from '@auth0-web-ui-components/core';
 
 interface I18nProps {
   currentLanguage?: string;
@@ -21,33 +21,34 @@ export const useI18nInitialization = (i18n?: I18nProps) => {
     translator: undefined,
   });
 
-  React.useEffect(() => {
+  const initializeTranslations = React.useCallback(async () => {
     if (!i18n?.currentLanguage) {
       setI18nState({ initialized: true, translator: undefined });
       return;
     }
 
-    const initializeTranslations = async () => {
-      try {
-        const instance = await createI18n({
-          currentLanguage: i18n.currentLanguage!,
-          fallbackLanguage: i18n.fallbackLanguage,
-        });
+    try {
+      const i18nInstance = await initializeI18n({
+        currentLanguage: i18n.currentLanguage!,
+        fallbackLanguage: i18n.fallbackLanguage,
+      });
 
-        setI18nState({
-          initialized: true,
-          translator: instance.t,
-        });
-      } catch {
-        setI18nState({
-          initialized: true,
-          translator: undefined,
-        });
-      }
-    };
-
-    initializeTranslations();
+      setI18nState({
+        initialized: true,
+        translator: i18nInstance.translator,
+      });
+    } catch {
+      setI18nState({
+        initialized: true,
+        translator: undefined,
+      });
+    }
   }, [i18n?.currentLanguage, i18n?.fallbackLanguage]);
+
+  // Initialize i18n when language changes
+  React.useEffect(() => {
+    initializeTranslations();
+  }, [initializeTranslations]);
 
   return i18nState;
 };

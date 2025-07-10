@@ -2,10 +2,6 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import QRCode from 'react-qr-code';
-
-import { MFAType, normalizeError, EnrollMfaResponse } from '@auth0-web-ui-components/core';
-
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -16,9 +12,8 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Input } from '@/components/ui/input';
-import { useI18n } from '@/hooks';
+import { OTPField } from '@/components/ui/otp-field';
+import { TextField } from '@/components/ui/text-field';
 import {
   SHOW_OTP,
   ENTER_OTP,
@@ -35,6 +30,14 @@ import {
   FACTOR_TYPE_OTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
 } from '@auth0-web-ui-components/core';
+import QRCode from 'react-qr-code';
+import {
+  normalizeError,
+  type MFAType,
+  type EnrollMfaResponse,
+} from '@auth0-web-ui-components/core';
+import { MailIcon, PhoneIcon } from 'lucide-react';
+import { useTranslator } from '@/hooks';
 
 const phoneRegex = /^\+?[0-9\s\-()]{8,}$/;
 
@@ -70,7 +73,7 @@ export function EnrollmentForm({
   onSuccess,
   onError,
 }: EnrollmentFormProps) {
-  const t = useI18n('mfa');
+  const t = useTranslator('mfa');
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
@@ -238,12 +241,19 @@ export function EnrollmentForm({
                           : t('enrollment_form.phone_number')}
                       </FormLabel>
                       <FormControl>
-                        <Input
+                        <TextField
+                          type={factorType === FACTOR_TYPE_EMAIL ? 'email' : 'tel'}
+                          startAdornment={
+                            <div className="p-1.5">
+                              {factorType === FACTOR_TYPE_EMAIL ? <MailIcon /> : <PhoneIcon />}
+                            </div>
+                          }
                           placeholder={
                             factorType === FACTOR_TYPE_EMAIL
                               ? EMAIL_PLACEHOLDER
                               : PHONE_NUMBER_PLACEHOLDER
                           }
+                          error={Boolean(formContact.formState.errors.contact)}
                           {...field}
                         />
                       </FormControl>
@@ -251,7 +261,11 @@ export function EnrollmentForm({
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={!formContact.formState.isValid || loading}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  disabled={!formContact.formState.isValid || loading}
+                >
                   {loading ? t('enrollment_form.sending') : t('enrollment_form.send_code')}
                 </Button>
               </form>
@@ -305,23 +319,14 @@ export function EnrollmentForm({
                           </FormLabel>
                           <FormControl>
                             <div className="flex justify-center">
-                              <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
-                                <InputOTPGroup>
-                                  <InputOTPSlot index={0} />
-                                  <InputOTPSlot index={1} />
-                                  <InputOTPSlot index={2} />
-                                  <InputOTPSlot index={3} />
-                                  <InputOTPSlot index={4} />
-                                  <InputOTPSlot index={5} />
-                                </InputOTPGroup>
-                              </InputOTP>
+                              <OTPField length={6} onChange={field.onChange} className="max-w-xs" />
                             </div>
                           </FormControl>
                           <FormMessage className="text-left" />
                         </FormItem>
                       )}
                     />
-                    <Button type="submit" disabled={loading}>
+                    <Button type="submit" size="sm" disabled={loading}>
                       {loading
                         ? t('enrollment_form.show_otp.verifying')
                         : t('enrollment_form.show_otp.verify_code')}
@@ -352,23 +357,14 @@ export function EnrollmentForm({
                       </FormLabel>
                       <FormControl>
                         <div className="flex justify-center">
-                          <InputOTP maxLength={6} {...field} autoComplete="one-time-code">
-                            <InputOTPGroup>
-                              <InputOTPSlot index={0} />
-                              <InputOTPSlot index={1} />
-                              <InputOTPSlot index={2} />
-                              <InputOTPSlot index={3} />
-                              <InputOTPSlot index={4} />
-                              <InputOTPSlot index={5} />
-                            </InputOTPGroup>
-                          </InputOTP>
+                          <OTPField length={6} onChange={field.onChange} className="max-w-xs" />
                         </div>
                       </FormControl>
                       <FormMessage className="text-left" />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" size="sm" disabled={loading}>
                   {loading
                     ? t('enrollment_form.show_otp.verifying')
                     : t('enrollment_form.show_otp.verify_code')}

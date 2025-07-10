@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useComponentConfig, useI18n, useMFA } from '@/hooks';
+
+import { useComponentConfig, useMFA, useTranslator } from '@/hooks';
 import type { ManageMfaProps, MFAType, Authenticator } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -72,7 +73,7 @@ function ManageMfaComponent({
   onErrorAction,
   onBeforeAction,
 }: ManageMfaProps): React.JSX.Element {
-  const t = useI18n('mfa', localization);
+  const t = useTranslator('mfa', localization);
   const {
     config: { loader },
   } = useComponentConfig();
@@ -299,7 +300,7 @@ function ManageMfaComponent({
                         <span className="leading-6 text-left">
                           {t(`${factor.factorName}.title`)}
                           {factor.active && (
-                            <Badge variant="success" className="ml-3">
+                            <Badge variant="success" size="sm" className="ml-3">
                               {t('enrolled')}
                             </Badge>
                           )}
@@ -314,6 +315,7 @@ function ManageMfaComponent({
                           ? !readOnly && (
                               <Button
                                 type="submit"
+                                size="sm"
                                 onClick={() =>
                                   handleDeleteClick(factor.id, factor.factorName as MFAType)
                                 }
@@ -325,6 +327,7 @@ function ManageMfaComponent({
                             )
                           : !readOnly && (
                               <Button
+                                size="sm"
                                 onClick={() => handleEnrollClick(factor.factorName as MFAType)}
                                 disabled={disableEnroll || !isEnabledFactor}
                               >
@@ -367,6 +370,7 @@ function ManageMfaComponent({
           <div className="flex justify-end gap-4 pt-4">
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setIsDeleteDialogOpen(false)}
               disabled={isDeletingFactor}
             >

@@ -2,15 +2,13 @@
 
 import * as React from 'react';
 import type { Auth0ComponentProviderProps } from './types';
-import { ProxyModeProvider } from './proxy-mode-provider';
-import { I18nContext } from './i18n-provider';
 import { CoreClientContext } from '@/hooks/use-core-client';
 import { Spinner } from '@/components/ui/spinner';
 import { useI18nInitialization } from '@/hooks/use-i18n-initialization';
 import { useCoreClientInitialization } from '@/hooks/use-core-client-initialization';
 import { AuthDetailsCore } from '@auth0-web-ui-components/core';
-
-const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
+import { Auth0ComponentConfigContext } from '@/hooks';
+import { ThemeProvider } from './theme-provider';
 
 /**
  * Auth0ComponentProvider
@@ -49,9 +47,12 @@ const SpaModeProvider = React.lazy(() => import('./spa-mode-provider'));
 export const Auth0ComponentProvider = ({
   i18n,
   authDetails,
-  ...props
+  themeSettings = { mode: 'light' },
+  customOverrides = {},
+  loader,
+  children,
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
-  const isProxyMode = Boolean(authDetails.authProxyUrl);
+  // const isProxyMode = Boolean(authDetails.authProxyUrl); TODO:
 
   // Add default values if not provided
   const authDetailsCore: AuthDetailsCore = {
@@ -73,12 +74,17 @@ export const Auth0ComponentProvider = ({
     i18nInitialized: i18nState.initialized,
   });
 
-  const i18nValue = React.useMemo(
+  // TODO:????
+  // i18n,
+  // isProxyMode,
+  // isI18nInitialized,
+  const config = React.useMemo(
     () => ({
-      translator: i18nState.translator,
-      initialized: i18nState.initialized,
+      themeSettings,
+      customOverrides,
+      loader,
     }),
-    [i18nState.translator, i18nState.initialized],
+    [themeSettings, customOverrides, loader],
   );
 
   const coreClientValue = React.useMemo(
@@ -90,15 +96,13 @@ export const Auth0ComponentProvider = ({
 
   return (
     <CoreClientContext.Provider value={coreClientValue}>
-      <I18nContext.Provider value={i18nValue}>
-        {isProxyMode ? (
-          <ProxyModeProvider {...props} />
-        ) : (
-          <React.Suspense fallback={props.loader || <Spinner />}>
-            <SpaModeProvider {...props} />
-          </React.Suspense>
-        )}
-      </I18nContext.Provider>
+      <Auth0ComponentConfigContext.Provider value={{ config }}>
+        <ThemeProvider theme={{ branding: themeSettings, customOverrides }}>
+          {/* <I18nContext.Provider value={i18nValue}> */}
+          <React.Suspense fallback={loader || <Spinner />}>{children}</React.Suspense>
+          {/* </I18nContext.Provider> */}
+        </ThemeProvider>
+      </Auth0ComponentConfigContext.Provider>
     </CoreClientContext.Provider>
   );
 };
