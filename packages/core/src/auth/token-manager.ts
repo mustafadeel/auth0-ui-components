@@ -1,5 +1,5 @@
-import { CoreClientInterface } from './types';
-import { toURL } from './utils';
+import { CoreClientInterface } from './auth-types';
+import { toURL } from './auth-utils';
 
 // Store pending promises by a unique key (scope + audience combination)
 const pendingTokenRequests = new Map<string, Promise<string>>();

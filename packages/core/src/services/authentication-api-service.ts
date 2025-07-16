@@ -1,4 +1,4 @@
-import { CoreClientInterface } from '../types';
+import { CoreClientInterface } from '../auth/auth-types';
 import { MFAController } from './mfa/mfa-controller';
 
 /**

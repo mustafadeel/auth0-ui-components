@@ -6,17 +6,14 @@ import { Navbar } from './components/nav-bar';
 import { Auth0ComponentProvider } from '@auth0-web-ui-components/react';
 import '@auth0-web-ui-components/react/dist/index.css';
 import { useTranslation } from 'react-i18next';
-import { useAuth0 } from '@auth0/auth0-react';
 import { config } from './config/env';
 
 function App() {
   const { i18n } = useTranslation();
-  const auth0ContextInterface = useAuth0();
 
   const defaultAuthDetails = {
     clientId: config.auth0.clientId,
     domain: config.auth0.domain,
-    contextInterface: auth0ContextInterface,
   };
   return (
     <div>

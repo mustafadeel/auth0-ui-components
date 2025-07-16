@@ -1,8 +1,8 @@
-import { AuthDetailsCore, CoreClientInterface } from './types';
-import { I18nService, I18nInitOptions } from './i18n';
-import { AuthenticationAPIService } from './services/authentication-api-service';
+import { AuthDetailsCore, CoreClientInterface } from './auth-types';
+import { I18nService, I18nInitOptions } from '../i18n';
+import { AuthenticationAPIService } from '../services/authentication-api-service';
 import TokenManager from './token-manager';
-import { toURL } from './utils';
+import { toURL } from './auth-utils';
 
 export class CoreClient implements CoreClientInterface {
   public readonly auth: AuthDetailsCore;
@@ -10,13 +10,13 @@ export class CoreClient implements CoreClientInterface {
   private readonly tokenManager: TokenManager;
 
   // API services
-  public readonly authentication: AuthenticationAPIService;
+  public readonly authenticationApiService: AuthenticationAPIService;
 
   private constructor(auth: AuthDetailsCore, i18nService: I18nService) {
     this.auth = auth;
     this.i18nService = i18nService;
     this.tokenManager = new TokenManager(this);
-    this.authentication = new AuthenticationAPIService(this);
+    this.authenticationApiService = new AuthenticationAPIService(this);
   }
 
   static async create(

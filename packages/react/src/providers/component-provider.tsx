@@ -8,6 +8,7 @@ import { useCoreClientInitialization } from '@/hooks/use-core-client-initializat
 import { AuthDetailsCore } from '@auth0-web-ui-components/core';
 import { Auth0ComponentConfigContext } from '@/hooks';
 import { ThemeProvider } from './theme-provider';
+import { useAuth0 } from '@auth0/auth0-react';
 
 /**
  * Auth0ComponentProvider
@@ -51,6 +52,8 @@ export const Auth0ComponentProvider = ({
   loader,
   children,
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
+  const auth0ContextInterface = useAuth0();
+
   // Add default values if not provided
   const authDetailsCore: AuthDetailsCore = {
     clientId: authDetails.clientId,
@@ -58,7 +61,7 @@ export const Auth0ComponentProvider = ({
     accessToken: authDetails.accessToken ?? undefined,
     scopes: authDetails.scopes ?? undefined,
     authProxyUrl: authDetails.authProxyUrl ?? undefined,
-    contextInterface: authDetails.contextInterface,
+    contextInterface: auth0ContextInterface,
   };
 
   const coreClient = useCoreClientInitialization({

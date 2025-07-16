@@ -2,9 +2,9 @@ export { TranslationFunction, I18nInitOptions, I18nService } from './i18n';
 
 export { normalizeError } from './api';
 
-export { CoreClient } from './core-client';
+export { CoreClient } from './auth/core-client';
 
-export { AuthDetailsCore, CoreClientInterface } from './types';
+export { AuthDetailsCore, CoreClientInterface } from './auth/auth-types';
 
 export {
   EnrollMfaParams,
