@@ -2,6 +2,7 @@ import { AuthDetailsCore, CoreClientInterface } from './types';
 import { I18nService, I18nInitOptions } from './i18n';
 import { AuthenticationAPIService } from './services/authentication-api-service';
 import TokenManager from './token-manager';
+import { toURL } from './utils';
 
 export class CoreClient implements CoreClientInterface {
   public readonly auth: AuthDetailsCore;
@@ -38,12 +39,9 @@ export class CoreClient implements CoreClientInterface {
           cacheMode: 'off',
           detailedResponse: true,
         });
-        const claims = await authDetails.contextInterface.getIdTokenClaims();
         auth = {
           ...authDetails,
           accessToken: tokenRes.access_token,
-          domain: claims?.iss,
-          clientId: claims?.aud,
           scopes: tokenRes.scope,
         };
       } catch (err) {
@@ -80,7 +78,7 @@ export class CoreClient implements CoreClientInterface {
     if (!domain) {
       throw new Error('getApiBaseUrl: Auth0 domain is not configured');
     }
-    return domain.endsWith('/') ? domain : `${domain}/`;
+    return toURL(domain);
   }
 
   isProxyMode(): boolean {

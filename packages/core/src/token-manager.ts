@@ -1,4 +1,5 @@
 import { CoreClientInterface } from './types';
+import { toURL } from './utils';
 
 // Store pending promises by a unique key (scope + audience combination)
 const pendingTokenRequests = new Map<string, Promise<string>>();
@@ -14,20 +15,17 @@ class TokenManager {
     if (!this.coreClient.auth || !this.coreClient.auth.contextInterface) {
       throw new Error('getToken: CoreClient is not initialized.');
     }
-
+    if (!this.coreClient.auth.domain) {
+      throw new Error('getToken: Auth0 domain is not configured');
+    }
     if (this.coreClient.isProxyMode()) {
       return Promise.resolve(undefined); // In proxy mode, don't send access tokens
-    }
-
-    const domain = this.coreClient.auth.domain;
-    const audience = domain ? `${domain}${audiencePath}/` : '';
-
-    if (!domain) {
-      throw new Error('getToken: Auth0 domain is not configured');
     }
     if (!scope) {
       throw new Error('getToken: Scope is required');
     }
+    const domainURL = toURL(this.coreClient.auth.domain);
+    const audience = domainURL ? `${domainURL}${audiencePath}/` : '';
 
     // Create a unique key for this token request
     const requestKey = `${scope}:${audience}`;
