@@ -4,7 +4,7 @@ import type {
   AuthDetailsCore,
   I18nInitOptions,
 } from '@auth0-web-ui-components/core';
-import { CoreClient } from '@auth0-web-ui-components/core';
+import { createCoreClient } from '@auth0-web-ui-components/core';
 
 interface UseCoreClientInitializationProps {
   authDetails: AuthDetailsCore;
@@ -23,7 +23,7 @@ export const useCoreClientInitialization = ({
   React.useEffect(() => {
     const initializeCoreClient = async () => {
       try {
-        const initializedCoreClient = await CoreClient.create(authDetails, i18nOptions);
+        const initializedCoreClient = await createCoreClient(authDetails, i18nOptions);
 
         setCoreClient(initializedCoreClient);
       } catch (error) {

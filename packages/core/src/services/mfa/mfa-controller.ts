@@ -16,93 +16,112 @@ import type {
 } from './mfa-types';
 
 /**
- * Controller that handles MFA-related API operations.
+ * Pure functional utilities for MFA operations
  */
-export class MFAController implements MFAControllerInterface {
-  private readonly coreClient: CoreClientInterface;
-
-  constructor(coreClient: CoreClientInterface) {
-    this.coreClient = coreClient;
-  }
-
+export const MFAUtils = {
   /**
-   * Gets the access token for MFA operations.
+   * Get access token for MFA operations
    */
-  private async getToken(ignoreCache: boolean = false): Promise<string | undefined> {
-    return this.coreClient.getToken(
+  async getToken(
+    coreClient: CoreClientInterface,
+    ignoreCache: boolean = false,
+  ): Promise<string | undefined> {
+    return coreClient.getToken(
       'read:authenticators remove:authenticators enroll',
       'mfa',
       ignoreCache,
     );
-  }
+  },
 
   /**
-   * Fetches the list of MFA authenticators for the current user.
-   * @param onlyActive - If true, returns only factors that are actively enrolled
-   * @param ignoreCache - Whether to ignore the token cache
-   * @returns A promise that resolves with the list of authenticators
+   * Fetch MFA factors for a user
    */
   async fetchFactors(
+    coreClient: CoreClientInterface,
     onlyActive: boolean = false,
     ignoreCache: boolean = false,
   ): Promise<Authenticator[]> {
-    const baseUrl = this.coreClient.getApiBaseUrl();
-    const accessToken = await this.getToken(ignoreCache);
-
+    const baseUrl = coreClient.getApiBaseUrl();
+    const accessToken = await MFAUtils.getToken(coreClient, ignoreCache);
     return fetchMfaFactors(baseUrl, accessToken, onlyActive);
-  }
+  },
 
   /**
-   * Initiates the enrollment process for a new MFA factor.
-   * @param factorName - The type of factor to enroll (e.g., 'sms', 'totp')
-   * @param options - Factor-specific data required for enrollment
-   * @param ignoreCache - Whether to ignore the token cache
-   * @returns A promise that resolves with the enrollment response
+   * Enroll a new MFA factor
    */
   async enrollFactor(
+    coreClient: CoreClientInterface,
     factorName: MFAType,
     options: EnrollOptions = {},
     ignoreCache: boolean = false,
   ): Promise<EnrollMfaResponse> {
-    const baseUrl = this.coreClient.getApiBaseUrl();
-    const accessToken = await this.getToken(ignoreCache);
-
+    const baseUrl = coreClient.getApiBaseUrl();
+    const accessToken = await MFAUtils.getToken(coreClient, ignoreCache);
     const params = buildEnrollParams(factorName, options);
     return enrollMfaRequest(baseUrl, params, accessToken);
-  }
+  },
 
   /**
-   * Deletes a previously enrolled MFA factor.
-   * @param authenticatorId - The unique ID of the authenticator to delete
-   * @param ignoreCache - Whether to ignore the token cache
-   * @returns A promise that resolves when the deletion is successful
+   * Delete an MFA factor
    */
-  async deleteFactor(authenticatorId: string, ignoreCache: boolean = false): Promise<void> {
-    const baseUrl = this.coreClient.getApiBaseUrl();
-    const accessToken = await this.getToken(ignoreCache);
-
+  async deleteFactor(
+    coreClient: CoreClientInterface,
+    authenticatorId: string,
+    ignoreCache: boolean = false,
+  ): Promise<void> {
+    const baseUrl = coreClient.getApiBaseUrl();
+    const accessToken = await MFAUtils.getToken(coreClient, ignoreCache);
     return deleteMfaFactor(baseUrl, authenticatorId, accessToken);
-  }
+  },
 
   /**
-   * Confirms an MFA enrollment, typically by verifying a code provided by the user.
-   * @param factorName - The type of factor being confirmed
-   * @param options - The verification data, such as oobCode and userOtpCode
-   * @param ignoreCache - Whether to ignore the token cache
-   * @returns A promise that resolves with the confirmation response from the server
+   * Confirm MFA enrollment
    */
   async confirmEnrollment(
+    coreClient: CoreClientInterface,
     factorName: MFAType,
     options: ConfirmEnrollmentOptions,
     ignoreCache: boolean = false,
   ): Promise<unknown> {
-    const baseUrl = this.coreClient.getApiBaseUrl();
-    const accessToken = await this.getToken(ignoreCache);
-
-    const isProxyMode = this.coreClient.isProxyMode();
-    const clientId = isProxyMode ? undefined : this.coreClient.auth.clientId;
-
+    const baseUrl = coreClient.getApiBaseUrl();
+    const accessToken = await MFAUtils.getToken(coreClient, ignoreCache);
+    const isProxyMode = coreClient.isProxyMode();
+    const clientId = isProxyMode ? undefined : coreClient.auth.clientId;
     const params = buildConfirmParams(factorName, options, clientId, accessToken);
     return confirmMfaEnrollmentRequest(baseUrl, params, accessToken);
-  }
+  },
+};
+
+/**
+ * Factory function to create MFA controller interface
+ */
+export function createMFAController(coreClient: CoreClientInterface): MFAControllerInterface {
+  return {
+    async fetchFactors(
+      onlyActive: boolean = false,
+      ignoreCache: boolean = false,
+    ): Promise<Authenticator[]> {
+      return MFAUtils.fetchFactors(coreClient, onlyActive, ignoreCache);
+    },
+
+    async enrollFactor(
+      factorName: MFAType,
+      options: EnrollOptions = {},
+      ignoreCache: boolean = false,
+    ): Promise<EnrollMfaResponse> {
+      return MFAUtils.enrollFactor(coreClient, factorName, options, ignoreCache);
+    },
+
+    async deleteFactor(authenticatorId: string, ignoreCache: boolean = false): Promise<void> {
+      return MFAUtils.deleteFactor(coreClient, authenticatorId, ignoreCache);
+    },
+
+    async confirmEnrollment(
+      factorName: MFAType,
+      options: ConfirmEnrollmentOptions,
+      ignoreCache: boolean = false,
+    ): Promise<unknown> {
+      return MFAUtils.confirmEnrollment(coreClient, factorName, options, ignoreCache);
+    },
+  };
 }

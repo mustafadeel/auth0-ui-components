@@ -1,37 +1,38 @@
 import { AuthDetailsCore, CoreClientInterface } from './auth-types';
-import { I18nService, I18nInitOptions } from '../i18n';
-import { AuthenticationAPIService } from '../services/authentication-api-service';
-import TokenManager from './token-manager';
+import { createI18nService, I18nInitOptions } from '../i18n';
+import { createAuthenticationAPIService } from '../services/authentication-api-service';
+import { createTokenManager } from './token-manager';
 import { toURL } from './auth-utils';
 
-export class CoreClient implements CoreClientInterface {
-  public readonly auth: AuthDetailsCore;
-  public readonly i18nService: I18nService;
-  private readonly tokenManager: TokenManager;
+// Pure utility functions for core business logic
+export const CoreUtils = {
+  /**
+   * Get the base URL for API calls
+   */
+  getApiBaseUrl(auth: AuthDetailsCore): string {
+    // Use authProxyUrl if provided (proxy mode)
+    if (auth.authProxyUrl) {
+      return auth.authProxyUrl.endsWith('/') ? auth.authProxyUrl : `${auth.authProxyUrl}/`;
+    }
 
-  // API services
-  public readonly authenticationApiService: AuthenticationAPIService;
+    const domain = auth.domain;
+    if (!domain) {
+      throw new Error('getApiBaseUrl: Auth0 domain is not configured');
+    }
+    return toURL(domain);
+  },
 
-  private constructor(auth: AuthDetailsCore, i18nService: I18nService) {
-    this.auth = auth;
-    this.i18nService = i18nService;
-    this.tokenManager = new TokenManager(this);
-    this.authenticationApiService = new AuthenticationAPIService(this);
-  }
+  /**
+   * Check if running in proxy mode
+   */
+  isProxyMode(auth: AuthDetailsCore): boolean {
+    return !!auth.authProxyUrl;
+  },
 
-  static async create(
-    authDetails: AuthDetailsCore,
-    i18nOptions?: I18nInitOptions,
-  ): Promise<CoreClient> {
-    // Initialize i18n service
-    const i18nService = await I18nService.create(
-      i18nOptions || {
-        currentLanguage: 'en-US',
-        fallbackLanguage: 'en-US',
-      },
-    );
-
-    // Initialize auth details
+  /**
+   * Initialize auth details from context interface
+   */
+  async initializeAuthDetails(authDetails: AuthDetailsCore): Promise<AuthDetailsCore> {
     let auth = authDetails;
     if (authDetails.contextInterface) {
       try {
@@ -54,34 +55,56 @@ export class CoreClient implements CoreClientInterface {
         };
       }
     }
+    return auth;
+  },
+};
 
-    return new CoreClient(auth, i18nService);
-  }
+// Main functional factory for creating core client
+export async function createCoreClient(
+  authDetails: AuthDetailsCore,
+  i18nOptions?: I18nInitOptions,
+): Promise<CoreClientInterface> {
+  // Initialize i18n service
+  const i18nService = await createI18nService(
+    i18nOptions || {
+      currentLanguage: 'en-US',
+      fallbackLanguage: 'en-US',
+    },
+  );
 
-  async getToken(
-    scope: string,
-    audiencePath: string,
-    ignoreCache: boolean = false,
-  ): Promise<string | undefined> {
-    return this.tokenManager.getToken(scope, audiencePath, ignoreCache);
-  }
+  // Initialize auth details
+  const auth = await CoreUtils.initializeAuthDetails(authDetails);
 
-  getApiBaseUrl(): string {
-    // Use authProxyUrl if provided (proxy mode)
-    if (this.isProxyMode()) {
-      return this.auth.authProxyUrl!.endsWith('/')
-        ? this.auth.authProxyUrl!
-        : `${this.auth.authProxyUrl!}/`;
-    }
+  // Initialize token manager service
+  const tokenManagerService = createTokenManager(auth);
 
-    const domain = this.auth.domain;
-    if (!domain) {
-      throw new Error('getApiBaseUrl: Auth0 domain is not configured');
-    }
-    return toURL(domain);
-  }
+  // Create a placeholder object for circular dependencies
+  const coreClient = {} as CoreClientInterface;
 
-  isProxyMode(): boolean {
-    return !!this.auth.authProxyUrl;
-  }
+  // Initialize authentication service
+  const authenticationApiService = createAuthenticationAPIService(coreClient);
+
+  // Return the complete object with functional core
+  const client: CoreClientInterface = {
+    auth,
+    i18nService,
+    authenticationApiService,
+
+    async getToken(scope: string, audiencePath: string, ignoreCache = false) {
+      return tokenManagerService.getToken(scope, audiencePath, ignoreCache);
+    },
+
+    getApiBaseUrl(): string {
+      return CoreUtils.getApiBaseUrl(auth);
+    },
+
+    isProxyMode(): boolean {
+      return CoreUtils.isProxyMode(auth);
+    },
+  };
+
+  // Update the placeholder reference for circular dependencies
+  Object.assign(coreClient, client);
+
+  return client;
 }

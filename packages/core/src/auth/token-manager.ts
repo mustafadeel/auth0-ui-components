@@ -1,62 +1,58 @@
-import { CoreClientInterface } from './auth-types';
+import { AuthDetailsCore, Auth0ContextInterface } from './auth-types';
 import { toURL } from './auth-utils';
 
 // Store pending promises by a unique key (scope + audience combination)
 const pendingTokenRequests = new Map<string, Promise<string>>();
 
-class TokenManager {
-  constructor(private coreClient: CoreClientInterface) {}
+// Pure utility functions for token management
+export const TokenUtils = {
+  /**
+   * Build audience URL from domain and path
+   */
+  buildAudience(domain: string, audiencePath: string): string {
+    const domainURL = toURL(domain);
+    return domainURL ? `${domainURL}${audiencePath}/` : '';
+  },
 
-  async getToken(
-    scope: string,
-    audiencePath: string,
-    ignoreCache: boolean = false,
-  ): Promise<string | undefined> {
-    if (!this.coreClient.auth || !this.coreClient.auth.contextInterface) {
+  /**
+   * Create a unique key for token requests
+   */
+  createRequestKey(scope: string, audience: string): string {
+    return `${scope}:${audience}`;
+  },
+
+  /**
+   * Validate token request parameters
+   */
+  validateTokenRequest(auth: AuthDetailsCore, scope: string): void {
+    if (!auth || !auth.contextInterface) {
       throw new Error('getToken: CoreClient is not initialized.');
     }
-    if (!this.coreClient.auth.domain) {
+    if (!auth.domain) {
       throw new Error('getToken: Auth0 domain is not configured');
-    }
-    if (this.coreClient.isProxyMode()) {
-      return Promise.resolve(undefined); // In proxy mode, don't send access tokens
     }
     if (!scope) {
       throw new Error('getToken: Scope is required');
     }
-    const domainURL = toURL(this.coreClient.auth.domain);
-    const audience = domainURL ? `${domainURL}${audiencePath}/` : '';
+  },
 
-    // Create a unique key for this token request
-    const requestKey = `${scope}:${audience}`;
-
-    // If ignoreCache is true, clear any pending request for this key
-    if (ignoreCache) {
-      pendingTokenRequests.delete(requestKey);
-    }
-
-    // Check if there's already a pending request for this token
-    const existingRequest = pendingTokenRequests.get(requestKey);
-
-    if (existingRequest) {
-      return existingRequest;
-    }
-
-    const tokenPromise = this.fetchToken(scope, audience, ignoreCache);
-    pendingTokenRequests.set(requestKey, tokenPromise);
-
+  /**
+   * Check if running in proxy mode. In proxy mode, don't send access tokens
+   */
+  isProxyMode(auth: AuthDetailsCore): boolean {
+    return !!auth.authProxyUrl;
+  },
+  /**
+   * Fetch token silently with fallback to popup
+   */
+  async fetchToken(
+    contextInterface: Auth0ContextInterface,
+    scope: string,
+    audience: string,
+    ignoreCache: boolean,
+  ): Promise<string> {
     try {
-      const token = await tokenPromise;
-      return token;
-    } finally {
-      // Clean up the pending request after completion
-      pendingTokenRequests.delete(requestKey);
-    }
-  }
-
-  private async fetchToken(scope: string, audience: string, ignoreCache: boolean): Promise<string> {
-    try {
-      const token = await this.coreClient.auth.contextInterface!.getAccessTokenSilently({
+      const token = await contextInterface.getAccessTokenSilently({
         authorizationParams: {
           audience,
           scope,
@@ -70,7 +66,7 @@ class TokenManager {
 
       return token;
     } catch (error) {
-      const token = await this.coreClient.auth.contextInterface!.getAccessTokenWithPopup({
+      const token = await contextInterface.getAccessTokenWithPopup({
         authorizationParams: {
           audience,
           scope,
@@ -84,7 +80,59 @@ class TokenManager {
 
       return token;
     }
-  }
-}
+  },
+};
 
-export default TokenManager;
+// Functional factory for token manager service
+export function createTokenManager(auth: AuthDetailsCore) {
+  return {
+    /**
+     * Get token with caching and deduplication
+     */
+    async getToken(
+      scope: string,
+      audiencePath: string,
+      ignoreCache: boolean = false,
+    ): Promise<string | undefined> {
+      // Validate request
+      TokenUtils.validateTokenRequest(auth, scope);
+
+      if (TokenUtils.isProxyMode(auth)) {
+        return Promise.resolve(undefined);
+      }
+
+      // Build audience and request key
+      const audience = TokenUtils.buildAudience(auth.domain!, audiencePath);
+      const requestKey = TokenUtils.createRequestKey(scope, audience);
+
+      // If ignoreCache is true, clear any pending request for this key
+      if (ignoreCache) {
+        pendingTokenRequests.delete(requestKey);
+      }
+
+      // Check if there's already a pending request for this token
+      const existingRequest = pendingTokenRequests.get(requestKey);
+      if (existingRequest) {
+        return existingRequest;
+      }
+
+      // Create new token request
+      const tokenPromise = TokenUtils.fetchToken(
+        auth.contextInterface!,
+        scope,
+        audience,
+        ignoreCache,
+      );
+
+      pendingTokenRequests.set(requestKey, tokenPromise);
+
+      try {
+        const token = await tokenPromise;
+        return token;
+      } finally {
+        // Clean up the pending request after completion
+        pendingTokenRequests.delete(requestKey);
+      }
+    },
+  };
+}
