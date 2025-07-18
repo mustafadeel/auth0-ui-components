@@ -2,13 +2,11 @@
 
 import * as React from 'react';
 import type { Auth0ComponentProviderProps } from './types';
-import { CoreClientContext } from '@/hooks/use-core-client';
 import { Spinner } from '@/components/ui/spinner';
-import { useCoreClientInitialization } from '@/hooks/use-core-client-initialization';
-import { AuthDetailsCore } from '@auth0-web-ui-components/core';
 import { Auth0ComponentConfigContext } from '@/hooks';
 import { ThemeProvider } from './theme-provider';
-import { useAuth0 } from '@auth0/auth0-react';
+import { ProxyProvider } from './proxy-provider';
+const SpaProvider = React.lazy(() => import('./spa-provider'));
 
 /**
  * Auth0ComponentProvider
@@ -52,19 +50,6 @@ export const Auth0ComponentProvider = ({
   loader,
   children,
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
-  const auth0ContextInterface = useAuth0();
-
-  // Add context interface
-  const authDetailsCore: AuthDetailsCore = {
-    ...authDetails,
-    contextInterface: auth0ContextInterface,
-  };
-
-  const coreClient = useCoreClientInitialization({
-    authDetails: authDetailsCore,
-    i18nOptions: i18n,
-  });
-
   const config = React.useMemo(
     () => ({
       themeSettings,
@@ -74,20 +59,21 @@ export const Auth0ComponentProvider = ({
     [themeSettings, customOverrides, loader],
   );
 
-  const coreClientValue = React.useMemo(
-    () => ({
-      coreClient,
-    }),
-    [coreClient],
-  );
-
   return (
-    <CoreClientContext.Provider value={coreClientValue}>
-      <Auth0ComponentConfigContext.Provider value={{ config }}>
-        <ThemeProvider theme={{ branding: themeSettings, customOverrides }}>
-          <React.Suspense fallback={loader || <Spinner />}>{children}</React.Suspense>
-        </ThemeProvider>
-      </Auth0ComponentConfigContext.Provider>
-    </CoreClientContext.Provider>
+    <Auth0ComponentConfigContext.Provider value={{ config }}>
+      <ThemeProvider theme={{ branding: themeSettings, customOverrides }}>
+        <React.Suspense fallback={loader || <Spinner />}>
+          {authDetails?.authProxyUrl ? (
+            <ProxyProvider i18n={i18n} authDetails={authDetails}>
+              {children}
+            </ProxyProvider>
+          ) : (
+            <SpaProvider i18n={i18n} authDetails={authDetails}>
+              {children}
+            </SpaProvider>
+          )}
+        </React.Suspense>
+      </ThemeProvider>
+    </Auth0ComponentConfigContext.Provider>
   );
 };
