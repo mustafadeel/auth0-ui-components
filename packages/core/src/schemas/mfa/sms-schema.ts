@@ -14,11 +14,9 @@ const phoneRegex = /^\+?[0-9\s\-()]{8,}$/;
  */
 export const createSmsContactSchema = (errorMessage?: string, customRegex?: RegExp) =>
   z.object({
-    contact: z
-      .string()
-      .regex(customRegex || phoneRegex, {
-        message: errorMessage || 'Please enter a valid phone number',
-      }),
+    contact: z.string().regex(customRegex || phoneRegex, {
+      message: errorMessage || 'Please enter a valid phone number',
+    }),
   });
 
 /**
