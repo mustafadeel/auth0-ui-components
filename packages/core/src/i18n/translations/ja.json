@@ -53,6 +53,7 @@
       "invalid_email": "無効なメールアドレス",
       "invalid_phone_number": "無効な電話番号",
       "unsupported_mfa_type": "未対応のMFAタイプです: ${factorName}",
+      "too_many_entities": "この種類のエンティティのユーザーごとの上限に達しました。",
       "invalid_request": {
         "totp": "必須パラメーターがありません: otp"
       },
