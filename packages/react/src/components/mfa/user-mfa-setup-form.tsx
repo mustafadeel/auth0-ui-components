@@ -30,6 +30,7 @@ type UserMFASetupFormProps = {
   ) => Promise<unknown | null>;
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
+  schemaValidation?: { email?: RegExp; phone?: RegExp };
 };
 
 type EnrollmentPhase = typeof ENTER_CONTACT | typeof ENTER_OTP | typeof SHOW_OTP | null;
@@ -42,6 +43,7 @@ export function UserMFASetupForm({
   confirmEnrollment,
   onSuccess,
   onError,
+  schemaValidation,
 }: UserMFASetupFormProps) {
   const t = useTranslator('mfa');
 
@@ -122,6 +124,7 @@ export function UserMFASetupForm({
             onContactSuccess={handleContactSuccess}
             onOtpSuccess={handleOtpSuccess}
             onClose={onClose}
+            schemaValidation={schemaValidation}
           />
         );
       case SHOW_OTP:

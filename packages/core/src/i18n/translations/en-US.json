@@ -12,15 +12,18 @@
     }
   },
   "mfa": {
-    "title": "MFA Authenticators",
-    "loading": "Loading...",
-    "description": "Manage the MFA enrollments for your account.",
+    "title": "Additional verification methods",
+    "description": "Extra protection for your account and your identity",
     "no_active_mfa": "No active MFA factors enrolled.",
+    "loading": "Loading...",
     "delete": "Delete",
     "enroll": "Enroll",
     "submit": "Submit",
+    "update": "Update",
+    "remove": "Remove",
     "enrolling": "Enrolling...",
     "enrolled": "Enrolled",
+    "enabled": "ENABLED",
     "enrollment": "Enrollment",
     "confirmation": "Confirmation",
     "remove_factor": "Enrollment removed successfully.",
@@ -69,20 +72,24 @@
       }
     },
     "sms": {
-      "title": "Phone Message",
-      "description": "Users will receive a phone message with a verification code"
+      "title": "SMS",
+      "description": "No phone number has been added.",
+      "button-text": "Add Phone for SMS"
     },
     "push-notification": {
-      "title": "Push Notification using Auth0 Guardian",
-      "description": "Provide a push notification using Auth0 Guardian."
+      "title": "Push Authentication",
+      "description": "No push authentication has been added.",
+      "button-text": "Add Push Authentication"
     },
     "totp": {
-      "title": "One-time Password",
-      "description": "Provide a one-time password using Google Authenticator or similar."
+      "title": "TOTP (One-time code)",
+      "description": "No authenticator has been added.",
+      "button-text": "Add Authenticator App"
     },
     "email": {
       "title": "Email",
-      "description": "Users will receive an email message containing a verification code."
+      "description": "No email has been added.",
+      "button-text": "Add Email"
     },
     "duo": {
       "title": "Duo Security",

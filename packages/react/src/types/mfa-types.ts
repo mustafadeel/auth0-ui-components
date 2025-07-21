@@ -79,6 +79,7 @@ export interface UserMFAMgmtProps {
     action: 'enroll' | 'delete' | 'confirm',
     factorType: MFAType,
   ) => boolean | Promise<boolean>;
+  schemaValidation?: { email?: RegExp; phone?: RegExp };
 }
 
 export interface MFAFactorContent {

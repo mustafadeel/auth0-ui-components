@@ -35,6 +35,7 @@ export function useContactEnrollment({
 
   const onSubmitContact = useCallback(
     async (data: ContactForm) => {
+      if (loading) return;
       setLoading(true);
       try {
         const options: Record<string, string> =
@@ -67,7 +68,7 @@ export function useContactEnrollment({
         setLoading(false);
       }
     },
-    [factorType, enrollMfa, onContactSuccess, onOtpSuccess, onError, t],
+    [loading, factorType, enrollMfa, onContactSuccess, onOtpSuccess, onError, t],
   );
 
   return { onSubmitContact, loading };

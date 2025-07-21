@@ -33,6 +33,7 @@ export function useOtpEnrollment({
   });
 
   const fetchOtpEnrollment = useCallback(async () => {
+    if (loading) return;
     setLoading(true);
     try {
       const response = await enrollMfa(factorType, {});
@@ -53,7 +54,7 @@ export function useOtpEnrollment({
     } finally {
       setLoading(false);
     }
-  }, [factorType, enrollMfa, onError, onClose, t]);
+  }, [loading, factorType, enrollMfa, onError, onClose, t]);
 
   const resetOtpData = useCallback(() => {
     setOtpData({ secret: null, barcodeUri: null, recoveryCodes: [] });

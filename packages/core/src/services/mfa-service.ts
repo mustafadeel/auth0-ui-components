@@ -8,9 +8,9 @@ import type {
 } from './types';
 
 export const factorsMetaKeys = new Set([
-  'sms',
-  'push-notification',
   'totp',
+  'push-notification',
+  'sms',
   'email',
   'duo',
   'webauthn-roaming',
@@ -61,6 +61,7 @@ export async function fetchMfaFactors(
       oob_channel: factor?.oob_channel ?? [],
       active: factor?.active ?? false,
       factorName,
+      name: factor?.name,
     });
 
     return acc;

@@ -12,15 +12,18 @@
     }
   },
   "mfa": {
-    "title": "多要素認証",
-    "loading": "読み込み中...",
-    "description": "アカウントの多要素認証の登録を管理します。",
+    "title": "追加の認証方法",
+    "description": "あなたのアカウントと身元をさらに保護します",
     "no_active_mfa": "登録されている多要素認証はありません。",
+    "loading": "読み込み中...",
     "delete": "削除",
     "enroll": "登録",
     "submit": "送信",
+    "update": "更新",
+    "remove": "削除",
     "enrolling": "登録中...",
     "enrolled": "登録済み",
+    "enabled": "有効",
     "enrollment": "登録",
     "confirmation": "確認",
     "remove_factor": "登録を正常に削除しました。",
@@ -70,20 +73,24 @@
       }
     },
     "sms": {
-      "title": "SMSメッセージ",
-      "description": "確認コードがSMSで送信されます"
+      "title": "SMS",
+      "description": "電話番号が追加されていません。",
+      "button-text": "SMS用電話番号を追加"
     },
     "push-notification": {
-      "title": "Auth0 Guardianによるプッシュ通知",
-      "description": "Auth0 Guardianを使用してプッシュ通知を送信します。"
+      "title": "プッシュ認証",
+      "description": "プッシュ認証が追加されていません。",
+      "button-text": "プッシュ認証を追加"
     },
     "totp": {
-      "title": "ワンタイムパスワード",
-      "description": "Google認証システムなどを使用してワンタイムパスワードを生成します。"
+      "title": "TOTP (ワンタイムコード)",
+      "description": "認証システムが追加されていません。",
+      "button-text": "認証アプリを追加"
     },
     "email": {
       "title": "メール",
-      "description": "確認コードがメールで送信されます。"
+      "description": "メールアドレスが追加されていません。",
+      "button-text": "メールアドレスを追加"
     },
     "duo": {
       "title": "Duoセキュリティ",

@@ -30,6 +30,7 @@ export function useOtpConfirmation({
 
   const onSubmitOtp = useCallback(
     async (data: OtpForm, oobCode?: string) => {
+      if (loading) return;
       setLoading(true);
 
       try {
@@ -55,7 +56,7 @@ export function useOtpConfirmation({
         setLoading(false);
       }
     },
-    [factorType, confirmEnrollment, onError, onSuccess, onClose, t],
+    [loading, factorType, confirmEnrollment, onError, onSuccess, onClose, t],
   );
 
   return { onSubmitOtp, loading };

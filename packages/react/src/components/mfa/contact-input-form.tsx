@@ -40,6 +40,7 @@ type ContactInputFormProps = {
     recoveryCodes: string[];
   }) => void;
   onClose?: () => void;
+  schemaValidation?: { email?: RegExp; phone?: RegExp };
 };
 
 export function ContactInputForm({
@@ -49,6 +50,7 @@ export function ContactInputForm({
   onContactSuccess,
   onOtpSuccess,
   onClose,
+  schemaValidation,
 }: ContactInputFormProps) {
   const t = useTranslator('mfa');
 
@@ -61,10 +63,12 @@ export function ContactInputForm({
   });
 
   const ContactSchema = React.useMemo(() => {
-    return factorType === FACTOR_TYPE_EMAIL
-      ? createEmailContactSchema(t('errors.invalid_email'))
-      : createSmsContactSchema(t('errors.invalid_phone_number'));
-  }, [factorType, t]);
+    if (factorType === FACTOR_TYPE_EMAIL) {
+      return createEmailContactSchema(t('errors.invalid_email'), schemaValidation?.email);
+    } else {
+      return createSmsContactSchema(t('errors.invalid_phone_number'), schemaValidation?.phone);
+    }
+  }, [factorType, t, schemaValidation]);
 
   const form = useForm<ContactForm>({
     resolver: zodResolver(ContactSchema),
