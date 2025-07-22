@@ -5,7 +5,7 @@ import { toURL } from './auth-utils';
 const pendingTokenRequests = new Map<string, Promise<string>>();
 
 // Pure utility functions for token management
-export const TokenUtils = {
+const TokenUtils = {
   /**
    * Build audience URL from domain and path
    */

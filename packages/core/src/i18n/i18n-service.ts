@@ -7,7 +7,7 @@ import {
 } from './i18n-types';
 
 // Pure utility functions for i18n functionality
-export const I18nUtils = {
+const I18nUtils = {
   /**
    * Variable substitution regex
    */
@@ -125,21 +125,6 @@ export const I18nUtils = {
 
     return null;
   },
-
-  /**
-   * Create translator factory function
-   */
-  createTranslatorFactory(translations: LangTranslations | null): TFactory {
-    return (namespace: string, overrides?: Record<string, unknown>) =>
-      I18nUtils.createTranslator(namespace, translations, overrides);
-  },
-
-  /**
-   * Create common translator (shorthand for 'common' namespace)
-   */
-  createCommonTranslator(translations: LangTranslations | null): TranslationFunction {
-    return I18nUtils.createTranslator('common', translations);
-  },
 };
 
 // Functional approach for creating i18n service
@@ -172,11 +157,12 @@ export async function createI18nService(
     },
 
     get translator(): TFactory {
-      return I18nUtils.createTranslatorFactory(_translations);
+      return (namespace: string, overrides?: Record<string, unknown>) =>
+        I18nUtils.createTranslator(namespace, translations, overrides);
     },
 
     get commonTranslator(): TranslationFunction {
-      return I18nUtils.createCommonTranslator(_translations);
+      return I18nUtils.createTranslator('common', translations);
     },
 
     getCurrentTranslations(): LangTranslations | null {

@@ -5,7 +5,7 @@ import { createTokenManager } from './token-manager';
 import { toURL } from './auth-utils';
 
 // Pure utility functions for core business logic
-export const CoreUtils = {
+const CoreUtils = {
   /**
    * Get the base URL for API calls
    */
@@ -33,37 +33,27 @@ export const CoreUtils = {
    * Initialize auth details from context interface
    */
   async initializeAuthDetails(authDetails: AuthDetailsCore): Promise<AuthDetailsCore> {
-    // Set default values if not provided
-    let auth = {
-      accessToken: authDetails.accessToken ?? undefined,
-      domain: authDetails.domain ?? undefined,
-      clientId: authDetails.clientId ?? undefined,
-      scopes: authDetails.scopes ?? undefined,
-      authProxyUrl: authDetails.authProxyUrl ?? undefined,
-      contextInterface: authDetails.contextInterface ?? undefined,
-    };
-    if (!CoreUtils.isProxyMode(auth) && authDetails.contextInterface) {
+    if (CoreUtils.isProxyMode(authDetails)) {
+      return authDetails;
+    }
+    if (authDetails.contextInterface) {
       try {
         const tokenRes = await authDetails.contextInterface.getAccessTokenSilently({
           cacheMode: 'off',
           detailedResponse: true,
         });
-        auth = {
-          ...auth,
+        return {
+          ...authDetails,
           accessToken: tokenRes.access_token,
         };
       } catch (err) {
-        auth = {
+        return {
+          ...authDetails,
           accessToken: undefined,
-          domain: undefined,
-          clientId: undefined,
-          scopes: undefined,
-          authProxyUrl: auth.authProxyUrl,
-          contextInterface: undefined,
         };
       }
     }
-    return auth;
+    return authDetails;
   },
 };
 

@@ -18,7 +18,7 @@ import type {
 /**
  * Pure functional utilities for MFA operations
  */
-export const MFAUtils = {
+const MFAUtils = {
   /**
    * Get access token for MFA operations
    */

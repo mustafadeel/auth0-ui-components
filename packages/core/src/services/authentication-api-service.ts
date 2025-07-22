@@ -1,19 +1,16 @@
 import { CoreClientInterface } from '../auth/auth-types';
 import { createMFAController } from './mfa/mfa-controller';
+import { MFAControllerInterface } from './mfa/mfa-types';
 
-// Pure utility functions for authentication API operations
-export const AuthApiUtils = {
-  /**
-   * Create MFA controller with core client
-   */
-  createMfaController(coreClient: CoreClientInterface) {
-    return createMFAController(coreClient);
-  },
-};
+export interface AuthenticationAPIServiceInterface {
+  mfa: MFAControllerInterface;
+}
 
 // Functional factory for authentication service
-export function createAuthenticationAPIService(coreClient: CoreClientInterface) {
+export function createAuthenticationAPIService(
+  coreClient: CoreClientInterface,
+): AuthenticationAPIServiceInterface {
   return {
-    mfa: AuthApiUtils.createMfaController(coreClient),
+    mfa: createMFAController(coreClient),
   };
 }
