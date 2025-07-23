@@ -5,6 +5,7 @@ import { MailIcon, PhoneIcon } from 'lucide-react';
 
 import {
   MFAType,
+  FACTOR_TYPE_EMAIL,
   createEmailContactSchema,
   createSmsContactSchema,
   type EmailContactForm,
@@ -24,12 +25,7 @@ import {
 import { TextField } from '@/components/ui/text-field';
 import { useTranslator } from '@/hooks';
 import { useContactEnrollment } from '@/hooks/mfa';
-import {
-  FACTOR_TYPE_EMAIL,
-  EMAIL_PLACEHOLDER,
-  PHONE_NUMBER_PLACEHOLDER,
-  ENROLL,
-} from '@/lib/constants';
+import { EMAIL_PLACEHOLDER, PHONE_NUMBER_PLACEHOLDER, ENROLL } from '@/lib/mfa-constants';
 
 type ContactForm = EmailContactForm | SmsContactForm;
 
@@ -52,7 +48,7 @@ export function ContactInputForm({
   onContactSuccess,
   onOtpSuccess,
 }: ContactInputFormProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
 
   const { onSubmitContact, loading } = useContactEnrollment({
     factorType,

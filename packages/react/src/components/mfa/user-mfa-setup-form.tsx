@@ -3,17 +3,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { ContactInputForm } from './contact-input-form';
 import { QRCodeEnrollmentForm } from './qr-code-enrollment-form';
 import { OTPVerificationForm } from './otp-verification-form';
+import { SHOW_OTP, ENTER_OTP, ENTER_CONTACT, ENROLL, CONFIRM } from '@/lib/mfa-constants';
 import {
-  SHOW_OTP,
-  ENTER_OTP,
-  ENTER_CONTACT,
   FACTOR_TYPE_EMAIL,
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  ENROLL,
-  CONFIRM,
-} from '@/lib/constants';
+} from '@auth0-web-ui-components/core';
 import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
 import { useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/mfa';
@@ -42,7 +38,7 @@ export function UserMFASetupForm({
   onSuccess,
   onError,
 }: UserMFASetupFormProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);

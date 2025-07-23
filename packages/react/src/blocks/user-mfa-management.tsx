@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { useComponentConfig, useMFA, useTranslator } from '@/hooks';
-import type { UserMFAMgmtProps, MFAType, Authenticator } from '@/types';
+import type { UserMFAMgmtProps } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -9,10 +9,12 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
+import { ENROLL, CONFIRM } from '@/lib/mfa-constants';
 import { UserMFASetupForm } from '@/components/mfa/user-mfa-setup-form';
-import { ENROLL, CONFIRM } from '@/lib/constants';
 import { Spinner } from '@/components/ui/spinner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { withCoreClient } from '@/hoc';
+import { Authenticator, MFAType } from '@auth0-web-ui-components/core';
 
 /**
  * UserMFAMgmt Component
@@ -23,27 +25,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
  *
  * - **ProxyMode (RWA)**: In this mode, the component interacts with a proxy service to manage MFA
  * - **SPA (Single Page Application)**: In this mode, the component communicates directly with the API to manage MFA factors.
- *
- * @param {Object} props - The properties passed to the component.
- * @param {Object} [props.localization={}] - Localization object for i18n support.
- * This object should contain key-value pairs for each language and its associated translations.
- *
- * Example:
- * ```js
- * localization={{
- *   title: 'Manage MFA Factors',
- *   description: 'Here you can manage your Multi-Factor Authentication (MFA) factors.',
- *   loading: 'Loading...',
- *   errors: {
- *     factorsLoadingError: 'An error occurred while loading MFA factors.',
- *   },
- *   no_active_mfa: 'No active MFA factors found.',
- *   enroll_factor: 'Successfully enrolled the MFA factor.',
- *   remove_factor: 'Successfully removed the MFA factor.',
- *   delete: 'Delete',
- *   enroll: 'Enroll',
- * }}
- * ```
+ * * @param {Object} props - The properties passed to the component.
+ * @param {Object} [props.customMessages] - Custom messages to override default translations for this component instance.
  * @param {boolean} [props.hideHeader=false] - Whether to hide the header.
  * @param {boolean} [props.showActiveOnly=false] - Whether to show only active MFA factors.
  * @param {boolean} [props.disableEnroll=false] - Whether to disable the enrollment of new factors.
@@ -58,8 +41,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
  *
  * @returns {React.JSX.Element} The rendered component.
  */
-export function UserMFAMgmt({
-  localization = {},
+function UserMFAMgmtComponent({
+  customMessages = {},
   hideHeader = false,
   showActiveOnly = false,
   disableEnroll = false,
@@ -72,8 +55,10 @@ export function UserMFAMgmt({
   onErrorAction,
   onBeforeAction,
 }: UserMFAMgmtProps): React.JSX.Element {
-  const t = useTranslator('mfa', localization);
-  const { loader } = useComponentConfig();
+  const { t } = useTranslator('mfa', customMessages);
+  const {
+    config: { loader },
+  } = useComponentConfig();
   const { fetchFactors, enrollMfa, deleteMfa, confirmEnrollment } = useMFA();
 
   const [factors, setFactors] = React.useState<Authenticator[]>([]);
@@ -256,7 +241,7 @@ export function UserMFAMgmt({
       );
       onErrorAction?.(error, stage);
     },
-    [onErrorAction],
+    [onErrorAction, t],
   );
 
   return (
@@ -386,3 +371,5 @@ export function UserMFAMgmt({
     </>
   );
 }
+
+export const UserMFAMgmt = withCoreClient(UserMFAMgmtComponent);

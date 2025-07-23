@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
 import {
+  FACTOR_TYPE_OTP,
   normalizeError,
   type MFAType,
   type EnrollMfaResponse,
 } from '@auth0-web-ui-components/core';
-import { FACTOR_TYPE_OTP, ENROLL } from '@/lib/constants';
+import { ENROLL } from '@/lib/mfa-constants';
 import { useTranslator } from '@/hooks';
 
 type UseOtpEnrollmentProps = {
@@ -20,7 +21,7 @@ export function useOtpEnrollment({
   onError,
   onClose,
 }: UseOtpEnrollmentProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
   const [loading, setLoading] = useState(false);
   const [otpData, setOtpData] = useState<{
     secret: string | null;

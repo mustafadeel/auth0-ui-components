@@ -14,7 +14,7 @@ import { OTPField } from '@/components/ui/otp-field';
 import { useTranslator } from '@/hooks';
 import { useOtpConfirmation } from '@/hooks/mfa';
 import { type MFAType } from '@auth0-web-ui-components/core';
-import { CONFIRM } from '@/lib/constants';
+import { CONFIRM } from '@/lib/mfa-constants';
 
 type OtpForm = {
   userOtp: string;
@@ -40,7 +40,7 @@ export function OTPVerificationForm({
   onClose,
   oobCode,
 }: OTPVerificationFormProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
 
   const { onSubmitOtp, loading } = useOtpConfirmation({
     factorType,
