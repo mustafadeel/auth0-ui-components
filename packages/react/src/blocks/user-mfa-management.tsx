@@ -1,20 +1,30 @@
 import * as React from 'react';
+import { MoreVertical, Trash2, Edit, Mail, Smartphone } from 'lucide-react';
 
-import { useComponentConfig, useMFA, useTranslator } from '@/hooks';
-import type { UserMFAMgmtProps, MFAType, Authenticator } from '@/types';
+import {
+  Authenticator,
+  type MFAType,
+  FACTOR_TYPE_EMAIL,
+  FACTOR_TYPE_SMS,
+} from '@auth0-web-ui-components/core';
+
+import type { UserMFAMgmtProps } from '@/types';
+
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
+import { ENROLL, CONFIRM } from '@/lib/mfa-constants';
 import { UserMFASetupForm } from '@/components/mfa/user-mfa-setup-form';
-import { ENROLL, CONFIRM, FACTOR_TYPE_SMS, FACTOR_TYPE_EMAIL } from '@/lib/constants';
 import { Spinner } from '@/components/ui/spinner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { List, ListItem } from '@/components/ui/list';
-import { MoreVertical, Trash2, Edit, Mail, Smartphone } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+
+import { withCoreClient } from '@/hoc';
+import { useComponentConfig, useMFA, useTranslator } from '@/hooks';
 
 /**
  * UserMFAMgmt Component
@@ -23,12 +33,10 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
  * This component handles fetching the MFA access token, fetching authenticators, enrolling, and deletion of MFA factors, and manages the MFA access token.
  * It operates in both ProxyMode (RWA) and SPA modes for authentication.
  *
- * - **ProxyMode (RWA)**: The component interacts with a proxy service to manage MFA.
- * - **SPA (Single Page Application)**: The component communicates directly with the API to manage MFA factors.
- *
- * @param {Object} props - The properties passed to the component.
- * @param {Object} [props.localization={}] - Localization object for i18n support.
- *   This object should contain key-value pairs for each language and its associated translations.
+ * - **ProxyMode (RWA)**: In this mode, the component interacts with a proxy service to manage MFA
+ * - **SPA (Single Page Application)**: In this mode, the component communicates directly with the API to manage MFA factors.
+ * * @param {Object} props - The properties passed to the component.
+ * @param {Object} [props.customMessages] - Custom messages to override default translations for this component instance.
  * @param {boolean} [props.hideHeader=false] - Whether to hide the header.
  * @param {boolean} [props.showActiveOnly=false] - Whether to show only active MFA factors.
  * @param {boolean} [props.disableEnroll=false] - Whether to disable the enrollment of new factors.
@@ -78,8 +86,8 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
  *
  * @returns {React.JSX.Element} The rendered component.
  */
-export function UserMFAMgmt({
-  localization = {},
+function UserMFAMgmtComponent({
+  customMessages = {},
   hideHeader = false,
   showActiveOnly = false,
   disableEnroll = false,
@@ -93,8 +101,10 @@ export function UserMFAMgmt({
   onBeforeAction,
   schemaValidation,
 }: UserMFAMgmtProps): React.JSX.Element {
-  const t = useTranslator('mfa', localization);
-  const { loader } = useComponentConfig();
+  const { t } = useTranslator('mfa', customMessages);
+  const {
+    config: { loader },
+  } = useComponentConfig();
   const { fetchFactors, enrollMfa, deleteMfa, confirmEnrollment } = useMFA();
 
   const [factors, setFactors] = React.useState<Authenticator[]>([]);
@@ -277,7 +287,7 @@ export function UserMFAMgmt({
       );
       onErrorAction?.(error, stage);
     },
-    [onErrorAction],
+    [onErrorAction, t],
   );
 
   return (
@@ -576,3 +586,5 @@ export function UserMFAMgmt({
     </>
   );
 }
+
+export const UserMFAMgmt = withCoreClient(UserMFAMgmtComponent);

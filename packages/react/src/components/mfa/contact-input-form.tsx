@@ -5,6 +5,7 @@ import { MailIcon, SmartphoneIcon } from 'lucide-react';
 
 import {
   MFAType,
+  FACTOR_TYPE_EMAIL,
   createEmailContactSchema,
   createSmsContactSchema,
   type EmailContactForm,
@@ -25,7 +26,8 @@ import {
 import { TextField } from '@/components/ui/text-field';
 import { useTranslator } from '@/hooks';
 import { useContactEnrollment } from '@/hooks/mfa';
-import { FACTOR_TYPE_EMAIL, ENROLL, ENTER_CONTACT, ENTER_OTP, CONFIRM } from '@/lib/constants';
+import { ENTER_CONTACT, ENROLL, CONFIRM, ENTER_OTP } from '@/lib/mfa-constants';
+
 import { OTPVerificationForm } from './otp-verification-form';
 
 type ContactForm = EmailContactForm | SmsContactForm;
@@ -59,8 +61,8 @@ export function ContactInputForm({
   onClose,
   schemaValidation,
 }: ContactInputFormProps) {
-  const t = useTranslator('mfa');
   const [phase, setPhase] = React.useState<Phase>(ENTER_CONTACT);
+  const { t } = useTranslator('mfa');
 
   const { onSubmitContact, loading, contactData, setContactData } = useContactEnrollment({
     factorType,

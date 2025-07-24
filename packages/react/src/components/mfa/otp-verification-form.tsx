@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { type MFAType } from '@auth0-web-ui-components/core';
+import { type MFAType, FACTOR_TYPE_EMAIL } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -15,8 +15,7 @@ import { OTPField } from '@/components/ui/otp-field';
 
 import { useTranslator } from '@/hooks';
 import { useOtpConfirmation } from '@/hooks/mfa';
-
-import { CONFIRM, FACTOR_TYPE_EMAIL } from '@/lib/constants';
+import { CONFIRM } from '@/lib/mfa-constants';
 
 type OtpForm = {
   userOtp: string;
@@ -90,7 +89,7 @@ export function OTPVerificationForm({
   contact,
   onBack,
 }: OTPVerificationFormProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
 
   const { onSubmitOtp, loading } = useOtpConfirmation({
     factorType,

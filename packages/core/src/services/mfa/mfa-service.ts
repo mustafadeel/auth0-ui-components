@@ -1,11 +1,11 @@
-import { get, del, isApiError, post } from '../api';
+import { get, del, isApiError, post } from '../../api';
 import type {
   Authenticator,
   EnrollMfaParams,
   EnrollMfaResponse,
   AuthenticatorType,
   MFAType,
-} from './types';
+} from './mfa-types';
 
 export const factorsMetaKeys = new Set([
   'totp',
@@ -23,18 +23,20 @@ export const factorsMetaKeys = new Set([
  *
  * Fetch MFA authenticators from Auth0 API and enrich them with metadata.
  *
- * @param apiBaseUrl Base URL for Auth0 API (e.g., https://domain or proxy URL)
+ * @param baseUrl - The base API URL (e.g. Auth0 domain or proxy).
  * @param accessToken Optional access token for authorization (ignored if proxy URL used)
  * @param onlyActive Whether to filter only active authenticators
  *
  * @returns Promise resolving to enriched authenticators array
  */
 export async function fetchMfaFactors(
-  apiBaseUrl: string,
+  baseUrl: string,
   accessToken?: string,
   onlyActive = false,
 ): Promise<Authenticator[]> {
-  const response = await get<Authenticator[]>(`${apiBaseUrl}mfa/authenticators`, { accessToken });
+  const response = await get<Authenticator[]>(`${baseUrl}mfa/authenticators`, {
+    accessToken,
+  });
 
   // Build map prioritizing active authenticators
   const map = new Map<string, Authenticator>();
@@ -71,7 +73,7 @@ export async function fetchMfaFactors(
 /**
  * Deletes an MFA authenticator by ID.
  *
- * @param baseUrl - The base URL for the Auth0 API or proxy.
+ * @param baseUrl - The base API URL (e.g. Auth0 domain or proxy).
  * @param id - The authenticator ID to delete.
  * @param accessToken - Optional token (used in SPA mode).
  */

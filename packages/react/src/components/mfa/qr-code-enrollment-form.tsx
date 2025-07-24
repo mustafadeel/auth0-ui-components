@@ -6,10 +6,10 @@ import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/c
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 
+import { CONFIRM, QR_PHASE_ENTER_OTP, QR_PHASE_SCAN, ENROLL } from '@/lib/mfa-constants';
+
 import { useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/mfa';
-
-import { ENROLL, CONFIRM, QR_PHASE_ENTER_OTP, QR_PHASE_SCAN } from '@/lib/constants';
 
 import { OTPVerificationForm } from './otp-verification-form';
 
@@ -40,8 +40,8 @@ export function QRCodeEnrollmentForm({
   onSuccess,
   onClose,
 }: QRCodeEnrollmentFormProps) {
-  const t = useTranslator('mfa');
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
+  const { t } = useTranslator('mfa');
 
   const { fetchOtpEnrollment, otpData, resetOtpData, loading } = useOtpEnrollment({
     factorType,

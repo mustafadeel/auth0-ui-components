@@ -1,16 +1,5 @@
 {
-  "common": {
-    "loading_auth_details": "認証情報を読み込み中...",
-    "errors": {
-      "missing_access_token": "アクセストークンが必要です。",
-      "missing_base_url": "Auth0 APIのベースURLが見つかりません",
-      "missing_domain": "Auth0ドメインが見つかりません",
-      "scope_required": "スコープが必要です",
-      "domain_not_configured": "Auth0ドメインが設定されていません",
-      "access_token_error": "アクセストークンが未定義です",
-      "auth_details_error": "認証に失敗しました: ${message}"
-    }
-  },
+  "common": {},
   "mfa": {
     "title": "多要素認証方法",
     "description": "あなたのアカウントと身元をさらに保護します",
@@ -44,7 +33,6 @@
     "deleting": "削除中...",
     "errors": {
       "factors_loading_error": "多要素認証の読み込みエラー！",
-      "access_token_error": "アクセストークンエラー: ${error}",
       "unknown_error": "不明なエラーが発生しました",
       "delete_factor": "認証器の削除に失敗しました",
       "failed": "失敗しました: ${message}",

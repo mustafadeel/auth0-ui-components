@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
 import {
+  FACTOR_TYPE_EMAIL,
+  FACTOR_TYPE_SMS,
   normalizeError,
   type MFAType,
   type EnrollMfaResponse,
 } from '@auth0-web-ui-components/core';
-import { FACTOR_TYPE_EMAIL, FACTOR_TYPE_SMS, ENROLL } from '@/lib/constants';
+import { ENROLL } from '@/lib/mfa-constants';
 import { useTranslator } from '@/hooks';
 
 type ContactForm = {
@@ -22,7 +24,7 @@ export function useContactEnrollment({
   enrollMfa,
   onError,
 }: UseContactEnrollmentProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
   const [loading, setLoading] = useState(false);
   const [contactData, setContactData] = useState<{
     contact: string | null;

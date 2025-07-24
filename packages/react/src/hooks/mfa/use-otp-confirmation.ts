@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import { normalizeError, type MFAType } from '@auth0-web-ui-components/core';
-import { FACTOR_TYPE_EMAIL, CONFIRM } from '@/lib/constants';
+import { FACTOR_TYPE_EMAIL, normalizeError, type MFAType } from '@auth0-web-ui-components/core';
+import { CONFIRM } from '@/lib/mfa-constants';
 import { useTranslator } from '@/hooks';
 
 type OtpForm = {
@@ -25,7 +25,7 @@ export function useOtpConfirmation({
   onSuccess,
   onClose,
 }: UseOtpConfirmationProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
   const [loading, setLoading] = useState(false);
 
   const onSubmitOtp = useCallback(

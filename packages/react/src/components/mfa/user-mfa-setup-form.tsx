@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
+import {
+  type MFAType,
+  type EnrollMfaResponse,
+  FACTOR_TYPE_EMAIL,
+  FACTOR_TYPE_SMS,
+  FACTOR_TYPE_TOPT,
+  FACTOR_TYPE_PUSH_NOTIFICATION,
+} from '@auth0-web-ui-components/core';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
@@ -13,14 +20,10 @@ import {
   ENTER_QR,
   ENTER_OTP,
   ENTER_CONTACT,
-  FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
-  FACTOR_TYPE_TOPT,
-  FACTOR_TYPE_PUSH_NOTIFICATION,
-  QR_PHASE_INSTALLATION,
   ENROLL,
   CONFIRM,
-} from '@/lib/constants';
+  QR_PHASE_INSTALLATION,
+} from '@/lib/mfa-constants';
 
 import { useTranslator } from '@/hooks';
 
@@ -55,7 +58,8 @@ export function UserMFASetupForm({
   onError,
   schemaValidation,
 }: UserMFASetupFormProps) {
-  const t = useTranslator('mfa');
+  const { t } = useTranslator('mfa');
+
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
 

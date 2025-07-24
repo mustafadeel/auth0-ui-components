@@ -1,16 +1,5 @@
 {
-  "common": {
-    "loading_auth_details": "Loading authentication details...",
-    "errors": {
-      "missing_access_token": "Access token is required.",
-      "missing_base_url": "Missing Auth0 API base URL",
-      "missing_domain": "Missing Auth0 domain",
-      "scope_required": "Scope is required",
-      "domain_not_configured": "Auth0 domain is not configured",
-      "access_token_error": "Access token is undefined",
-      "auth_details_error": "Authentication failed: ${message}"
-    }
-  },
+  "common": {},
   "mfa": {
     "title": "Multi-Factor Authentication methods",
     "description": "Extra protection for your account and your identity",
@@ -43,7 +32,6 @@
     "deleting": "Deleting...",
     "errors": {
       "factors_loading_error": "Error loading MFA factors!",
-      "access_token_error": "Access token error: ${error}",
       "unknown_error": "Unknown error occurred",
       "delete_factor": "Delete authenticator failed",
       "failed": "failed: ${message}",

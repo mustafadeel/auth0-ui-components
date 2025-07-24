@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/theme-utils';
 
 export interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
   variant?: 'bullet' | 'number' | 'icon' | 'plain';
