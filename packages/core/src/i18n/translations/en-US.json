@@ -118,6 +118,7 @@
         "copy_as_code": "Copy as Code",
         "verifying": "Verifying...",
         "enter_verify_code": "Enter the 6-digit code we sent to ${verifier}",
+        "enter_opt_code": "Enter the code from your authenticator",
         "install_guardian_description": "In order to continue, install the Auth0 Guardian app via the app store from your mobile device"
       }
     }

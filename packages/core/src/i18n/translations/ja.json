@@ -119,6 +119,7 @@
         "copy_as_code": "コードとしてコピー",
         "verifying": "確認中...",
         "enter_verify_code": "${verifier}に送信された6桁のコードを入力してください",
+        "enter_opt_code": "認証アプリのコードを入力してください",
         "install_guardian_description": "続行するには、お使いのモバイルデバイスからアプリストア経由でAuth0 Guardianアプリをインストールしてください。"
       }
     }

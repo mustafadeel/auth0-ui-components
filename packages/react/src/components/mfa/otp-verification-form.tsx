@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
-import { type MFAType, FACTOR_TYPE_EMAIL } from '@auth0-web-ui-components/core';
+import {
+  type MFAType,
+  FACTOR_TYPE_EMAIL,
+  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_PUSH_NOTIFICATION,
+  FACTOR_TYPE_TOPT,
+} from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -133,7 +139,9 @@ export function OTPVerificationForm({
           aria-describedby="otp-description"
         >
           <p id="otp-description" className="font-normal text-center block mx-auto text-sm">
-            {t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
+            {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_TOPT, FACTOR_TYPE_OTP].includes(factorType)
+              ? t('enrollment_form.show_otp.enter_opt_code')
+              : t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
           </p>
           <FormField
             control={form.control}
