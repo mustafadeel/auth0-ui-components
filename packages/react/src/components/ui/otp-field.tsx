@@ -18,6 +18,7 @@ export interface OTPFieldProps {
   id?: string;
   value?: string;
   name?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 
 function OTPField({
@@ -31,6 +32,7 @@ function OTPField({
   id,
   value,
   name,
+  inputRef,
 }: OTPFieldProps) {
   const [internalOtp, setInternalOtp] = useState<string[]>(new Array(length).fill(''));
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -181,6 +183,13 @@ function OTPField({
           <TextField
             ref={(el) => {
               inputRefs.current[index] = el as HTMLInputElement;
+              if (index === 0 && inputRef) {
+                if (typeof inputRef === 'function') {
+                  inputRef(el as HTMLInputElement);
+                } else {
+                  inputRef.current = el as HTMLInputElement;
+                }
+              }
             }}
             type="text"
             inputMode="numeric"

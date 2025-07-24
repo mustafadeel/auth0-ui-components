@@ -48,7 +48,7 @@ export function useOtpConfirmation({
         }
       } catch (err) {
         const normalizedError = normalizeError(err, {
-          resolver: (code) => t(`errors.${code}.${factorType}`),
+          resolver: (code) => t(`errors.${factorType}.${code}`),
           fallbackMessage: 'An unexpected error occurred during MFA enrollment.',
         });
         onError(normalizedError, CONFIRM);

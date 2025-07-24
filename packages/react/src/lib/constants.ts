@@ -1,5 +1,5 @@
 export const ENTER_OTP = 'enterOtp';
-export const SHOW_OTP = 'showOtp';
+export const ENTER_QR = 'showQr';
 export const ENTER_CONTACT = 'enterContact';
 
 export const FACTOR_TYPE_EMAIL = 'email';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
+import { type MFAType } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -11,10 +12,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { OTPField } from '@/components/ui/otp-field';
-import { Label } from '@/components/ui/label';
+
 import { useTranslator } from '@/hooks';
 import { useOtpConfirmation } from '@/hooks/mfa';
-import { type MFAType } from '@auth0-web-ui-components/core';
+
 import { CONFIRM, FACTOR_TYPE_EMAIL } from '@/lib/constants';
 
 type OtpForm = {
@@ -74,7 +75,6 @@ const maskContact = (contact: string, factorType: MFAType): string => {
       : contact;
   }
 
-  // Mask phone number
   return contact.length > 6
     ? `${contact.slice(0, 3)}${'*'.repeat(contact.length - 6)}${contact.slice(-3)}`
     : contact;
@@ -106,10 +106,15 @@ export function OTPVerificationForm({
 
   const userOtp = form.watch('userOtp');
   const isOtpValid = userOtp && userOtp.length === 6;
+  const otpInputRef = React.useRef<HTMLInputElement>(null);
+
+  React.useEffect(() => {
+    otpInputRef.current?.focus();
+  }, []);
 
   const handleSubmit = React.useCallback(
-    (data: OtpForm) => {
-      onSubmitOtp(data, oobCode);
+    async (data: OtpForm) => {
+      await onSubmitOtp(data, oobCode);
     },
     [onSubmitOtp, oobCode],
   );
@@ -122,34 +127,55 @@ export function OTPVerificationForm({
   return (
     <div className="w-full max-w-sm mx-auto text-center">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} autoComplete="off" className="space-y-6">
-          <Label htmlFor="description" className="font-medium text-center block mx-auto text-base">
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          autoComplete="off"
+          className="space-y-6"
+          aria-describedby="otp-description"
+        >
+          <p id="otp-description" className="font-normal text-center block mx-auto text-sm">
             {t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
-          </Label>
+          </p>
           <FormField
             control={form.control}
             name="userOtp"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm">
+                <FormLabel className="text-sm font-normal" htmlFor="otp-input">
                   {t('enrollment_form.show_otp.one_time_passcode')}
                 </FormLabel>
                 <FormControl>
                   <OTPField
+                    id="otp-input"
                     length={6}
                     separator={{ character: '-', afterEvery: 3 }}
                     onChange={field.onChange}
+                    inputRef={otpInputRef}
+                    aria-invalid={Boolean(form.formState.errors.userOtp)}
                   />
                 </FormControl>
-                <FormMessage className="text-left" />
+                <FormMessage className="text-left" id="otp-error" role="alert" />
               </FormItem>
             )}
           />
           <div className="flex flex-col gap-3 justify-center">
-            <Button type="submit" size="lg" disabled={loading || !isOtpValid}>
+            <Button
+              type="submit"
+              className="text-sm"
+              size="lg"
+              disabled={loading || !isOtpValid}
+              aria-label={loading ? t('enrollment_form.show_otp.verifying') : t('submit')}
+            >
               {loading ? t('enrollment_form.show_otp.verifying') : t('submit')}
             </Button>
-            <Button type="button" variant="ghost" size="lg" onClick={onBack}>
+            <Button
+              type="button"
+              className="text-sm"
+              variant="ghost"
+              size="lg"
+              onClick={onBack}
+              aria-label={t('back')}
+            >
               {t('back')}
             </Button>
           </div>

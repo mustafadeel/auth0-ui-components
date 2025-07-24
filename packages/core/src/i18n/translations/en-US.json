@@ -12,7 +12,7 @@
     }
   },
   "mfa": {
-    "title": "Additional verification methods",
+    "title": "Multi-Factor Authentication methods",
     "description": "Extra protection for your account and your identity",
     "no_active_mfa": "No active MFA factors enrolled.",
     "loading": "Loading...",
@@ -52,38 +52,41 @@
       "invalid_email": "Invalid email address",
       "invalid_phone_number": "Invalid phone number",
       "unsupported_mfa_type": "Unsupported MFA type: ${factorName}",
-      "too_many_entities": "You reached the limit of entities of this type for this user.",
-      "invalid_request": {
-        "totp": "Missing required parameter: otp"
+      "push-notification": {
+        "too_many_entities": "You reached the limit of entities of the push notification type for this user.",
+        "unsupported_challenge_type": "Auth0 Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"Push notifications\" on Guardian MFA section.",
+        "invalid_request": "Missing required parameter"
       },
-      "unsupported_challenge_type": {
-        "sms": "SMS Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"SMS\" on Guardian MFA section.",
-        "totp": "OTP Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"Push notifications\" on Guardian MFA section (Push notications include OTP).",
-        "push-notification": "Auth0 Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"Push notifications\" on Guardian MFA section."
+      "totp": {
+        "invalid_request": "Missing required parameter",
+        "too_many_entities": "You reached the limit of entities of the totp type for this user.",
+        "unsupported_challenge_type": "OTP Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"Push notifications\" on Guardian MFA section (Push notications include OTP).",
+        "invalid_grant": "Invalid Otp Code"
       },
-      "expired_token": {
-        "email": "Verification code is expired"
+      "sms": {
+        "unsupported_challenge_type": "SMS Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"SMS\" on Guardian MFA section.",
+        "bad_gateway": "The phone number is invalid.",
+        "too_many_entities": "You reached the limit of entities of the sms type for this user."
       },
-      "invalid_grant": {
-        "email": "Invalid Code",
-        "totp": "Invalid Otp Code"
-      },
-      "access_denied": {
-        "email": "Could not find the requested authenticator"
+      "email": {
+        "expired_token": "Verification code is expired",
+        "invalid_grant": "Invalid Code",
+        "access_denied": "Could not find the requested authenticator",
+        "too_many_entities": "You reached the limit of entities of the email type for this user."
       }
     },
     "sms": {
-      "title": "SMS",
+      "title": "Phone Message",
       "description": "No phone number has been added.",
       "button-text": "Add Phone for SMS"
     },
     "push-notification": {
-      "title": "Push Authentication",
+      "title": "Push Notification using Auth0 Guardian",
       "description": "No push authentication has been added.",
       "button-text": "Add Push Authentication"
     },
     "totp": {
-      "title": "TOTP (One-time code)",
+      "title": "One-time Password",
       "description": "No authenticator has been added.",
       "button-text": "Add Authenticator App"
     },

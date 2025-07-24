@@ -1,23 +1,28 @@
 import * as React from 'react';
+import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+
 import { ContactInputForm } from './contact-input-form';
 import { QRCodeEnrollmentForm } from './qr-code-enrollment-form';
-import { OTPVerificationForm } from './otp-verification-form';
+
 import {
-  SHOW_OTP,
+  ENTER_QR,
   ENTER_OTP,
   ENTER_CONTACT,
   FACTOR_TYPE_EMAIL,
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
+  QR_PHASE_INSTALLATION,
   ENROLL,
   CONFIRM,
 } from '@/lib/constants';
-import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
+
 import { useTranslator } from '@/hooks';
-import { useOtpEnrollment } from '@/hooks/mfa';
 
 type UserMFASetupFormProps = {
   open: boolean;
@@ -33,7 +38,12 @@ type UserMFASetupFormProps = {
   schemaValidation?: { email?: RegExp; phone?: RegExp };
 };
 
-type EnrollmentPhase = typeof ENTER_CONTACT | typeof ENTER_OTP | typeof SHOW_OTP | null;
+type EnrollmentPhase =
+  | typeof ENTER_CONTACT
+  | typeof ENTER_OTP
+  | typeof ENTER_QR
+  | typeof QR_PHASE_INSTALLATION
+  | null;
 
 export function UserMFASetupForm({
   open,
@@ -46,112 +56,102 @@ export function UserMFASetupForm({
   schemaValidation,
 }: UserMFASetupFormProps) {
   const t = useTranslator('mfa');
-
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
-  const [oobCode, setOobCode] = React.useState<string | undefined>(undefined);
-  const [contact, setContact] = React.useState<string>(''); // Initialize contact state
-
-  const otpEnrollment = useOtpEnrollment({
-    factorType,
-    enrollMfa,
-    onError,
-    onClose,
-  });
 
   React.useEffect(() => {
     if (!open) {
-      setPhase(null); // reset phase to null when dialog closes
-      setOobCode(undefined);
-      otpEnrollment.resetOtpData();
+      setPhase(null);
     }
-  }, [open, otpEnrollment]);
+  }, [open]);
 
   React.useEffect(() => {
-    if (open && (factorType === FACTOR_TYPE_EMAIL || factorType === FACTOR_TYPE_SMS)) {
-      setPhase(ENTER_CONTACT);
-    }
+    if (!open) return;
+    const phaseMap: Partial<Record<MFAType, EnrollmentPhase>> = {
+      [FACTOR_TYPE_EMAIL]: ENTER_CONTACT,
+      [FACTOR_TYPE_SMS]: ENTER_CONTACT,
+      [FACTOR_TYPE_PUSH_NOTIFICATION]: QR_PHASE_INSTALLATION,
+      [FACTOR_TYPE_TOPT]: ENTER_QR,
+    };
+
+    setPhase(phaseMap[factorType] ?? null);
   }, [open, factorType]);
 
-  // Automatically initiate OTP enrollment when factorType is 'totp' or 'push-notification'
-  React.useEffect(() => {
-    if (
-      [FACTOR_TYPE_TOPT, FACTOR_TYPE_PUSH_NOTIFICATION].includes(factorType) &&
-      !otpEnrollment.otpData.secret &&
-      open
-    ) {
-      otpEnrollment.fetchOtpEnrollment().then(() => {
-        setPhase(SHOW_OTP);
-      });
-    }
-  }, [factorType, otpEnrollment, open]);
-
-  // Callback functions for form components
-  const handleContactSuccess = React.useCallback((oobCode?: string, contactValue?: string) => {
-    setOobCode(oobCode);
-    if (contactValue) {
-      setContact(contactValue);
-    }
-    setPhase(ENTER_OTP);
-  }, []);
-
-  const handleOtpSuccess = React.useCallback(
-    (otpData: { secret: string | null; barcodeUri: string | null; recoveryCodes: string[] }) => {
-      otpEnrollment.resetOtpData();
-      // Use the proper setter function instead of direct mutation
-      otpEnrollment.updateOtpData(otpData);
-      setPhase(SHOW_OTP);
-    },
-    [otpEnrollment],
+  const renderInstallationPhase = () => (
+    <div className="w-full max-w-sm mx-auto">
+      <div className="flex flex-col items-center justify-center flex-1 space-y-10">
+        <p className="text-center text-sm font-normal">
+          {t('enrollment_form.show_otp.install_guardian_description')}
+        </p>
+        <div className="flex gap-4 w-full">
+          <a
+            href="https://apps.apple.com/us/app/auth0-guardian/id1093447833"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1"
+          >
+            <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
+              <img
+                src="https://cdn.auth0.com/marketplace/catalog/content/assets/creators/apple/apple-avatar.png"
+                alt="Apple"
+                className="w-8 h-8"
+              />
+              <span className="text-sm text-center">App Store</span>
+            </Card>
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.auth0.guardian"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1"
+          >
+            <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
+              <img
+                src="https://cdn.auth0.com/marketplace/catalog/content/assets/creators/google/google-avatar.png"
+                alt="Google"
+                className="w-8 h-8"
+              />
+              <span className="text-sm text-center">Google Play</span>
+            </Card>
+          </a>
+        </div>
+        <div className="flex flex-col gap-3 w-full">
+          <Button type="button" className="text-sm" size="lg" onClick={() => setPhase(ENTER_QR)}>
+            {t('continue')}
+          </Button>
+          <Button type="button" className="text-sm" variant="ghost" size="lg" onClick={onClose}>
+            {t('cancel')}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 
-  const handleBack = React.useCallback(() => {
-    if (phase === ENTER_OTP) {
-      const isContactBased = [FACTOR_TYPE_EMAIL, FACTOR_TYPE_SMS].includes(factorType);
-      setPhase(isContactBased ? ENTER_CONTACT : SHOW_OTP);
-    }
-  }, [phase, factorType]);
-
-  // Render the appropriate form based on the current phase and factorType
   const renderForm = () => {
     switch (phase) {
+      case QR_PHASE_INSTALLATION:
+        return renderInstallationPhase();
       case ENTER_CONTACT:
         return (
           <ContactInputForm
             factorType={factorType}
             enrollMfa={enrollMfa}
+            confirmEnrollment={confirmEnrollment}
             onError={onError}
-            onContactSuccess={handleContactSuccess}
-            onOtpSuccess={handleOtpSuccess}
+            onSuccess={onSuccess}
             onClose={onClose}
             schemaValidation={schemaValidation}
           />
         );
-      case SHOW_OTP:
+      case ENTER_QR:
         return (
           <QRCodeEnrollmentForm
             factorType={factorType}
-            barcodeUri={otpEnrollment.otpData.barcodeUri || ''}
-            recoveryCodes={otpEnrollment.otpData.recoveryCodes}
-            secret={otpEnrollment.otpData.secret || ''}
+            enrollMfa={enrollMfa}
             confirmEnrollment={confirmEnrollment}
             onError={onError}
             onSuccess={onSuccess}
             onClose={onClose}
-            oobCode={oobCode}
-          />
-        );
-      case ENTER_OTP:
-        return (
-          <OTPVerificationForm
-            factorType={factorType}
-            confirmEnrollment={confirmEnrollment}
-            onError={onError}
-            onSuccess={onSuccess}
-            onClose={onClose}
-            oobCode={oobCode}
-            contact={contact}
-            onBack={handleBack}
           />
         );
       default:
@@ -161,7 +161,7 @@ export function UserMFASetupForm({
 
   return (
     <Dialog open={open && Boolean(phase)} onOpenChange={onClose}>
-      <DialogContent aria-describedby={factorType} className="w-[400px] h-[548px]">
+      <DialogContent aria-describedby="mfa-setup-form" className="w-[400px] h-[548px]">
         <DialogHeader>
           <DialogTitle className="text-left font-medium text-xl">
             {t('enrollment_form.enroll_title')}

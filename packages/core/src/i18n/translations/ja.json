@@ -12,7 +12,7 @@
     }
   },
   "mfa": {
-    "title": "追加の認証方法",
+    "title": "多要素認証方法",
     "description": "あなたのアカウントと身元をさらに保護します",
     "no_active_mfa": "登録されている多要素認証はありません。",
     "loading": "読み込み中...",
@@ -53,38 +53,41 @@
       "invalid_email": "無効なメールアドレス",
       "invalid_phone_number": "無効な電話番号",
       "unsupported_mfa_type": "未対応のMFAタイプです: ${factorName}",
-      "too_many_entities": "この種類のエンティティのユーザーごとの上限に達しました。",
-      "invalid_request": {
-        "totp": "必須パラメーターがありません: otp"
+      "push-notification": {
+        "too_many_entities": "このユーザーのプッシュ通知エンティティの数には上限があります。",
+        "unsupported_challenge_type": "Auth0 Verifier がテナントで無効になっています。ダッシュボードの Guardian MFA セクションで「プッシュ通知」をオンにすると有効にできます。",
+        "invalid_request": "必須パラメーターがありません"
       },
-      "unsupported_challenge_type": {
-        "sms": "SMSの認証が無効になっています。ダッシュボードのGuardian MFAセクションで「SMS」をオンにしてください。",
-        "totp": "OTP認証が無効になっています。ダッシュボードのGuardian MFAセクションで「プッシュ通知」をオンにしてください（プッシュ通知にはOTPが含まれます）。",
-        "push-notification": "Auth0認証が無効になっています。ダッシュボードのGuardian MFAセクションで「プッシュ通知」をオンにしてください。"
+      "totp": {
+        "invalid_request": "必須パラメーターがありません",
+        "too_many_entities": "このユーザーのTOTPエンティティの数には上限があります。",
+        "unsupported_challenge_type": "OTP Verifier がテナントで無効になっています。ダッシュボードの Guardian MFA セクションで「プッシュ通知」をオンにすると有効にできます（プッシュ通知にはOTPが含まれます）。",
+        "invalid_grant": "OTPコードが無効です"
       },
-      "expired_token": {
-        "email": "認証コードの有効期限が切れました"
+      "sms": {
+        "unsupported_challenge_type": "SMS Verifier がテナントで無効になっています。ダッシュボードの Guardian MFA セクションで「SMS」をオンにすると有効にできます。",
+        "bad_gateway": "電話番号が無効です。",
+        "too_many_entities": "このユーザーのSMSエンティティの数には上限があります。"
       },
-      "invalid_grant": {
-        "email": "無効なコード",
-        "totp": "無効な認証コードです"
-      },
-      "access_denied": {
-        "email": "認証器が見つかりませんでした"
+      "email": {
+        "expired_token": "確認コードの有効期限が切れました",
+        "invalid_grant": "コードが無効です",
+        "access_denied": "要求された認証機能が見つかりませんでした",
+        "too_many_entities": "このユーザーのメールエンティティの数には上限があります。"
       }
     },
     "sms": {
-      "title": "SMS",
+      "title": "電話メッセージ ",
       "description": "電話番号が追加されていません。",
       "button-text": "SMS用電話番号を追加"
     },
     "push-notification": {
-      "title": "プッシュ認証",
+      "title": "Auth0 Guardian プッシュ通知",
       "description": "プッシュ認証が追加されていません。",
       "button-text": "プッシュ認証を追加"
     },
     "totp": {
-      "title": "TOTP (ワンタイムコード)",
+      "title": "ワンタイムパスワード",
       "description": "認証システムが追加されていません。",
       "button-text": "認証アプリを追加"
     },
