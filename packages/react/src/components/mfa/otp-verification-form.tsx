@@ -159,6 +159,7 @@ export function OTPVerificationForm({
                     onChange={field.onChange}
                     inputRef={otpInputRef}
                     aria-invalid={Boolean(form.formState.errors.userOtp)}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage className="text-left" id="otp-error" role="alert" />

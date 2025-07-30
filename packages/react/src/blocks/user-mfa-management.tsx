@@ -12,16 +12,15 @@ import type { UserMFAMgmtProps } from '@/types';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner';
 import { ENROLL, CONFIRM } from '@/lib/mfa-constants';
 import { UserMFASetupForm } from '@/components/mfa/user-mfa-setup-form';
 import { Spinner } from '@/components/ui/spinner';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { List, ListItem } from '@/components/ui/list';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { DeleteFactorConfirmation } from '@/components/mfa/delete-factor-confirmation';
 
 import { withCoreClient } from '@/hoc';
 import { useComponentConfig, useMFA, useTranslator } from '@/hooks';
@@ -296,7 +295,7 @@ function UserMFAMgmtComponent({
       {loading ? (
         loader || <Spinner aria-label={t('loading')} />
       ) : (
-        <Card>
+        <Card className="bg-white py-10 px-8 sm:py-8 sm:px-6">
           <CardContent>
             {error ? (
               <div
@@ -305,12 +304,14 @@ function UserMFAMgmtComponent({
                 aria-live="assertive"
               >
                 <h1
-                  className="text-2xl font-medium text-center text-destructive"
+                  className="text-base font-medium text-center text-destructive"
                   id="mfa-management-title"
                 >
                   {t('component_error_title')}
                 </h1>
-                <p className="text-center text-destructive">{t('component_error_description')}</p>
+                <p className="text-sm text-center text-destructive whitespace-pre-line">
+                  {t('component_error_description')}
+                </p>
               </div>
             ) : (
               <>
@@ -538,51 +539,14 @@ function UserMFAMgmtComponent({
           schemaValidation={schemaValidation}
         />
       )}
-      <Dialog
+      <DeleteFactorConfirmation
         open={isDeleteDialogOpen}
         onOpenChange={(open) => !isDeletingFactor && setIsDeleteDialogOpen(open)}
-        aria-modal="true"
-        aria-labelledby="delete-mfa-title"
-        aria-describedby="delete-mfa-description"
-      >
-        <DialogContent aria-describedby="delete-mfa-description" className="w-[400px] h-[548px]">
-          <DialogHeader>
-            <DialogTitle id="delete-mfa-title" className="text-center text-xl font-medium">
-              {t('delete_mfa_title')}
-            </DialogTitle>
-            <Separator className="my-2" />
-          </DialogHeader>
-
-          <div className="flex flex-col items-center justify-center flex-1 space-y-10">
-            <p id="delete-mfa-description" className="text-center text-base font-medium">
-              {t(`delete_mfa_${factorToDelete?.type}_consent`)}
-            </p>
-
-            <div className="flex flex-col space-y-3 w-full">
-              <Button
-                variant="destructive"
-                size="lg"
-                className="text-sm"
-                onClick={() => factorToDelete && handleConfirmDelete(factorToDelete.id)}
-                disabled={isDeletingFactor}
-                aria-label={t('confirm')}
-              >
-                {isDeletingFactor ? t('deleting') : t('confirm')}
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-sm"
-                onClick={() => setIsDeleteDialogOpen(false)}
-                disabled={isDeletingFactor}
-                aria-label={t('cancel')}
-              >
-                {t('cancel')}
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+        factorToDelete={factorToDelete}
+        isDeletingFactor={isDeletingFactor}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsDeleteDialogOpen(false)}
+      />
     </>
   );
 }

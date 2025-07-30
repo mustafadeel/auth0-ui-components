@@ -64,16 +64,7 @@ export function QRCodeEnrollmentForm({
   }, []);
 
   const handleCopySecret = React.useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(otpData?.secret || '');
-    } catch (err) {
-      const textArea = document.createElement('textarea');
-      textArea.value = otpData?.secret || '';
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-    }
+    await navigator.clipboard.writeText(otpData?.secret || '');
   }, [otpData.secret]);
 
   const renderQrScreen = () => {

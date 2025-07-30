@@ -26,6 +26,8 @@ import {
 } from '@/lib/mfa-constants';
 
 import { useTranslator } from '@/hooks';
+import AppleLogo from '@/lib/svgs/apple-logo';
+import GoogleLogo from '@/lib/svgs/google-logo';
 
 type UserMFASetupFormProps = {
   open: boolean;
@@ -95,12 +97,8 @@ export function UserMFASetupForm({
             className="flex-1"
           >
             <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
-              <img
-                src="https://cdn.auth0.com/marketplace/catalog/content/assets/creators/apple/apple-avatar.png"
-                alt="Apple"
-                className="w-8 h-8"
-              />
-              <span className="text-sm text-center">App Store</span>
+              <AppleLogo className="w-8 h-8" />
+              <span className="text-sm text-center">{t('app-store')}</span>
             </Card>
           </a>
           <a
@@ -110,12 +108,8 @@ export function UserMFASetupForm({
             className="flex-1"
           >
             <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
-              <img
-                src="https://cdn.auth0.com/marketplace/catalog/content/assets/creators/google/google-avatar.png"
-                alt="Google"
-                className="w-8 h-8"
-              />
-              <span className="text-sm text-center">Google Play</span>
+              <GoogleLogo className="w-8 h-8" />
+              <span className="text-sm text-center">{t('google-play')}</span>
             </Card>
           </a>
         </div>
