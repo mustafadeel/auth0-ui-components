@@ -1,7 +1,28 @@
 export interface Styling {
-  common: Record<string, string>;
-  light: Record<string, string>;
-  dark: Record<string, string>;
+  common?: Record<string, string> & {
+    '--font-size-heading'?: string;
+    '--font-size-description'?: string;
+    '--font-size-title'?: string;
+    '--font-size-paragraph'?: string;
+    '--font-size-label'?: string;
+  };
+  light?: Record<string, string> & {
+    '--color-card-foreground'?: string;
+    '--bg-color'?: string;
+    '--color-primary'?: string;
+    '--color-primary-foreground'?: string;
+    '--color-foreground'?: string;
+    '--color-muted-foreground'?: string;
+    '--color-accent-foreground'?: string;
+  };
+  dark?: Record<string, string> & {
+    '--bg-color'?: string;
+    '--color-primary'?: string;
+    '--color-primary-foreground'?: string;
+    '--color-foreground'?: string;
+    '--color-muted-foreground'?: string;
+    '--color-accent-foreground'?: string;
+  };
 }
 
 /**
@@ -28,15 +49,12 @@ export const getCurrentStyles = (
  * Uses getCurrentStyles to merge the common and theme-specific variables,
  * then applies them to the appropriate DOM elements.
  *
- * @param styleOverrides - An object containing CSS variable overrides.
+ * @param styling - An object containing CSS variable overrides.
  * @param mode - The current theme mode ('dark' or 'light'). Defaults to 'light'.
  */
-export function applyStyleOverrides(
-  styleOverrides: Styling,
-  mode: 'dark' | 'light' = 'light',
-): void {
+export function applyStyleOverrides(styling: Styling, mode: 'dark' | 'light' = 'light'): void {
   const isDarkMode = mode === 'dark';
-  const mergedStyles = getCurrentStyles(styleOverrides, isDarkMode);
+  const mergedStyles = getCurrentStyles(styling, isDarkMode);
   const target = isDarkMode ? '.dark' : ':root';
   const elements = document.querySelectorAll<HTMLElement>(target);
 

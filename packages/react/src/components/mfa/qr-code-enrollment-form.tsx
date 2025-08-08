@@ -24,7 +24,7 @@ type QRCodeEnrollmentFormProps = {
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
-  currentStyles?: Record<string, string>;
+  styling?: Record<string, string>;
 };
 
 const PHASES = {
@@ -41,7 +41,7 @@ export function QRCodeEnrollmentForm({
   onError,
   onSuccess,
   onClose,
-  currentStyles = {},
+  styling = {},
 }: QRCodeEnrollmentFormProps) {
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
   const { t } = useTranslator('mfa');
@@ -72,7 +72,7 @@ export function QRCodeEnrollmentForm({
 
   const renderQrScreen = () => {
     return (
-      <div style={currentStyles}>
+      <div style={styling}>
         {loading ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -148,7 +148,7 @@ export function QRCodeEnrollmentForm({
       onClose={onClose}
       oobCode={otpData?.oobCode || ''}
       onBack={handleBack}
-      currentStyles={currentStyles}
+      styling={styling}
     />
   );
 

@@ -16,7 +16,7 @@ const defaultStyleOverrides: Styling = { common: {}, light: {}, dark: {} };
  */
 export const ThemeContext = React.createContext<ThemeContextValue>({
   isDarkMode: false,
-  styleOverrides: defaultStyleOverrides,
+  styling: defaultStyleOverrides,
   loader: null,
 });
 
@@ -34,7 +34,7 @@ export const ThemeContext = React.createContext<ThemeContextValue>({
  * <ThemeProvider
  *   theme={{
  *     mode: 'dark',
- *     styleOverrides: {
+ *     styling: {
  *       common: {
  *         "--font-size-heading": "1.5rem",
  *         "--font-size-title": "1.25rem",
@@ -57,19 +57,16 @@ export const ThemeProvider: React.FC<{
   theme?: ThemeInput;
   children: React.ReactNode;
 }> = ({ theme, children }) => {
-  const styleOverrides = React.useMemo(
-    () => theme?.styleOverrides ?? defaultStyleOverrides,
-    [theme?.styleOverrides],
-  );
+  const styling = React.useMemo(() => theme?.styling ?? defaultStyleOverrides, [theme?.styling]);
 
   const loader = React.useMemo(() => theme?.loader ?? null, [theme?.loader]);
 
   React.useEffect(() => {
-    applyStyleOverrides(styleOverrides, theme?.mode);
-  }, [styleOverrides, theme?.mode]);
+    applyStyleOverrides(styling, theme?.mode);
+  }, [styling, theme?.mode]);
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode: theme?.mode === 'dark', styleOverrides, loader }}>
+    <ThemeContext.Provider value={{ isDarkMode: theme?.mode === 'dark', styling, loader }}>
       {children}
     </ThemeContext.Provider>
   );

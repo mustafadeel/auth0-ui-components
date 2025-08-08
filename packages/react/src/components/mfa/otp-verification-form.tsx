@@ -40,7 +40,7 @@ type OTPVerificationFormProps = {
   oobCode?: string;
   contact?: string;
   onBack?: () => void;
-  currentStyles?: Record<string, string>;
+  styling?: Record<string, string>;
 };
 
 /**
@@ -96,7 +96,7 @@ export function OTPVerificationForm({
   oobCode,
   contact,
   onBack,
-  currentStyles = {},
+  styling = {},
 }: OTPVerificationFormProps) {
   const { t } = useTranslator('mfa');
 
@@ -133,7 +133,7 @@ export function OTPVerificationForm({
   );
 
   return (
-    <div style={currentStyles} className="w-full max-w-sm mx-auto text-center">
+    <div style={styling} className="w-full max-w-sm mx-auto text-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

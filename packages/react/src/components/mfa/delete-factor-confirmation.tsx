@@ -15,7 +15,7 @@ type DeleteFactorConfirmationProps = {
   isDeletingFactor: boolean;
   onConfirm: (factorId: string) => void;
   onCancel: () => void;
-  currentStyles?: Record<string, string>;
+  styling?: Record<string, string>;
 };
 
 export function DeleteFactorConfirmation({
@@ -25,7 +25,7 @@ export function DeleteFactorConfirmation({
   isDeletingFactor,
   onConfirm,
   onCancel,
-  currentStyles = {},
+  styling = {},
 }: DeleteFactorConfirmationProps) {
   const { t } = useTranslator('mfa');
 
@@ -38,7 +38,7 @@ export function DeleteFactorConfirmation({
       aria-describedby="delete-mfa-description"
     >
       <DialogContent
-        style={currentStyles}
+        style={styling}
         aria-describedby="delete-mfa-description"
         className="w-[400px] h-[548px]"
       >

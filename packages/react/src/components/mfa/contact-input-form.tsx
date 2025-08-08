@@ -44,7 +44,7 @@ type ContactInputFormProps = {
   onSuccess: () => void;
   onClose: () => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  currentStyles?: Record<string, string>;
+  styling?: Record<string, string>;
 };
 
 const PHASES = {
@@ -62,7 +62,7 @@ export function ContactInputForm({
   onSuccess,
   onClose,
   schemaValidation,
-  currentStyles = {},
+  styling = {},
 }: ContactInputFormProps) {
   const [phase, setPhase] = React.useState<Phase>(ENTER_CONTACT);
   const { t } = useTranslator('mfa');
@@ -108,7 +108,7 @@ export function ContactInputForm({
   );
 
   const renderContactScreen = () => (
-    <div style={currentStyles} className="w-full max-w-sm mx-auto">
+    <div style={styling} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
         {loading ? (
           <div
@@ -221,7 +221,7 @@ export function ContactInputForm({
       oobCode={contactData.oobCode || ''}
       contact={contactData.contact || ''}
       onBack={handleBack}
-      currentStyles={currentStyles}
+      styling={styling}
     />
   );
 

@@ -33,18 +33,12 @@ import { cn } from '@/lib/theme-utils';
  * A component responsible for managing Multi-Factor Authentication (MFA) factors for a user.
  * This component handles fetching the MFA access token, fetching authenticators, enrolling, and deletion of MFA factors, and manages the MFA access token.
  * It operates in both ProxyMode (RWA) and SPA modes for authentication.
+ * - **ProxyMode (RWA)**: In this mode, the component interacts with a proxy service to manage MFA
+ * - **SPA (Single Page Application)**: In this mode, the component communicates directly with the API to manage MFA factors.
  *
  * @param {Object} props - The properties passed to the component.
- * @param {Object} [props.styling] - Custom class names for styling different parts of the component.
- * @param {string} [props.styling.container] - Class name for the main container.
- * @param {string} [props.styling.title] - Class name for the title section (e.g., `text-xl font-bold`).
- * @param {string} [props.styling.description] - Class name for the description section (e.g., `text-sm text-muted`).
- * @param {string} [props.styling.list] - Class name for the list of MFA factors.
- * @param {string} [props.styling.listItem] - Class name for each list item.
- * @param {string} [props.styling.button] - Class name for buttons (enroll/delete).
- * @param {string} [props.styling.badge] - Class name for the badge.
- * @param {string} [props.styling.error] - Class name for the error message.
- * @param {Object} [props.customMessages] - Custom messages to override default translations for this component instance.
+ * @param {StylingConfig} [props.styling] - Styling configuration for customizing the component.
+ * @param {Object} [props.customMessages] - Custom localization messages for the component.
  * @param {boolean} [props.hideHeader=false] - Whether to hide the header.
  * @param {boolean} [props.showActiveOnly=false] - Whether to show only active MFA factors.
  * @param {boolean} [props.disableEnroll=false] - Whether to disable the enrollment of new factors.
@@ -62,18 +56,23 @@ import { cn } from '@/lib/theme-utils';
  *
  * @example
  * <UserMFAMgmt
- *   localization={{
+ *   styling={{
+ *     common: {
+ *       '--font-size-heading': '1.5rem',
+ *       '--font-size-paragraph': '0.875rem',
+ *     },
+ *     light: {
+ *       '--color-primary': 'blue',
+ *       '--color-primary-foreground': 'white',
+ *     },
+ *     dark: {
+ *       '--color-primary': 'red',
+ *       '--color-primary-foreground': 'black',
+ *     },
+ *   }}
+ *   customMessages={{
  *     title: 'Manage MFA Factors',
  *     description: 'Here you can manage your Multi-Factor Authentication (MFA) factors.',
- *     loading: 'Loading...',
- *     errors: {
- *       factorsLoadingError: 'An error occurred while loading MFA factors.',
- *     },
- *     no_active_mfa: 'No active MFA factors found.',
- *     enroll_factor: 'Successfully enrolled the MFA factor.',
- *     remove_factor: 'Successfully removed the MFA factor.',
- *     delete: 'Delete',
- *     enroll: 'Enroll',
  *   }}
  *   hideHeader={false}
  *   showActiveOnly={false}
@@ -571,7 +570,7 @@ function UserMFAMgmtComponent({
           onSuccess={handleEnrollSuccess}
           onError={handleEnrollError}
           schemaValidation={schemaValidation}
-          currentStyles={currentStyles}
+          styling={currentStyles}
         />
       )}
       <DeleteFactorConfirmation
@@ -581,7 +580,7 @@ function UserMFAMgmtComponent({
         isDeletingFactor={isDeletingFactor}
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDeleteDialogOpen(false)}
-        currentStyles={currentStyles}
+        styling={currentStyles}
       />
     </div>
   );

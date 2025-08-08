@@ -42,7 +42,7 @@ const SpaProvider = React.lazy(() => import('./spa-provider'));
  *   i18n={{ currentLanguage: "en", fallbackLanguage: "en" }}
  *   theme={{
  *     mode: "dark",
- *     styleOverrides: {
+ *     styling: {
  *       common: {
  *         "--font-size-heading": "1.5rem",
  *         "--font-size-title": "1.25rem",
@@ -66,7 +66,7 @@ export const Auth0ComponentProvider = ({
   authDetails,
   theme = {
     mode: 'light',
-    styleOverrides: {
+    styling: {
       common: {},
       light: {},
       dark: {},
@@ -76,7 +76,7 @@ export const Auth0ComponentProvider = ({
   children,
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
   return (
-    <ThemeProvider theme={{ mode: theme.mode, styleOverrides: theme.styleOverrides, loader }}>
+    <ThemeProvider theme={{ mode: theme.mode, styling: theme.styling, loader }}>
       <React.Suspense fallback={loader || <Spinner />}>
         {authDetails?.authProxyUrl ? (
           <ProxyProvider i18n={i18n} authDetails={authDetails}>

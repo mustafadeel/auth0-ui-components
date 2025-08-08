@@ -42,7 +42,7 @@ type UserMFASetupFormProps = {
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  currentStyles?: Record<string, string>;
+  styling?: Record<string, string>;
 };
 
 type EnrollmentPhase =
@@ -61,7 +61,7 @@ export function UserMFASetupForm({
   onSuccess,
   onError,
   schemaValidation,
-  currentStyles = {},
+  styling = {},
 }: UserMFASetupFormProps) {
   const { t } = useTranslator('mfa');
 
@@ -87,7 +87,7 @@ export function UserMFASetupForm({
   }, [open, factorType]);
 
   const renderInstallationPhase = () => (
-    <div style={currentStyles} className="w-full max-w-sm mx-auto">
+    <div style={styling} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
         <p className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}>
           {t('enrollment_form.show_otp.install_guardian_description')}
@@ -146,7 +146,7 @@ export function UserMFASetupForm({
             onSuccess={onSuccess}
             onClose={onClose}
             schemaValidation={schemaValidation}
-            currentStyles={currentStyles}
+            styling={styling}
           />
         );
       case ENTER_QR:
@@ -158,7 +158,7 @@ export function UserMFASetupForm({
             onError={onError}
             onSuccess={onSuccess}
             onClose={onClose}
-            currentStyles={currentStyles}
+            styling={styling}
           />
         );
       default:
@@ -169,7 +169,7 @@ export function UserMFASetupForm({
   return (
     <Dialog open={open && Boolean(phase)} onOpenChange={onClose}>
       <DialogContent
-        style={currentStyles}
+        style={styling}
         aria-describedby="mfa-setup-form"
         className="w-[400px] h-[548px]"
       >

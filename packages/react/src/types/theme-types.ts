@@ -8,7 +8,7 @@ import type { Styling } from '@auth0-web-ui-components/core';
  */
 export interface ThemeSettings {
   mode?: 'light' | 'dark';
-  styleOverrides?: Styling;
+  styling?: Styling;
 }
 
 /**
@@ -18,7 +18,7 @@ export interface ThemeSettings {
  */
 export type ThemeInput = {
   mode?: 'light' | 'dark';
-  styleOverrides?: Styling;
+  styling?: Styling;
   loader?: React.ReactNode;
 };
 
@@ -29,6 +29,6 @@ export type ThemeInput = {
  */
 export type ThemeContextValue = {
   isDarkMode?: boolean;
-  styleOverrides: Styling;
+  styling: Styling;
   loader: React.ReactNode | null;
 };
