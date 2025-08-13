@@ -11,6 +11,7 @@ import {
   type EmailContactForm,
   type SmsContactForm,
   type EnrollMfaResponse,
+  type MergedStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -44,7 +45,7 @@ type ContactInputFormProps = {
   onSuccess: () => void;
   onClose: () => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: Record<string, string>;
+  styling?: MergedStyles;
 };
 
 const PHASES = {

@@ -2,7 +2,11 @@ import * as React from 'react';
 import QRCode from 'react-qr-code';
 import { Copy } from 'lucide-react';
 
-import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
+import {
+  type MFAType,
+  type EnrollMfaResponse,
+  type MergedStyles,
+} from '@auth0-web-ui-components/core';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 
@@ -24,7 +28,7 @@ type QRCodeEnrollmentFormProps = {
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
-  styling?: Record<string, string>;
+  styling?: MergedStyles;
 };
 
 const PHASES = {

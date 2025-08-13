@@ -140,6 +140,13 @@ export interface Styling {
 }
 
 /**
+ * Type representing all possible CSS variables from the Styling interface
+ */
+export type MergedStyles = {
+  [K in keyof Styling['common'] | keyof Styling['light'] | keyof Styling['dark']]?: string;
+};
+
+/**
  * Returns the merged CSS variables for the current theme.
  *
  * Combines the common styles with the theme-specific styles
@@ -152,7 +159,7 @@ export interface Styling {
 export const getCurrentStyles = (
   styling: Styling = { common: {}, light: {}, dark: {} },
   isDarkMode = false,
-): Record<string, string> => ({
+): MergedStyles => ({
   ...styling.common,
   ...(isDarkMode ? styling.dark : styling.light),
 });
@@ -191,6 +198,6 @@ export function applyStyleOverrides(
   // Apply CSS variable overrides (if any)
   const mergedStyles = getCurrentStyles(styling, isDarkMode);
   Object.entries(mergedStyles).forEach(([key, value]) => {
-    htmlElement.style.setProperty(key, value);
+    htmlElement.style.setProperty(key, value as string);
   });
 }

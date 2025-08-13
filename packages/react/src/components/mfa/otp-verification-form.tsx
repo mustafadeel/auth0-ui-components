@@ -6,6 +6,7 @@ import {
   FACTOR_TYPE_OTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
   FACTOR_TYPE_TOPT,
+  MergedStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ type OTPVerificationFormProps = {
   oobCode?: string;
   contact?: string;
   onBack?: () => void;
-  styling?: Record<string, string>;
+  styling?: MergedStyles;
 };
 
 /**

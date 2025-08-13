@@ -6,6 +6,7 @@ import {
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
+  type MergedStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -42,7 +43,7 @@ type UserMFASetupFormProps = {
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: Record<string, string>;
+  styling?: MergedStyles;
 };
 
 type EnrollmentPhase =

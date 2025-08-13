@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { useTranslator } from '@/hooks';
-import type { MFAType } from '@auth0-web-ui-components/core';
+import type { MFAType, MergedStyles } from '@auth0-web-ui-components/core';
 import { cn } from '@/lib/theme-utils';
 
 type DeleteFactorConfirmationProps = {
@@ -15,7 +15,7 @@ type DeleteFactorConfirmationProps = {
   isDeletingFactor: boolean;
   onConfirm: (factorId: string) => void;
   onCancel: () => void;
-  styling?: Record<string, string>;
+  styling?: MergedStyles;
 };
 
 export function DeleteFactorConfirmation({
