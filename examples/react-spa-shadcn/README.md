@@ -91,7 +91,7 @@ This will:
 Use the ShadCN CLI to add the MFA component:
 
 ```sh
-npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/manage-mfa.json
+npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/user-mfa-management.json
 ```
 
 This will install the `UserMFAMgmt` component in your `src/blocks/` directory.
@@ -101,20 +101,14 @@ This will install the `UserMFAMgmt` component in your `src/blocks/` directory.
 Update your main App component (`src/App.tsx`) to include the Auth0 Component provider:
 
 ```tsx
-import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from '@/components/RouterCompat';
 import Index from './pages/Index';
-import AccountsLayout from './pages/AccountsLayout';
 import Profile from './pages/Profile';
-import SecurityPage from './components/SecurityPage';
-import Payment from './pages/Payment';
-import Orders from './pages/Orders';
-import NotFound from './pages/NotFound';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
+import { config } from './config/env';
 // ========== Importing Component Provider ==========
 import { Auth0ComponentProvider } from '@/providers/component-provider';
 
@@ -122,28 +116,27 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const { i18n } = useTranslation();
+  const defaultAuthDetails = {
+    clientId: config.auth0.clientId,
+    domain: config.auth0.domain,
+  };
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Auth0Provider
-            domain={import.meta.env.VITE_AUTH0_DOMAIN}
-            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+            domain={config.auth0.domain}
+            clientId={config.auth0.clientId}
             authorizationParams={{ redirect_uri: window.location.origin }}
           >
             {/* Wrapping routes with Auth0ComponentProvider for MFA and localization */}
-            <Auth0ComponentProvider i18n={{ currentLanguage: i18n.language }}>
+            <Auth0ComponentProvider
+              authDetails={defaultAuthDetails}
+              i18n={{ currentLanguage: i18n.language }}
+            >
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/accounts" element={<AccountsLayout />}>
-                  <Route index element={<Profile />} />
-                  <Route path="security" element={<SecurityPage />} />
-                  <Route path="payment" element={<Payment />} />
-                  <Route path="orders" element={<Orders />} />
-                </Route>
-                <Route path="*" element={<NotFound />} />
+                <Route path="/profile" element={<Profile />} />
               </Routes>
             </Auth0ComponentProvider>
           </Auth0Provider>
@@ -158,43 +151,31 @@ export default App;
 
 #### Step 4: Using the UserMFAMgmt Component
 
-Here's how to integrate the MFA component in your security page (`src/components/SecurityPage.tsx`):
+Here's how to integrate the MFA component in your profile page (`src/pages/Profile.tsx`):
 
 ```tsx
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, Plus } from 'lucide-react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-// ========== Importing UserMFAMgmt ==========
-import { UserMFAMgmt } from '@/blocks/manage-mfa';
+import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
+// ========== Importing UserMFAMgmt ==========
+import { UserMFAMgmt } from '@/blocks/user-mfa-management';
 
-const SecurityPage = () => {
+const Profile = () => {
   const { t } = useTranslation();
+
   return (
-    <div className="p-8 max-w-4xl">
-      <h1 className="text-3xl font-semibold text-gray-900 mb-2">Security</h1>
-
-      {/* Manage MFA Section */}
-      {/* ==========  MFA SECTION START ========== */}
-      <section className="mb-12">
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">Manage MFA</h2>
-        <p className="text-gray-600 mb-6">
-          Manage your multi-factor authentication settings to enhance the security of your account.
-        </p>
-
-        <div className="space-y-4">
+    <div className="min-h-screen">
+      <Header />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 className="text-3xl font-semibold text-gray-900 mb-6">{t('user-profile.title')}</h1>
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-medium text-gray-900 mb-4">{t('user-profile.mfa.title')}</h2>
+          <p className="text-gray-600 mb-4">{t('user-profile.mfa.description')}</p>
+          {/* Manage MFA Section */}
+          {/* ==========  MFA SECTION START ========== */}
           <UserMFAMgmt
-            localization={{ title: t('user-profile.mfa.title') }}
             factorConfig={{
               duo: {
-                enabled: false,
+                visible: false,
               },
               'webauthn-platform': {
                 visible: false,
@@ -207,15 +188,14 @@ const SecurityPage = () => {
               },
             }}
           />
+          {/* ========== MFA SECTION END ========== */}
         </div>
-      </section>
-      {/* ========== MFA SECTION END ========== */}
-      {/* Additional security sections... */}
+      </div>
     </div>
   );
 };
 
-export default SecurityPage;
+export default Profile;
 ```
 
 ### 5. **Start the development server:**
@@ -373,10 +353,10 @@ Add MFA-related translation keys to your locale files:
 
 Something went wrong. Please check the error below for more details.
 If the problem persists, please open an issue on GitHub.
-request to https://auth0-web-ui-components.vercel.app/r/manage-mfa.json failed, reason: self-signed certificate in certificate chain
+request to https://auth0-web-ui-components.vercel.app/r/user-mfa-management.json failed, reason: self-signed certificate in certificate chain
 **Work Around - Run the below command**
 
-`NODE_TLS_REJECT_UNAUTHORIZED=0 npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/manage-mfa.json`
+`NODE_TLS_REJECT_UNAUTHORIZED=0 npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/user-mfa-management.json`
 
 ### Getting Help
 
