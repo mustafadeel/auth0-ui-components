@@ -1,4 +1,4 @@
-export interface Styling {
+export interface StylingVariables {
   common?: {
     '--font-size-heading'?: string;
     '--font-size-description'?: string;
@@ -139,65 +139,12 @@ export interface Styling {
   };
 }
 
-/**
- * Type representing all possible CSS variables from the Styling interface
- */
 export type MergedStyles = {
-  [K in keyof Styling['common'] | keyof Styling['light'] | keyof Styling['dark']]?: string;
+  variables: {
+    [K in
+      | keyof NonNullable<StylingVariables>['common']
+      | keyof NonNullable<StylingVariables>['light']
+      | keyof NonNullable<StylingVariables>['dark']]?: string;
+  };
+  classNames?: Record<string, string | undefined>;
 };
-
-/**
- * Returns the merged CSS variables for the current theme.
- *
- * Combines the common styles with the theme-specific styles
- * based on the `isDarkMode` flag.
- *
- * @param styling - An object containing common, light, and dark style variables.
- * @param isDarkMode - A boolean indicating if dark mode is active.
- * @returns A merged object of CSS variables for the active theme.
- */
-export const getCurrentStyles = (
-  styling: Styling = { common: {}, light: {}, dark: {} },
-  isDarkMode = false,
-): MergedStyles => ({
-  ...styling.common,
-  ...(isDarkMode ? styling.dark : styling.light),
-});
-
-/**
- * Apply style overrides to the :root element or .dark class based on the theme mode.
- *
- * Dynamically applies the appropriate theme class to the `html` element.
- *
- * @param styling - An object containing CSS variable overrides.
- * @param mode - The current theme mode ('dark' or 'light'). Defaults to 'light'.
- * @param theme - The selected theme ('default', 'minimal', 'rounded'). Defaults to 'default'.
- */
-export function applyStyleOverrides(
-  styling: Styling,
-  mode: 'dark' | 'light' = 'light',
-  theme: 'default' | 'minimal' | 'rounded' = 'default',
-): void {
-  const isDarkMode = mode === 'dark';
-  const htmlElement = document.documentElement;
-
-  // Remove existing theme classes if not default
-  if (theme !== 'default') {
-    htmlElement.classList.remove(
-      'theme-minimal',
-      'theme-rounded',
-      'theme-minimal-dark',
-      'theme-rounded-dark',
-    );
-
-    // Add the new theme class
-    const themeClass = `theme-${theme}${isDarkMode ? '-dark' : ''}`;
-    htmlElement.classList.add(themeClass);
-  }
-
-  // Apply CSS variable overrides (if any)
-  const mergedStyles = getCurrentStyles(styling, isDarkMode);
-  Object.entries(mergedStyles).forEach(([key, value]) => {
-    htmlElement.style.setProperty(key, value as string);
-  });
-}

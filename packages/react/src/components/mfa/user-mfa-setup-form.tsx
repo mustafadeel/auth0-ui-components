@@ -6,7 +6,7 @@ import {
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  type MergedStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -26,10 +26,11 @@ import {
   QR_PHASE_INSTALLATION,
 } from '@/lib/mfa-constants';
 
-import { useTranslator } from '@/hooks';
 import AppleLogo from '@/lib/svgs/apple-logo';
 import GoogleLogo from '@/lib/svgs/google-logo';
+import { useTheme, useTranslator } from '@/hooks';
 import { cn } from '@/lib/theme-utils';
+import { Styling } from '@/types';
 
 type UserMFASetupFormProps = {
   open: boolean;
@@ -43,7 +44,7 @@ type UserMFASetupFormProps = {
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 type EnrollmentPhase =
@@ -62,9 +63,18 @@ export function UserMFASetupForm({
   onSuccess,
   onError,
   schemaValidation,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classNames: {},
+  },
 }: UserMFASetupFormProps) {
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = getComponentStyles(styling, isDarkMode);
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
@@ -88,9 +98,17 @@ export function UserMFASetupForm({
   }, [open, factorType]);
 
   const renderInstallationPhase = () => (
-    <div style={styling} className="w-full max-w-sm mx-auto">
+    <div
+      style={currentStyles?.variables}
+      className={cn('w-full max-w-sm mx-auto', currentStyles.classNames?.formContainer)}
+    >
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
-        <p className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}>
+        <p
+          className={cn(
+            'text-center text-sm text-(length:--font-size-paragraph) font-normal',
+            currentStyles.classNames?.formDescription,
+          )}
+        >
           {t('enrollment_form.show_otp.install_guardian_description')}
         </p>
         <div className="flex gap-4 w-full">
@@ -121,11 +139,24 @@ export function UserMFASetupForm({
             </Card>
           </a>
         </div>
-        <div className="flex flex-col gap-3 w-full">
-          <Button type="button" className="text-sm" size="lg" onClick={() => setPhase(ENTER_QR)}>
+        <div
+          className={cn('flex flex-col gap-3 w-full', currentStyles.classNames?.formButtonGroup)}
+        >
+          <Button
+            type="button"
+            className={cn('text-sm', currentStyles.classNames?.formSubmitButton)}
+            size="lg"
+            onClick={() => setPhase(ENTER_QR)}
+          >
             {t('continue')}
           </Button>
-          <Button type="button" className="text-sm" variant="ghost" size="lg" onClick={onClose}>
+          <Button
+            type="button"
+            className={cn('text-sm', currentStyles.classNames?.formCancelButton)}
+            variant="ghost"
+            size="lg"
+            onClick={onClose}
+          >
             {t('cancel')}
           </Button>
         </div>
@@ -170,15 +201,23 @@ export function UserMFASetupForm({
   return (
     <Dialog open={open && Boolean(phase)} onOpenChange={onClose}>
       <DialogContent
-        style={styling}
+        style={currentStyles.variables}
         aria-describedby="mfa-setup-form"
-        className="w-[400px] h-[548px]"
+        className={cn(
+          'w-[400px] max-h-[90vh] min-h-[548px]',
+          currentStyles.classNames?.dialogContent,
+        )}
       >
-        <DialogHeader>
-          <DialogTitle className="text-left font-medium text-xl text-(length:--font-size-title)">
+        <DialogHeader className={currentStyles.classNames?.dialogHeader}>
+          <DialogTitle
+            className={cn(
+              'text-left font-medium text-xl text-(length:--font-size-title)',
+              currentStyles.classNames?.dialogTitle,
+            )}
+          >
             {t('enrollment_form.enroll_title')}
           </DialogTitle>
-          <Separator className="my-2" />
+          <Separator className={cn('my-2', currentStyles.classNames?.dialogSeparator)} />
         </DialogHeader>
         {renderForm()}
       </DialogContent>

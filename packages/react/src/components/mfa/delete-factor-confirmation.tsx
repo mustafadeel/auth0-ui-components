@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import { useTranslator } from '@/hooks';
-import type { MFAType, MergedStyles } from '@auth0-web-ui-components/core';
+import type { MFAType } from '@auth0-web-ui-components/core';
+import { getComponentStyles } from '@auth0-web-ui-components/core';
 import { cn } from '@/lib/theme-utils';
+import { Styling } from '@/types';
+import { useTheme, useTranslator } from '@/hooks';
 
 type DeleteFactorConfirmationProps = {
   open: boolean;
@@ -15,7 +17,7 @@ type DeleteFactorConfirmationProps = {
   isDeletingFactor: boolean;
   onConfirm: (factorId: string) => void;
   onCancel: () => void;
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 export function DeleteFactorConfirmation({
@@ -25,9 +27,18 @@ export function DeleteFactorConfirmation({
   isDeletingFactor,
   onConfirm,
   onCancel,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classNames: {},
+  },
 }: DeleteFactorConfirmationProps) {
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = getComponentStyles(styling, isDarkMode);
 
   return (
     <Dialog
@@ -38,33 +49,49 @@ export function DeleteFactorConfirmation({
       aria-describedby="delete-mfa-description"
     >
       <DialogContent
-        style={styling}
+        style={currentStyles?.variables}
         aria-describedby="delete-mfa-description"
-        className="w-[400px] h-[548px]"
+        className={cn(
+          'w-[400px] max-h-[90vh] min-h-[548px]',
+          currentStyles.classNames?.dialogContent,
+        )}
       >
-        <DialogHeader>
+        <DialogHeader className={currentStyles.classNames?.dialogHeader}>
           <DialogTitle
             id="delete-mfa-title"
-            className="text-center text-(length:--font-size-title) font-medium"
+            className={cn(
+              'text-center text-(length:--font-size-title) font-medium',
+              currentStyles.classNames?.dialogTitle,
+            )}
           >
             {t('delete_mfa_title')}
           </DialogTitle>
-          <Separator className="my-2" />
+          <Separator className={cn('my-2', currentStyles.classNames?.dialogSeparator)} />
         </DialogHeader>
 
-        <div className="flex flex-col items-center justify-center flex-1 space-y-10">
+        <div
+          className={cn('flex flex-col items-center mt-6', currentStyles.classNames?.dialogBody)}
+        >
           <p
             id="delete-mfa-description"
-            className={cn('text-center text-(length:--font-size-paragraph) font-normal')}
+            className={cn(
+              'text-center text-(length:--font-size-paragraph) font-normal mb-10',
+              currentStyles.classNames?.dialogDescription,
+            )}
           >
             {t(`delete_mfa_${factorToDelete?.type}_consent`)}
           </p>
 
-          <div className="flex flex-col space-y-3 w-full">
+          <div
+            className={cn(
+              'flex flex-col space-y-3 w-full mt-6',
+              currentStyles.classNames?.dialogActions,
+            )}
+          >
             <Button
               variant="destructive"
               size="lg"
-              className="text-sm"
+              className={cn('text-sm', currentStyles.classNames?.dialogConfirmButton)}
               onClick={() => factorToDelete && onConfirm(factorToDelete.id)}
               disabled={isDeletingFactor}
               aria-label={t('confirm')}
@@ -74,7 +101,7 @@ export function DeleteFactorConfirmation({
             <Button
               variant="outline"
               size="lg"
-              className="text-sm"
+              className={cn('text-sm', currentStyles.classNames?.dialogCancelButton)}
               onClick={onCancel}
               disabled={isDeletingFactor}
               aria-label={t('cancel')}

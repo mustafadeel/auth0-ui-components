@@ -1,13 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { applyStyleOverrides, type Styling } from '@auth0-web-ui-components/core';
+import { applyStyleOverrides, type StylingVariables } from '@auth0-web-ui-components/core';
 import type { ThemeContextValue, ThemeInput } from '@/types/theme-types';
 
 /**
  * Default empty customer overrides. (later may be UL branding)
  */
-const defaultStyleOverrides: Styling = { common: {}, light: {}, dark: {} };
+const defaultStyleOverrides: StylingVariables = { common: {}, light: {}, dark: {} };
 
 /**
  * ThemeContext
@@ -16,7 +16,7 @@ const defaultStyleOverrides: Styling = { common: {}, light: {}, dark: {} };
  */
 export const ThemeContext = React.createContext<ThemeContextValue>({
   isDarkMode: false,
-  styling: defaultStyleOverrides,
+  variables: defaultStyleOverrides,
   loader: null,
 });
 
@@ -35,7 +35,7 @@ export const ThemeContext = React.createContext<ThemeContextValue>({
  *   themeSettings={{
  *     theme: "default" | "minimal" | "rounded";
  *     mode: 'dark',
- *     styling: {
+ *     variables: {
  *       common: {
  *         "--font-size-heading": "1.5rem",
  *         "--font-size-title": "1.25rem",
@@ -58,9 +58,9 @@ export const ThemeProvider: React.FC<{
   themeSettings?: ThemeInput;
   children: React.ReactNode;
 }> = ({ themeSettings, children }) => {
-  const { styling, loader, mode, theme } = React.useMemo(
+  const { variables, loader, mode, theme } = React.useMemo(
     () => ({
-      styling: themeSettings?.styling ?? defaultStyleOverrides,
+      variables: themeSettings?.variables ?? defaultStyleOverrides,
       loader: themeSettings?.loader ?? null,
       mode: themeSettings?.mode,
       theme: themeSettings?.theme,
@@ -69,11 +69,11 @@ export const ThemeProvider: React.FC<{
   );
 
   React.useEffect(() => {
-    applyStyleOverrides(styling, mode, theme);
-  }, [styling, mode, theme]);
+    applyStyleOverrides(variables, mode, theme);
+  }, [variables, mode, theme]);
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode: mode === 'dark', styling, loader }}>
+    <ThemeContext.Provider value={{ isDarkMode: mode === 'dark', variables, loader }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -6,7 +6,7 @@ import {
   FACTOR_TYPE_OTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
   FACTOR_TYPE_TOPT,
-  MergedStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -20,10 +20,10 @@ import {
 } from '@/components/ui/form';
 import { OTPField } from '@/components/ui/otp-field';
 
-import { useTranslator } from '@/hooks';
-import { useOtpConfirmation } from '@/hooks/mfa';
+import { useTheme, useTranslator, useOtpConfirmation } from '@/hooks';
 import { CONFIRM } from '@/lib/mfa-constants';
 import { cn } from '@/lib/theme-utils';
+import { Styling } from '@/types';
 
 type OtpForm = {
   userOtp: string;
@@ -41,7 +41,7 @@ type OTPVerificationFormProps = {
   oobCode?: string;
   contact?: string;
   onBack?: () => void;
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 /**
@@ -97,9 +97,18 @@ export function OTPVerificationForm({
   oobCode,
   contact,
   onBack,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classNames: {},
+  },
 }: OTPVerificationFormProps) {
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = getComponentStyles(styling, isDarkMode);
 
   const { onSubmitOtp, loading } = useOtpConfirmation({
     factorType,
@@ -134,7 +143,10 @@ export function OTPVerificationForm({
   );
 
   return (
-    <div style={styling} className="w-full max-w-sm mx-auto text-center">
+    <div
+      style={currentStyles.variables}
+      className={cn('w-full max-w-sm mx-auto text-center', currentStyles.classNames?.formContainer)}
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -146,6 +158,7 @@ export function OTPVerificationForm({
             id="otp-description"
             className={cn(
               'font-normal text-center block mx-auto text-sm text-(length:--font-size-paragraph)',
+              currentStyles.classNames?.formDescription,
             )}
           >
             {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_TOPT, FACTOR_TYPE_OTP].includes(factorType)
@@ -156,9 +169,12 @@ export function OTPVerificationForm({
             control={form.control}
             name="userOtp"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className={currentStyles.classNames?.formItem}>
                 <FormLabel
-                  className="text-sm text-(length:--font-size-label) font-normal"
+                  className={cn(
+                    'text-sm text-(length:--font-size-label) font-normal',
+                    currentStyles.classNames?.formLabel,
+                  )}
                   htmlFor="otp-input"
                 >
                   {t('enrollment_form.show_otp.one_time_passcode')}
@@ -172,20 +188,29 @@ export function OTPVerificationForm({
                     inputRef={otpInputRef}
                     aria-invalid={Boolean(form.formState.errors.userOtp)}
                     value={field.value || ''}
+                    className={currentStyles.classNames?.otpField}
                   />
                 </FormControl>
                 <FormMessage
-                  className="text-sm text-(length:--font-size-paragraph) text-left"
+                  className={cn(
+                    'text-sm text-(length:--font-size-paragraph) text-left',
+                    currentStyles.classNames?.formErrorMessage,
+                  )}
                   id="otp-error"
                   role="alert"
                 />
               </FormItem>
             )}
           />
-          <div className="flex flex-col gap-3 justify-center">
+          <div
+            className={cn(
+              'flex flex-col gap-3 justify-center',
+              currentStyles.classNames?.formButtonGroup,
+            )}
+          >
             <Button
               type="submit"
-              className="text-sm"
+              className={cn('text-sm', currentStyles.classNames?.formSubmitButton)}
               size="lg"
               disabled={loading || !isOtpValid}
               aria-label={loading ? t('enrollment_form.show_otp.verifying') : t('submit')}
@@ -194,7 +219,7 @@ export function OTPVerificationForm({
             </Button>
             <Button
               type="button"
-              className="text-sm"
+              className={cn('text-sm', currentStyles.classNames?.formBackButton)}
               variant="ghost"
               size="lg"
               onClick={onBack}
