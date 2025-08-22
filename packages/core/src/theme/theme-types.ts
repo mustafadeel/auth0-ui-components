@@ -146,5 +146,5 @@ export type MergedStyles = {
       | keyof NonNullable<StylingVariables>['light']
       | keyof NonNullable<StylingVariables>['dark']]?: string;
   };
-  classNames?: Record<string, string | undefined>;
+  classes?: Record<string, string | undefined>;
 };

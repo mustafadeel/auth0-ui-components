@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
@@ -33,12 +34,15 @@ export function DeleteFactorConfirmation({
       light: {},
       dark: {},
     },
-    classNames: {},
+    classes: {},
   },
 }: DeleteFactorConfirmationProps) {
   const { t } = useTranslator('mfa');
   const { isDarkMode } = useTheme();
-  const currentStyles = getComponentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   return (
     <Dialog
@@ -53,45 +57,32 @@ export function DeleteFactorConfirmation({
         aria-describedby="delete-mfa-description"
         className={cn(
           'w-[400px] max-h-[90vh] min-h-[548px]',
-          currentStyles.classNames?.dialogContent,
+          currentStyles.classes?.['DeleteFactorConfirmation-dialogContent'],
         )}
       >
-        <DialogHeader className={currentStyles.classNames?.dialogHeader}>
+        <DialogHeader>
           <DialogTitle
             id="delete-mfa-title"
-            className={cn(
-              'text-center text-(length:--font-size-title) font-medium',
-              currentStyles.classNames?.dialogTitle,
-            )}
+            className={cn('text-center text-(length:--font-size-title) font-medium')}
           >
             {t('delete_mfa_title')}
           </DialogTitle>
-          <Separator className={cn('my-2', currentStyles.classNames?.dialogSeparator)} />
+          <Separator className="my-2" />
         </DialogHeader>
 
-        <div
-          className={cn('flex flex-col items-center mt-6', currentStyles.classNames?.dialogBody)}
-        >
+        <div className="flex flex-col items-center mt-6">
           <p
             id="delete-mfa-description"
-            className={cn(
-              'text-center text-(length:--font-size-paragraph) font-normal mb-10',
-              currentStyles.classNames?.dialogDescription,
-            )}
+            className={cn('text-center text-(length:--font-size-paragraph) font-normal mb-10')}
           >
             {t(`delete_mfa_${factorToDelete?.type}_consent`)}
           </p>
 
-          <div
-            className={cn(
-              'flex flex-col space-y-3 w-full mt-6',
-              currentStyles.classNames?.dialogActions,
-            )}
-          >
+          <div className="flex flex-col space-y-3 w-full mt-6">
             <Button
               variant="destructive"
               size="lg"
-              className={cn('text-sm', currentStyles.classNames?.dialogConfirmButton)}
+              className="text-sm"
               onClick={() => factorToDelete && onConfirm(factorToDelete.id)}
               disabled={isDeletingFactor}
               aria-label={t('confirm')}
@@ -101,7 +92,7 @@ export function DeleteFactorConfirmation({
             <Button
               variant="outline"
               size="lg"
-              className={cn('text-sm', currentStyles.classNames?.dialogCancelButton)}
+              className="text-sm"
               onClick={onCancel}
               disabled={isDeletingFactor}
               aria-label={t('cancel')}

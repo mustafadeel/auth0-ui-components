@@ -27,7 +27,7 @@ export const getCoreStyles = (
  * @returns Merged styles with variables and classNames
  */
 export const getComponentStyles = (
-  styling: { variables?: StylingVariables; classNames?: Record<string, string | undefined> } = {},
+  styling: { variables?: StylingVariables; classes?: Record<string, string | undefined> } = {},
   isDarkMode = false,
 ): MergedStyles => {
   const stylingVars = styling.variables;
@@ -35,7 +35,7 @@ export const getComponentStyles = (
 
   return {
     variables: coreStyles.variables,
-    classNames: styling.classNames,
+    classes: styling.classes,
   };
 };
 

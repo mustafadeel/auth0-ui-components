@@ -16,8 +16,8 @@ import { useTheme, useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/mfa';
 
 import { OTPVerificationForm } from './otp-verification-form';
-import { cn } from '@/lib/theme-utils';
 import { Styling } from '@/types';
+import { cn } from '@/lib/theme-utils';
 
 type QRCodeEnrollmentFormProps = {
   factorType: MFAType;
@@ -52,13 +52,16 @@ export function QRCodeEnrollmentForm({
       light: {},
       dark: {},
     },
-    classNames: {},
+    classes: {},
   },
 }: QRCodeEnrollmentFormProps) {
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
   const { t } = useTranslator('mfa');
   const { isDarkMode } = useTheme();
-  const currentStyles = getComponentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const { fetchOtpEnrollment, otpData, resetOtpData, loading } = useOtpEnrollment({
     factorType,
@@ -86,10 +89,7 @@ export function QRCodeEnrollmentForm({
 
   const renderQrScreen = () => {
     return (
-      <div
-        style={currentStyles.variables}
-        className={cn('w-full', currentStyles.classNames?.formContainer)}
-      >
+      <div style={currentStyles.variables} className="w-full">
         {loading ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -101,12 +101,7 @@ export function QRCodeEnrollmentForm({
         ) : (
           <div className="w-full max-w-sm mx-auto text-center">
             <div className="mb-6">
-              <div
-                className={cn(
-                  'flex justify-center items-center mb-6',
-                  currentStyles.classNames?.qrCodeContainer,
-                )}
-              >
+              <div className="flex justify-center items-center mb-6">
                 <QRCode
                   size={150}
                   value={otpData.barcodeUri || ''}
@@ -117,22 +112,15 @@ export function QRCodeEnrollmentForm({
                 id="qr-description"
                 className={cn(
                   'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
-                  currentStyles.classNames?.formDescription,
                 )}
               >
                 {t('enrollment_form.show_otp.title')}
               </p>
             </div>
-            <div
-              className={cn(
-                'flex flex-col gap-3 justify-center',
-                currentStyles.classNames?.formButtonGroup,
-              )}
-              aria-describedby="qr-description"
-            >
+            <div className="flex flex-col gap-3 justify-center" aria-describedby="qr-description">
               <Button
                 type="button"
-                className={cn('text-sm', currentStyles.classNames?.formSubmitButton)}
+                className="text-sm"
                 variant="outline"
                 size="lg"
                 onClick={handleCopySecret}
@@ -144,7 +132,7 @@ export function QRCodeEnrollmentForm({
               <div className="mt-3" />
               <Button
                 type="button"
-                className={cn('text-sm', currentStyles.classNames?.formCancelButton)}
+                className="text-sm"
                 size="lg"
                 onClick={handleContinue}
                 aria-label={t('continue')}

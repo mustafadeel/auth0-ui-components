@@ -69,12 +69,15 @@ export function UserMFASetupForm({
       light: {},
       dark: {},
     },
-    classNames: {},
+    classes: {},
   },
 }: UserMFASetupFormProps) {
   const { t } = useTranslator('mfa');
   const { isDarkMode } = useTheme();
-  const currentStyles = getComponentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
@@ -98,17 +101,9 @@ export function UserMFASetupForm({
   }, [open, factorType]);
 
   const renderInstallationPhase = () => (
-    <div
-      style={currentStyles?.variables}
-      className={cn('w-full max-w-sm mx-auto', currentStyles.classNames?.formContainer)}
-    >
+    <div style={currentStyles?.variables} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
-        <p
-          className={cn(
-            'text-center text-sm text-(length:--font-size-paragraph) font-normal',
-            currentStyles.classNames?.formDescription,
-          )}
-        >
+        <p className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}>
           {t('enrollment_form.show_otp.install_guardian_description')}
         </p>
         <div className="flex gap-4 w-full">
@@ -139,24 +134,11 @@ export function UserMFASetupForm({
             </Card>
           </a>
         </div>
-        <div
-          className={cn('flex flex-col gap-3 w-full', currentStyles.classNames?.formButtonGroup)}
-        >
-          <Button
-            type="button"
-            className={cn('text-sm', currentStyles.classNames?.formSubmitButton)}
-            size="lg"
-            onClick={() => setPhase(ENTER_QR)}
-          >
+        <div className="flex flex-col gap-3 w-full">
+          <Button type="button" className="text-sm" size="lg" onClick={() => setPhase(ENTER_QR)}>
             {t('continue')}
           </Button>
-          <Button
-            type="button"
-            className={cn('text-sm', currentStyles.classNames?.formCancelButton)}
-            variant="ghost"
-            size="lg"
-            onClick={onClose}
-          >
+          <Button type="button" className="text-sm" variant="ghost" size="lg" onClick={onClose}>
             {t('cancel')}
           </Button>
         </div>
@@ -205,19 +187,16 @@ export function UserMFASetupForm({
         aria-describedby="mfa-setup-form"
         className={cn(
           'w-[400px] max-h-[90vh] min-h-[548px]',
-          currentStyles.classNames?.dialogContent,
+          currentStyles.classes?.['UserMFASetupForm-dialogContent'],
         )}
       >
-        <DialogHeader className={currentStyles.classNames?.dialogHeader}>
+        <DialogHeader>
           <DialogTitle
-            className={cn(
-              'text-left font-medium text-xl text-(length:--font-size-title)',
-              currentStyles.classNames?.dialogTitle,
-            )}
+            className={cn('text-left font-medium text-xl text-(length:--font-size-title)')}
           >
             {t('enrollment_form.enroll_title')}
           </DialogTitle>
-          <Separator className={cn('my-2', currentStyles.classNames?.dialogSeparator)} />
+          <Separator className="my-2" />
         </DialogHeader>
         {renderForm()}
       </DialogContent>

@@ -70,13 +70,16 @@ export function ContactInputForm({
       light: {},
       dark: {},
     },
-    classNames: {},
+    classes: {},
   },
 }: ContactInputFormProps) {
   const [phase, setPhase] = React.useState<Phase>(ENTER_CONTACT);
   const { t } = useTranslator('mfa');
   const { isDarkMode } = useTheme();
-  const currentStyles = getComponentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const { onSubmitContact, loading, contactData, setContactData } = useContactEnrollment({
     factorType,
@@ -119,10 +122,7 @@ export function ContactInputForm({
   );
 
   const renderContactScreen = () => (
-    <div
-      style={currentStyles?.variables}
-      className={cn('w-full max-w-sm mx-auto', currentStyles.classNames?.formContainer)}
-    >
+    <div style={currentStyles?.variables} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
         {loading ? (
           <div
@@ -135,10 +135,7 @@ export function ContactInputForm({
         ) : (
           <>
             <p
-              className={cn(
-                'text-center text-sm text-(length:--font-size-paragraph) font-normal',
-                currentStyles.classNames?.formDescription,
-              )}
+              className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}
               id="contact-description"
             >
               {factorType === FACTOR_TYPE_EMAIL
@@ -157,12 +154,9 @@ export function ContactInputForm({
                     control={form.control}
                     name="contact"
                     render={({ field }) => (
-                      <FormItem className={cn(currentStyles.classNames?.formItem)}>
+                      <FormItem>
                         <FormLabel
-                          className={cn(
-                            'text-(length:--font-size-label) font-normal',
-                            currentStyles.classNames?.formLabel,
-                          )}
+                          className={cn('text-(length:--font-size-label) font-normal')}
                           htmlFor="contact-input"
                         >
                           {factorType === FACTOR_TYPE_EMAIL
@@ -177,13 +171,12 @@ export function ContactInputForm({
                             startAdornment={
                               <div className="p-1.5" aria-hidden="true">
                                 {factorType === FACTOR_TYPE_EMAIL ? (
-                                  <MailIcon className={currentStyles.classNames?.emailIcon} />
+                                  <MailIcon />
                                 ) : (
-                                  <SmartphoneIcon className={currentStyles.classNames?.phoneIcon} />
+                                  <SmartphoneIcon />
                                 )}
                               </div>
                             }
-                            className={currentStyles.classNames?.formInput}
                             placeholder={
                               factorType === FACTOR_TYPE_EMAIL
                                 ? t('enrollment_form.enroll_email_placeholder')
@@ -195,26 +188,18 @@ export function ContactInputForm({
                           />
                         </FormControl>
                         <FormMessage
-                          className={cn(
-                            'text-left text-sm text-(length:--font-size-paragraph)',
-                            currentStyles.classNames?.formErrorMessage,
-                          )}
+                          className={cn('text-left text-sm text-(length:--font-size-paragraph)')}
                           id="contact-error"
                           role="alert"
                         />
                       </FormItem>
                     )}
                   />
-                  <div
-                    className={cn(
-                      'flex flex-col gap-3 justify-center',
-                      currentStyles.classNames?.formButtonGroup,
-                    )}
-                  >
+                  <div className="flex flex-col gap-3 justify-center">
                     <Button
                       type="submit"
                       size="lg"
-                      className={cn('text-sm', currentStyles.classNames?.formSubmitButton)}
+                      className="text-sm"
                       disabled={!form.formState.isValid || loading}
                       aria-label={t('submit')}
                     >
@@ -222,7 +207,7 @@ export function ContactInputForm({
                     </Button>
                     <Button
                       type="button"
-                      className={cn('text-sm', currentStyles.classNames?.formCancelButton)}
+                      className="text-sm"
                       variant="ghost"
                       size="lg"
                       onClick={handleCancel}

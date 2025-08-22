@@ -108,7 +108,7 @@ function UserMFAMgmtComponent({
       light: {},
       dark: {},
     },
-    classNames: {},
+    classes: {},
   },
   hideHeader = false,
   showActiveOnly = false,
@@ -125,7 +125,10 @@ function UserMFAMgmtComponent({
 }: UserMFAMgmtProps): React.JSX.Element {
   const { t } = useTranslator('mfa', customMessages);
   const { loader, isDarkMode } = useTheme();
-  const currentStyles = getComponentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
   const { fetchFactors, enrollMfa, deleteMfa, confirmEnrollment } = useMFA();
 
   const [factors, setFactors] = React.useState<Authenticator[]>([]);
@@ -312,26 +315,24 @@ function UserMFAMgmtComponent({
   );
 
   return (
-    <div style={currentStyles.variables} className={currentStyles.classNames?.container}>
+    <div style={currentStyles.variables}>
       <Toaster position="top-right" />
       {loading ? (
         loader || <Spinner aria-label={t('loading')} />
       ) : (
-        <Card className={cn('py-10 px-8 sm:py-8 sm:px-6', currentStyles.classNames?.card)}>
+        <Card
+          className={cn('py-10 px-8 sm:py-8 sm:px-6', currentStyles.classes?.['UserMFAMgmt-card'])}
+        >
           <CardContent>
             {error ? (
               <div
-                className={cn(
-                  'flex flex-col items-center justify-center p-4 space-y-2',
-                  currentStyles.classNames?.errorContainer,
-                )}
+                className="flex flex-col items-center justify-center p-4 space-y-2"
                 role="alert"
                 aria-live="assertive"
               >
                 <h1
                   className={cn(
                     'text-base text-(length:--font-size-body) font-medium text-center text-destructive',
-                    currentStyles.classNames?.errorTitle,
                   )}
                   id="mfa-management-title"
                 >
@@ -340,7 +341,6 @@ function UserMFAMgmtComponent({
                 <p
                   className={cn(
                     'text-sm text-(length:--font-size-paragraph) text-center text-destructive whitespace-pre-line',
-                    currentStyles.classNames?.errorMessage,
                   )}
                 >
                   {t('component_error_description')}
@@ -354,7 +354,6 @@ function UserMFAMgmtComponent({
                       id="mfa-management-title"
                       className={cn(
                         'text-2xl text-(length:--font-size-heading) font-medium text-left',
-                        currentStyles.classNames?.title,
                       )}
                     >
                       {t('title')}
@@ -363,7 +362,6 @@ function UserMFAMgmtComponent({
                       id="mfa-management-desc"
                       className={cn(
                         'text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left',
-                        currentStyles.classNames?.description,
                       )}
                     >
                       {t('description')}
@@ -374,7 +372,6 @@ function UserMFAMgmtComponent({
                   <p
                     className={cn(
                       'text-sm text-(length:--font-size-paragraph) text-center text-muted-foreground',
-                      currentStyles.classNames?.emptyState,
                     )}
                     role="status"
                   >
@@ -382,10 +379,7 @@ function UserMFAMgmtComponent({
                   </p>
                 ) : (
                   <List
-                    className={cn(
-                      'flex flex-col gap-0 w-full',
-                      currentStyles.classNames?.factorList,
-                    )}
+                    className="flex flex-col gap-0 w-full"
                     aria-labelledby="mfa-management-title"
                     aria-describedby="mfa-management-desc"
                   >
@@ -395,21 +389,12 @@ function UserMFAMgmtComponent({
                       return (
                         <React.Fragment key={`${factor.name}-${idx}`}>
                           <ListItem
-                            className={cn(
-                              `w-full p-0 m-0 ${!isEnabledFactor ? 'opacity-50 pointer-events-none' : ''}`,
-                              currentStyles.classNames?.factorItem,
-                              !isEnabledFactor && currentStyles.classNames?.factorItemDisabled,
-                            )}
+                            className={`w-full p-0 m-0 ${!isEnabledFactor ? 'opacity-50 pointer-events-none' : ''}`}
                             aria-disabled={!isEnabledFactor}
                             tabIndex={0}
                             aria-label={t(`${factor.factorName}.title`)}
                           >
-                            <div
-                              className={cn(
-                                'flex w-full flex-col sm:flex-row items-start py-6 gap-2 sm:gap-4',
-                                currentStyles.classNames?.factorItemContainer,
-                              )}
-                            >
+                            <div className="flex w-full flex-col sm:flex-row items-start py-6 gap-2 sm:gap-4">
                               <div className="flex flex-col min-w-0 gap-2 flex-grow w-full">
                                 <div className="grid grid-cols-4 gap-2 sm:gap-6 items-center w-full">
                                   <div
@@ -418,10 +403,7 @@ function UserMFAMgmtComponent({
                                     )}
                                   >
                                     <span
-                                      className={cn(
-                                        'break-words whitespace-normal',
-                                        currentStyles.classNames?.factorTitle,
-                                      )}
+                                      className="break-words whitespace-normal"
                                       id={`factor-title-${idx}`}
                                     >
                                       {t(`${factor.factorName}.title`)}
@@ -430,10 +412,7 @@ function UserMFAMgmtComponent({
                                       <Badge
                                         variant="success"
                                         size="sm"
-                                        className={cn(
-                                          'shrink-0',
-                                          currentStyles.classNames?.factorBadge,
-                                        )}
+                                        className="shrink-0"
                                         aria-label={t('enabled')}
                                       >
                                         {t('enabled')}
@@ -445,10 +424,7 @@ function UserMFAMgmtComponent({
                                       <Button
                                         size="default"
                                         variant="outline"
-                                        className={cn(
-                                          'text-sm',
-                                          currentStyles.classNames?.enrollButton,
-                                        )}
+                                        className="text-sm"
                                         onClick={() => handleEnroll(factor.factorName as MFAType)}
                                         disabled={disableEnroll || !isEnabledFactor}
                                         aria-label={t(`${factor.factorName}.button-text`)}
@@ -484,10 +460,7 @@ function UserMFAMgmtComponent({
                                             <Button
                                               size="sm"
                                               variant="ghost"
-                                              className={cn(
-                                                'flex items-center justify-center px-4 py-2 gap-2 text-red-600 font-normal text-sm w-full',
-                                                currentStyles.classNames?.removeButton,
-                                              )}
+                                              className="flex items-center justify-center px-4 py-2 gap-2 text-red-600 font-normal text-sm w-full"
                                               onClick={() =>
                                                 handleDeleteFactor(
                                                   factor.id,
@@ -517,40 +490,25 @@ function UserMFAMgmtComponent({
                                 (factor.factorName === FACTOR_TYPE_SMS ||
                                   factor.factorName === FACTOR_TYPE_EMAIL) ? (
                                   <Card
-                                    className={cn(
-                                      'border rounded-lg shadow-none bg-transparent p-0 w-full mt-2',
-                                      currentStyles.classNames?.factorCard,
-                                    )}
+                                    className="border rounded-lg shadow-none bg-transparent p-0 w-full mt-2"
                                     aria-label={t(`${factor.factorName}.title`)}
                                   >
-                                    <CardContent
-                                      className={cn(
-                                        'flex flex-row items-center justify-between gap-3 p-3 w-full',
-                                        currentStyles.classNames?.factorCardContent,
-                                      )}
-                                    >
+                                    <CardContent className="flex flex-row items-center justify-between gap-3 p-3 w-full">
                                       <div className="flex items-center gap-3">
                                         {factor.factorName === FACTOR_TYPE_SMS ? (
                                           <Smartphone
-                                            className={cn(
-                                              'w-5 h-5 text-muted-foreground',
-                                              currentStyles.classNames?.factorIcon,
-                                            )}
+                                            className="w-5 h-5 text-muted-foreground"
                                             aria-hidden="true"
                                           />
                                         ) : (
                                           <Mail
-                                            className={cn(
-                                              'w-5 h-5 text-muted-foreground',
-                                              currentStyles.classNames?.factorIcon,
-                                            )}
+                                            className="w-5 h-5 text-muted-foreground"
                                             aria-hidden="true"
                                           />
                                         )}
                                         <span
                                           className={cn(
                                             'font-medium text-base text-(length:--font-size-body) text-foreground',
-                                            currentStyles.classNames?.factorValue,
                                           )}
                                         >
                                           {factor.name}
@@ -606,7 +564,6 @@ function UserMFAMgmtComponent({
                                   <p
                                     className={cn(
                                       'font-normal text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left break-words mt-1',
-                                      currentStyles.classNames?.factorDescription,
                                     )}
                                     id={`factor-desc-${idx}`}
                                   >

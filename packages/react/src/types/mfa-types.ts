@@ -10,76 +10,10 @@ import type {
 
 export interface Styling {
   variables?: CoreStylingVariables;
-  classNames?: {
-    container?: string;
-
-    // Main card and content
-    card?: string;
-    cardContent?: string;
-
-    // Header elements
-    title?: string;
-    description?: string;
-
-    // Error state elements
-    errorContainer?: string;
-    errorTitle?: string;
-    errorMessage?: string;
-
-    // Factor list elements
-    factorList?: string;
-    factorItem?: string;
-    factorItemContainer?: string;
-    factorTitle?: string;
-    factorBadge?: string;
-    factorDescription?: string;
-
-    // Factor card for SMS/Email
-    factorCard?: string;
-    factorCardContent?: string;
-    factorIcon?: string;
-    factorValue?: string;
-
-    // Buttons
-    enrollButton?: string;
-    removeButton?: string;
-
-    //dialog elements
-    dialogContent?: string;
-    dialogHeader?: string;
-    dialogTitle?: string;
-    dialogSeparator?: string;
-    dialogDescription?: string;
-    dialogBody?: string;
-    dialogActions?: string;
-    dialogConfirmButton?: string;
-    dialogCancelButton?: string;
-
-    //form elements
-    formContainer?: string;
-    formDescription?: string;
-    form?: string;
-    formItem?: string;
-    formLabel?: string;
-    formField?: string;
-    formInput?: string;
-    formErrorMessage?: string;
-    formButtonGroup?: string;
-    formSubmitButton?: string;
-    formBackButton?: string;
-    formCancelButton?: string;
-
-    // Specific to OTP
-    otpField?: string;
-
-    // Specific to Contact form
-    emailIcon?: string;
-    phoneIcon?: string;
-
-    //Specific to QR Code form
-    qrCodeContainer?: string;
-
-    emptyState?: string;
+  classes?: {
+    'UserMFAMgmt-card'?: string;
+    'UserMFASetupForm-dialogContent'?: string;
+    'DeleteFactorConfirmation-dialogContent'?: string;
   };
 }
 
