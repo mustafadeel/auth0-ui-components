@@ -119,19 +119,19 @@
   --shadow-switch-focus: var(--shadow-switch-focus);
   --shadow-switch-thumb: var(--shadow-switch-thumb);
 
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 10px;
-  --radius-2xl: 12px;
-  --radius-3xl: 16px;
-  --radius-4xl: 20px;
-  --radius-5xl: 24px;
-  --radius-6xl: 32px;
-  --radius-7xl: 40px;
-  --radius-8xl: 48px;
-  --radius-9xl: 56px;
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-3xl: var(--radius-3xl);
+  --radius-4xl: var(--radius-4xl);
+  --radius-5xl: var(--radius-5xl);
+  --radius-6xl: var(--radius-6xl);
+  --radius-7xl: var(--radius-7xl);
+  --radius-8xl: var(--radius-8xl);
+  --radius-9xl: var(--radius-9xl);
 
   --font-size-heading: 1.5rem;
   /* Default for text-2xl */
