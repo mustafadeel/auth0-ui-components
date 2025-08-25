@@ -23,7 +23,7 @@ export interface StylingVariables {
     '--color-page'?: string;
     '--color-background'?: string;
     '--color-foreground'?: string;
-    '--color-card-background'?: string;
+    '--color-card'?: string;
     '--color-card-foreground'?: string;
     '--color-primary'?: string;
     '--color-primary-foreground'?: string;
@@ -82,7 +82,7 @@ export interface StylingVariables {
     '--color-page'?: string;
     '--color-background'?: string;
     '--color-foreground'?: string;
-    '--color-card-background'?: string;
+    '--color-card'?: string;
     '--color-card-foreground'?: string;
     '--color-primary'?: string;
     '--color-primary-foreground'?: string;

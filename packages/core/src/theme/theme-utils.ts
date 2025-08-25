@@ -52,20 +52,14 @@ export function applyStyleOverrides(
   theme: 'default' | 'minimal' | 'rounded' = 'default',
 ): void {
   const isDarkMode = mode === 'dark';
-  const htmlElement = document.documentElement;
+  const html = document.documentElement;
+  html.dataset.theme = theme;
 
-  // Remove existing theme classes if not default
-  if (theme !== 'default') {
-    htmlElement.classList.remove(
-      'theme-minimal',
-      'theme-rounded',
-      'theme-minimal-dark',
-      'theme-rounded-dark',
-    );
-
-    // Add the new theme class
-    const themeClass = `theme-${theme}${isDarkMode ? '-dark' : ''}`;
-    htmlElement.classList.add(themeClass);
+  // Handle dark mode using class
+  if (isDarkMode) {
+    html.classList.add('dark');
+  } else {
+    html.classList.remove('dark');
   }
 
   // Apply CSS variable overrides (if any)
@@ -74,7 +68,7 @@ export function applyStyleOverrides(
   // Apply only string values directly
   for (const [key, value] of Object.entries(variables)) {
     if (typeof value === 'string') {
-      htmlElement.style.setProperty(key, value);
+      html.style.setProperty(key, value as string);
     }
   }
 }
