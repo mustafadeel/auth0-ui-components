@@ -6,7 +6,7 @@ import {
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  type MergedStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -26,10 +26,11 @@ import {
   QR_PHASE_INSTALLATION,
 } from '@/lib/mfa-constants';
 
-import { useTranslator } from '@/hooks';
 import AppleLogo from '@/lib/svgs/apple-logo';
 import GoogleLogo from '@/lib/svgs/google-logo';
+import { useTheme, useTranslator } from '@/hooks';
 import { cn } from '@/lib/theme-utils';
+import { Styling } from '@/types';
 
 type UserMFASetupFormProps = {
   open: boolean;
@@ -43,7 +44,7 @@ type UserMFASetupFormProps = {
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 type EnrollmentPhase =
@@ -62,9 +63,21 @@ export function UserMFASetupForm({
   onSuccess,
   onError,
   schemaValidation,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
 }: UserMFASetupFormProps) {
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
@@ -88,7 +101,7 @@ export function UserMFASetupForm({
   }, [open, factorType]);
 
   const renderInstallationPhase = () => (
-    <div style={styling} className="w-full max-w-sm mx-auto">
+    <div style={currentStyles?.variables} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
         <p
           className={cn(
@@ -174,9 +187,12 @@ export function UserMFASetupForm({
   return (
     <Dialog open={open && Boolean(phase)} onOpenChange={onClose}>
       <DialogContent
-        style={styling}
+        style={currentStyles.variables}
         aria-describedby="mfa-setup-form"
-        className="w-[400px] h-[548px]"
+        className={cn(
+          'w-[400px] max-h-[90vh] min-h-[548px]',
+          currentStyles.classes?.['UserMFASetupForm-dialogContent'],
+        )}
       >
         <DialogHeader>
           <DialogTitle className="text-left font-medium text-xl text-(length:--font-size-title)">

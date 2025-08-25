@@ -6,7 +6,7 @@ import {
   FACTOR_TYPE_OTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
   FACTOR_TYPE_TOPT,
-  MergedStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -20,10 +20,10 @@ import {
 } from '@/components/ui/form';
 import { OTPField } from '@/components/ui/otp-field';
 
-import { useTranslator } from '@/hooks';
-import { useOtpConfirmation } from '@/hooks/mfa';
+import { useTheme, useTranslator, useOtpConfirmation } from '@/hooks';
 import { CONFIRM } from '@/lib/mfa-constants';
 import { cn } from '@/lib/theme-utils';
+import { Styling } from '@/types';
 
 type OtpForm = {
   userOtp: string;
@@ -41,7 +41,7 @@ type OTPVerificationFormProps = {
   oobCode?: string;
   contact?: string;
   onBack?: () => void;
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 /**
@@ -97,9 +97,21 @@ export function OTPVerificationForm({
   oobCode,
   contact,
   onBack,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
 }: OTPVerificationFormProps) {
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const { onSubmitOtp, loading } = useOtpConfirmation({
     factorType,
@@ -134,7 +146,7 @@ export function OTPVerificationForm({
   );
 
   return (
-    <div style={styling} className="w-full max-w-sm mx-auto text-center">
+    <div style={currentStyles.variables} className="w-full max-w-sm mx-auto text-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

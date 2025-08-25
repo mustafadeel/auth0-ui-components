@@ -25,7 +25,7 @@ const SpaProvider = React.lazy(() => import('./spa-provider'));
  * @param {Object} [props.themeSettings] - Theme settings including mode, theme and style overrides.
  * @param {string} [props.themeSettings.mode] - Theme mode, either "light" or "dark". Defaults to "light".
  * @param {string} [props.themeSettings.theme] - Theme , either "default", minimal or "rounded". Defaults to "default".
- * @param {Auth0ComponentProviderProps.theme.styling} [props.theme.styling] - CSS variable overrides for customizing the theme.
+ * @param {Object} [props.themeSettings.variables] - CSS variable overrides for customizing the theme.
  * @param {React.ReactNode} [props.loader] - Custom loading component to show while
  *                                           authentication is initializing.
  *                                           Defaults to a spinner.
@@ -41,18 +41,18 @@ const SpaProvider = React.lazy(() => import('./spa-provider'));
  *   themeSettings={{
  *     theme: 'default
  *     mode: "dark",
- *     styling: {
- *       common: {
- *         "--font-size-heading": "1.5rem",
- *         "--font-size-title": "1.25rem",
- *       },
- *       light: {
- *         "--color-primary": "blue",
- *       },
- *       dark: {
- *         "--color-primary": "red",
- *       },
- *     },
+ *     variables: {
+ *         common: {
+ *           "--font-size-heading": "1.5rem",
+ *           "--font-size-title": "1.25rem",
+ *         },
+ *         light: {
+ *           "--color-primary": "blue",
+ *         },
+ *         dark: {
+ *           "--color-primary": "red",
+ *         },
+ *       }
  *   }}
  *  loader={<div>Loading...</div>}
  * >
@@ -66,7 +66,7 @@ export const Auth0ComponentProvider = ({
   themeSettings = {
     theme: 'default',
     mode: 'light',
-    styling: {
+    variables: {
       common: {},
       light: {},
       dark: {},
@@ -79,7 +79,7 @@ export const Auth0ComponentProvider = ({
     <ThemeProvider
       themeSettings={{
         mode: themeSettings.mode,
-        styling: themeSettings.styling,
+        variables: themeSettings.variables,
         loader,
         theme: themeSettings.theme,
       }}

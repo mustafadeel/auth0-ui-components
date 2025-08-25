@@ -5,7 +5,7 @@ import { Copy } from 'lucide-react';
 import {
   type MFAType,
   type EnrollMfaResponse,
-  type MergedStyles,
+  getComponentStyles,
   FACTOR_TYPE_TOPT,
 } from '@auth0-web-ui-components/core';
 import { Button } from '@/components/ui/button';
@@ -15,10 +15,11 @@ import { TextField } from '@/components/ui/text-field';
 
 import { CONFIRM, QR_PHASE_ENTER_OTP, QR_PHASE_SCAN, ENROLL } from '@/lib/mfa-constants';
 
-import { useTranslator } from '@/hooks';
+import { useTheme, useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/mfa';
 
 import { OTPVerificationForm } from './otp-verification-form';
+import { Styling } from '@/types';
 import { cn } from '@/lib/theme-utils';
 
 type QRCodeEnrollmentFormProps = {
@@ -31,7 +32,7 @@ type QRCodeEnrollmentFormProps = {
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 const PHASES = {
@@ -48,10 +49,22 @@ export function QRCodeEnrollmentForm({
   onError,
   onSuccess,
   onClose,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
 }: QRCodeEnrollmentFormProps) {
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const [tooltipText, setTooltipText] = React.useState(t('copy'));
 
@@ -88,7 +101,7 @@ export function QRCodeEnrollmentForm({
 
   const renderQrScreen = () => {
     return (
-      <div style={styling}>
+      <div style={currentStyles.variables} className="w-full">
         {loading ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -110,7 +123,7 @@ export function QRCodeEnrollmentForm({
               <p
                 id="qr-description"
                 className={cn(
-                  'font-normal block text-sm text-primary text-center block text-(length:--font-size-paragraph)',
+                  'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
                 )}
               >
                 {factorType === FACTOR_TYPE_TOPT
@@ -119,7 +132,7 @@ export function QRCodeEnrollmentForm({
               </p>
             </div>
 
-            <div className="flex flex-col space-y-3" aria-describedby="qr-description">
+            <div className="flex flex-col gap-3 justify-center" aria-describedby="qr-description">
               <TextField
                 readOnly
                 value={otpData?.secret || otpData?.barcodeUri || ''}

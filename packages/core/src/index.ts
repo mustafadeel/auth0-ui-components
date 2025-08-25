@@ -8,7 +8,7 @@ export { AuthDetailsCore, CoreClientInterface } from './auth/auth-types';
 
 export * from './schemas';
 
-export * from './utils';
+export * from './theme';
 
 export {
   EnrollMfaParams,
