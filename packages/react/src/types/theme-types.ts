@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Styling } from '@auth0-web-ui-components/core';
+import type { StylingVariables } from '@auth0-web-ui-components/core';
 
 /**
  * Theme configuration
@@ -9,7 +9,7 @@ import type { Styling } from '@auth0-web-ui-components/core';
 export interface ThemeSettings {
   theme?: 'default' | 'minimal' | 'rounded';
   mode?: 'light' | 'dark';
-  styling?: Styling;
+  variables?: StylingVariables;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface ThemeSettings {
 export type ThemeInput = {
   theme?: 'default' | 'minimal' | 'rounded';
   mode?: 'light' | 'dark';
-  styling?: Styling;
+  variables?: StylingVariables;
   loader?: React.ReactNode;
 };
 
@@ -32,6 +32,6 @@ export type ThemeInput = {
 export type ThemeContextValue = {
   theme?: 'default' | 'minimal' | 'rounded';
   isDarkMode?: boolean;
-  styling: Styling;
+  variables: StylingVariables;
   loader: React.ReactNode | null;
 };

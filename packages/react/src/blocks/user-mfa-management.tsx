@@ -6,7 +6,7 @@ import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
   FACTOR_TYPE_SMS,
-  getCurrentStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import type { UserMFAMgmtProps } from '@/types';
@@ -57,18 +57,25 @@ import { cn } from '@/lib/theme-utils';
  * @example
  * <UserMFAMgmt
  *   styling={{
- *     common: {
- *       '--font-size-heading': '1.5rem',
- *       '--font-size-paragraph': '0.875rem',
+ *     variables: {
+ *       common: {
+ *         '--font-size-heading': '1.5rem',
+ *         '--font-size-paragraph': '0.875rem',
+ *       },
+ *       light: {
+ *         '--color-primary': 'blue',
+ *         '--color-primary-foreground': 'white',
+ *       },
+ *       dark: {
+ *         '--color-primary': 'red',
+ *         '--color-primary-foreground': 'black',
+ *       },
  *     },
- *     light: {
- *       '--color-primary': 'blue',
- *       '--color-primary-foreground': 'white',
- *     },
- *     dark: {
- *       '--color-primary': 'red',
- *       '--color-primary-foreground': 'black',
- *     },
+ *     classNames: {
+ *       container: 'custom-container',
+ *       card: 'custom-card',
+ *       button: 'custom-button'
+ *     }
  *   }}
  *   customMessages={{
  *     title: 'Manage MFA Factors',
@@ -95,7 +102,14 @@ import { cn } from '@/lib/theme-utils';
  */
 function UserMFAMgmtComponent({
   customMessages = {},
-  styling = { common: {}, light: {}, dark: {} },
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
   hideHeader = false,
   showActiveOnly = false,
   disableEnroll = false,
@@ -111,7 +125,10 @@ function UserMFAMgmtComponent({
 }: UserMFAMgmtProps): React.JSX.Element {
   const { t } = useTranslator('mfa', customMessages);
   const { loader, isDarkMode } = useTheme();
-  const currentStyles = getCurrentStyles(styling, isDarkMode);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
   const { fetchFactors, enrollMfa, deleteMfa, confirmEnrollment } = useMFA();
 
   const [factors, setFactors] = React.useState<Authenticator[]>([]);
@@ -298,12 +315,14 @@ function UserMFAMgmtComponent({
   );
 
   return (
-    <div style={currentStyles}>
+    <div style={currentStyles.variables}>
       <Toaster position="top-right" />
       {loading ? (
         loader || <Spinner aria-label={t('loading')} />
       ) : (
-        <Card className="py-10 px-8 sm:py-8 sm:px-6">
+        <Card
+          className={cn('py-10 px-8 sm:py-8 sm:px-6', currentStyles.classes?.['UserMFAMgmt-card'])}
+        >
           <CardContent>
             {error ? (
               <div
@@ -321,7 +340,7 @@ function UserMFAMgmtComponent({
                 </h1>
                 <p
                   className={cn(
-                    `text-sm text-(length:--font-size-paragraph) text-center text-destructive whitespace-pre-line`,
+                    'text-sm text-(length:--font-size-paragraph) text-center text-destructive whitespace-pre-line',
                   )}
                 >
                   {t('component_error_description')}
@@ -339,7 +358,7 @@ function UserMFAMgmtComponent({
                     </CardTitle>
                     <CardDescription
                       id="mfa-management-desc"
-                      className={`text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left`}
+                      className="text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left"
                     >
                       {t('description')}
                     </CardDescription>
@@ -348,7 +367,7 @@ function UserMFAMgmtComponent({
                 {showActiveOnly && visibleFactors.length === 0 ? (
                   <p
                     className={cn(
-                      `text-sm text-(length:--font-size-paragraph) text-center text-muted-foreground`,
+                      'text-sm text-(length:--font-size-paragraph) text-center text-muted-foreground',
                     )}
                     role="status"
                   >
@@ -380,7 +399,7 @@ function UserMFAMgmtComponent({
                                     )}
                                   >
                                     <span
-                                      className="break-words whitespace-normal"
+                                      className="break-words text-card-foreground whitespace-normal"
                                       id={`factor-title-${idx}`}
                                     >
                                       {t(`${factor.factorName}.title`)}
@@ -540,7 +559,7 @@ function UserMFAMgmtComponent({
                                 ) : !factor.active ? (
                                   <p
                                     className={cn(
-                                      `font-normal text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left break-words mt-1`,
+                                      'font-normal text-sm text-(length:--font-size-paragraph) text-muted-foreground text-left break-words mt-1',
                                     )}
                                     id={`factor-desc-${idx}`}
                                   >
@@ -570,7 +589,7 @@ function UserMFAMgmtComponent({
           onSuccess={handleEnrollSuccess}
           onError={handleEnrollError}
           schemaValidation={schemaValidation}
-          styling={currentStyles}
+          styling={styling}
         />
       )}
       <DeleteFactorConfirmation
@@ -580,7 +599,7 @@ function UserMFAMgmtComponent({
         isDeletingFactor={isDeletingFactor}
         onConfirm={handleConfirmDelete}
         onCancel={() => setIsDeleteDialogOpen(false)}
-        styling={currentStyles}
+        styling={styling}
       />
     </div>
   );

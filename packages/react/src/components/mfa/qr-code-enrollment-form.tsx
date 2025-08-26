@@ -5,17 +5,21 @@ import { Copy } from 'lucide-react';
 import {
   type MFAType,
   type EnrollMfaResponse,
-  type MergedStyles,
+  getComponentStyles,
+  FACTOR_TYPE_TOPT,
 } from '@auth0-web-ui-components/core';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { TextField } from '@/components/ui/text-field';
 
 import { CONFIRM, QR_PHASE_ENTER_OTP, QR_PHASE_SCAN, ENROLL } from '@/lib/mfa-constants';
 
-import { useTranslator } from '@/hooks';
+import { useTheme, useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/mfa';
 
 import { OTPVerificationForm } from './otp-verification-form';
+import { Styling } from '@/types';
 import { cn } from '@/lib/theme-utils';
 
 type QRCodeEnrollmentFormProps = {
@@ -28,7 +32,7 @@ type QRCodeEnrollmentFormProps = {
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 const PHASES = {
@@ -45,10 +49,24 @@ export function QRCodeEnrollmentForm({
   onError,
   onSuccess,
   onClose,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
 }: QRCodeEnrollmentFormProps) {
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const [tooltipText, setTooltipText] = React.useState(t('copy'));
 
   const { fetchOtpEnrollment, otpData, resetOtpData, loading } = useOtpEnrollment({
     factorType,
@@ -71,12 +89,19 @@ export function QRCodeEnrollmentForm({
   }, []);
 
   const handleCopySecret = React.useCallback(async () => {
-    await navigator.clipboard.writeText(otpData?.secret || '');
-  }, [otpData.secret]);
+    try {
+      const textToCopy = otpData?.secret || otpData?.barcodeUri || '';
+      await navigator.clipboard.writeText(textToCopy);
+      setTooltipOpen(true);
+      setTooltipText(t('copied'));
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
+  }, [otpData?.secret, otpData?.barcodeUri, t]);
 
   const renderQrScreen = () => {
     return (
-      <div style={styling}>
+      <div style={currentStyles.variables} className="w-full">
         {loading ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -98,24 +123,41 @@ export function QRCodeEnrollmentForm({
               <p
                 id="qr-description"
                 className={cn(
-                  'font-normal block text-sm text-center block text-(length:--font-size-paragraph)',
+                  'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
                 )}
               >
-                {t('enrollment_form.show_otp.title')}
+                {factorType === FACTOR_TYPE_TOPT
+                  ? t('enrollment_form.show_otp.title')
+                  : t('enrollment_form.show_auth0_guardian_title')}
               </p>
             </div>
-            <div className="flex flex-col space-y-3" aria-describedby="qr-description">
-              <Button
-                type="button"
+
+            <div className="flex flex-col gap-3 justify-center" aria-describedby="qr-description">
+              <TextField
+                readOnly
+                value={otpData?.secret || otpData?.barcodeUri || ''}
+                aria-label={t('enrollment_form.show_otp.secret_code')}
                 className="text-sm"
-                variant="outline"
-                size="lg"
-                onClick={handleCopySecret}
-                aria-label={t('enrollment_form.show_otp.copy_as_code')}
-              >
-                <Copy className="h-4 w-4" aria-hidden="true" />
-                {t('enrollment_form.show_otp.copy_as_code')}
-              </Button>
+                endAdornment={
+                  <Tooltip open={tooltipOpen} onOpenChange={setTooltipOpen}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={handleCopySecret}
+                        aria-label={t('enrollment_form.show_otp.copy_as_code')}
+                      >
+                        <Copy className="h-4 w-4" aria-hidden="true" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" align="end" sideOffset={5} className="z-[1000]">
+                      {tooltipText}
+                    </TooltipContent>
+                  </Tooltip>
+                }
+              />
               <div className="mt-3" />
               <Button
                 type="button"

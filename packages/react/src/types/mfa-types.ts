@@ -5,8 +5,17 @@ import type {
   EnrollOptions,
   ConfirmEnrollmentOptions,
   MFAMessages,
-  Styling,
+  StylingVariables as CoreStylingVariables,
 } from '@auth0-web-ui-components/core';
+
+export interface Styling {
+  variables?: CoreStylingVariables;
+  classes?: {
+    'UserMFAMgmt-card'?: string;
+    'UserMFASetupForm-dialogContent'?: string;
+    'DeleteFactorConfirmation-dialogContent'?: string;
+  };
+}
 
 export interface UserMFAMgmtProps {
   customMessages?: Partial<MFAMessages>;

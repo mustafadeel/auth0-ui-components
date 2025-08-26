@@ -11,7 +11,7 @@ import {
   type EmailContactForm,
   type SmsContactForm,
   type EnrollMfaResponse,
-  type MergedStyles,
+  getComponentStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -25,9 +25,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { TextField } from '@/components/ui/text-field';
-import { useTranslator } from '@/hooks';
 import { useContactEnrollment } from '@/hooks/mfa';
 import { ENTER_CONTACT, ENROLL, CONFIRM, ENTER_OTP } from '@/lib/mfa-constants';
+import { Styling } from '@/types';
+import { useTheme, useTranslator } from '@/hooks';
 import { cn } from '@/lib/theme-utils';
 
 import { OTPVerificationForm } from './otp-verification-form';
@@ -45,7 +46,7 @@ type ContactInputFormProps = {
   onSuccess: () => void;
   onClose: () => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: MergedStyles;
+  styling?: Styling;
 };
 
 const PHASES = {
@@ -63,10 +64,22 @@ export function ContactInputForm({
   onSuccess,
   onClose,
   schemaValidation,
-  styling = {},
+  styling = {
+    variables: {
+      common: {},
+      light: {},
+      dark: {},
+    },
+    classes: {},
+  },
 }: ContactInputFormProps) {
   const [phase, setPhase] = React.useState<Phase>(ENTER_CONTACT);
   const { t } = useTranslator('mfa');
+  const { isDarkMode } = useTheme();
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const { onSubmitContact, loading, contactData, setContactData } = useContactEnrollment({
     factorType,
@@ -109,7 +122,7 @@ export function ContactInputForm({
   );
 
   const renderContactScreen = () => (
-    <div style={styling} className="w-full max-w-sm mx-auto">
+    <div style={currentStyles?.variables} className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
         {loading ? (
           <div
@@ -122,7 +135,9 @@ export function ContactInputForm({
         ) : (
           <>
             <p
-              className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}
+              className={cn(
+                'text-center text-primary text-sm text-(length:--font-size-paragraph) font-normal',
+              )}
               id="contact-description"
             >
               {factorType === FACTOR_TYPE_EMAIL
@@ -143,7 +158,7 @@ export function ContactInputForm({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel
-                          className="text-(length:--font-size-label) font-normal"
+                          className="text-left text-sm text-(length:--font-size-paragraph)"
                           htmlFor="contact-input"
                         >
                           {factorType === FACTOR_TYPE_EMAIL
