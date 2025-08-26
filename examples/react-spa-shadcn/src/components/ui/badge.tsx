@@ -1,52 +1,33 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { Fragment } from 'react';
-import { cn } from '@/lib/theme-utils';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'theme-default:shadow-xs box-border inline-flex items-center overflow-clip rounded-2xl border border-transparent font-medium',
+  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground theme-default:border-primary',
-        secondary: 'bg-muted text-muted-foreground theme-default:border-muted-foreground/25',
-        outline: 'border-border',
-        info: 'bg-info text-info-foreground theme-default:border-info-foreground/25',
-        success: 'bg-success theme-default:border-success-foreground/25 text-success-foreground',
-        warning: 'bg-warning theme-default:border-warning-foreground/25 text-warning-foreground',
+        default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
+        secondary:
+          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
         destructive:
-          'bg-destructive theme-default:border-destructive-foreground/25 text-destructive-foreground',
-      },
-      size: {
-        sm: 'px-1.5 py-0.5 text-xs',
-        md: 'px-2 py-1 text-sm',
-        lg: 'px-2.5 py-1.5 text-sm',
+          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+        outline: 'text-foreground',
       },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'md',
     },
   },
 );
 
-function Badge({
-  className,
-  variant,
-  size,
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {}
 
-  asChild = false,
-  ...props
-}: React.ComponentProps<'span'> & VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Fragment : 'span';
-
-  return (
-    <Comp
-      data-slot="badge"
-      className={cn(badgeVariants({ variant, size }), className)}
-      {...props}
-    />
-  );
+function Badge({ className, variant, ...props }: BadgeProps) {
+  return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
 
 export { Badge, badgeVariants };

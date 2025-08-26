@@ -6,7 +6,6 @@ import {
   FACTOR_TYPE_SMS,
   FACTOR_TYPE_TOPT,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  type MergedStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -29,7 +28,6 @@ import {
 import { useTranslator } from '@/hooks/index';
 import AppleLogo from '@/lib/svgs/apple-logo';
 import GoogleLogo from '@/lib/svgs/google-logo';
-import { cn } from '@/lib/theme-utils';
 
 type UserMFASetupFormProps = {
   open: boolean;
@@ -43,7 +41,6 @@ type UserMFASetupFormProps = {
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: MergedStyles;
 };
 
 type EnrollmentPhase =
@@ -62,7 +59,6 @@ export function UserMFASetupForm({
   onSuccess,
   onError,
   schemaValidation,
-  styling = {},
 }: UserMFASetupFormProps) {
   const { t } = useTranslator('mfa');
 
@@ -88,9 +84,9 @@ export function UserMFASetupForm({
   }, [open, factorType]);
 
   const renderInstallationPhase = () => (
-    <div style={styling} className="w-full max-w-sm mx-auto">
+    <div className="w-full max-w-sm mx-auto">
       <div className="flex flex-col items-center justify-center flex-1 space-y-10">
-        <p className={cn('text-center text-sm text-(length:--font-size-paragraph) font-normal')}>
+        <p className="text-center text-sm font-normal">
           {t('enrollment_form.show_otp.install_guardian_description')}
         </p>
         <div className="flex gap-4 w-full">
@@ -102,9 +98,7 @@ export function UserMFASetupForm({
           >
             <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
               <AppleLogo className="w-8 h-8" />
-              <span className={cn('text-sm text-(length:--font-size-paragraph) text-center')}>
-                {t('app-store')}
-              </span>
+              <span className="text-sm text-center">{t('app-store')}</span>
             </Card>
           </a>
           <a
@@ -115,9 +109,7 @@ export function UserMFASetupForm({
           >
             <Card className="flex flex-col items-center gap-1 min-w-24 p-6 h-full">
               <GoogleLogo className="w-8 h-8" />
-              <span className={cn('text-sm text-(length:--font-size-paragraph) text-center')}>
-                {t('google-play')}
-              </span>
+              <span className="text-sm text-center">{t('google-play')}</span>
             </Card>
           </a>
         </div>
@@ -147,7 +139,6 @@ export function UserMFASetupForm({
             onSuccess={onSuccess}
             onClose={onClose}
             schemaValidation={schemaValidation}
-            styling={styling}
           />
         );
       case ENTER_QR:
@@ -159,7 +150,6 @@ export function UserMFASetupForm({
             onError={onError}
             onSuccess={onSuccess}
             onClose={onClose}
-            styling={styling}
           />
         );
       default:
@@ -169,13 +159,9 @@ export function UserMFASetupForm({
 
   return (
     <Dialog open={open && Boolean(phase)} onOpenChange={onClose}>
-      <DialogContent
-        style={styling}
-        aria-describedby="mfa-setup-form"
-        className="w-[400px] h-[548px]"
-      >
+      <DialogContent aria-describedby="mfa-setup-form" className="w-[400px] h-[548px]">
         <DialogHeader>
-          <DialogTitle className="text-left font-medium text-xl text-(length:--font-size-title)">
+          <DialogTitle className="text-left font-medium text-xl">
             {t('enrollment_form.enroll_title')}
           </DialogTitle>
           <Separator className="my-2" />

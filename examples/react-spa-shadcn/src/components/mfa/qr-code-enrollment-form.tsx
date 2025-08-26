@@ -2,11 +2,7 @@ import * as React from 'react';
 import QRCode from 'react-qr-code';
 import { Copy } from 'lucide-react';
 
-import {
-  type MFAType,
-  type EnrollMfaResponse,
-  type MergedStyles,
-} from '@auth0-web-ui-components/core';
+import { type MFAType, type EnrollMfaResponse } from '@auth0-web-ui-components/core';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 
@@ -16,7 +12,6 @@ import { useTranslator } from '@/hooks/index';
 import { useOtpEnrollment } from '@/hooks/mfa';
 
 import { OTPVerificationForm } from './otp-verification-form';
-import { cn } from '@/lib/theme-utils';
 
 type QRCodeEnrollmentFormProps = {
   factorType: MFAType;
@@ -28,7 +23,6 @@ type QRCodeEnrollmentFormProps = {
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
-  styling?: MergedStyles;
 };
 
 const PHASES = {
@@ -45,7 +39,6 @@ export function QRCodeEnrollmentForm({
   onError,
   onSuccess,
   onClose,
-  styling = {},
 }: QRCodeEnrollmentFormProps) {
   const [phase, setPhase] = React.useState<Phase>(QR_PHASE_SCAN);
   const { t } = useTranslator('mfa');
@@ -76,7 +69,7 @@ export function QRCodeEnrollmentForm({
 
   const renderQrScreen = () => {
     return (
-      <div style={styling}>
+      <>
         {loading ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -95,12 +88,7 @@ export function QRCodeEnrollmentForm({
                   aria-label={t('enrollment_form.show_otp.qr_code_description')}
                 />
               </div>
-              <p
-                id="qr-description"
-                className={cn(
-                  'font-normal block text-sm text-center block text-(length:--font-size-paragraph)',
-                )}
-              >
+              <p id="qr-description" className="font-normal text-center block text-sm">
                 {t('enrollment_form.show_otp.title')}
               </p>
             </div>
@@ -139,7 +127,7 @@ export function QRCodeEnrollmentForm({
             </div>
           </div>
         )}
-      </div>
+      </>
     );
   };
 
@@ -152,7 +140,6 @@ export function QRCodeEnrollmentForm({
       onClose={onClose}
       oobCode={otpData?.oobCode || ''}
       onBack={handleBack}
-      styling={styling}
     />
   );
 

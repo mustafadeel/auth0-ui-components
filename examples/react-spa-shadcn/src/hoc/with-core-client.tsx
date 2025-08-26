@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useTheme, useCoreClient } from '../hooks';
+import { useComponentConfig, useCoreClient } from '../hooks';
 import { Spinner } from '../components/ui/spinner';
 
 /**
@@ -15,7 +15,9 @@ export function withCoreClient<P extends object>(
   WrappedComponent: React.ComponentType<P>,
 ): React.ComponentType<P> {
   const WithCoreClientComponent = (props: P) => {
-    const { loader } = useTheme();
+    const {
+      config: { loader },
+    } = useComponentConfig();
     const { coreClient } = useCoreClient();
 
     if (!coreClient) {
@@ -25,6 +27,7 @@ export function withCoreClient<P extends object>(
     return <WrappedComponent {...props} />;
   };
 
+  // Set display name for better debugging
   WithCoreClientComponent.displayName = WrappedComponent.displayName || WrappedComponent.name;
 
   return WithCoreClientComponent;

@@ -5,7 +5,6 @@ import type {
   EnrollOptions,
   ConfirmEnrollmentOptions,
   MFAMessages,
-  Styling,
 } from '@auth0-web-ui-components/core';
 
 export interface UserMFAMgmtProps {
@@ -30,7 +29,6 @@ export interface UserMFAMgmtProps {
     factorType: MFAType,
   ) => boolean | Promise<boolean>;
   schemaValidation?: { email?: RegExp; phone?: RegExp };
-  styling?: Styling;
 }
 
 /**

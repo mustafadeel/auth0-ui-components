@@ -6,7 +6,6 @@ import {
   FACTOR_TYPE_OTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
   FACTOR_TYPE_TOPT,
-  MergedStyles,
 } from '@auth0-web-ui-components/core';
 
 import { Button } from '@/components/ui/button';
@@ -23,7 +22,6 @@ import { OTPField } from '@/components/ui/otp-field';
 import { useTranslator } from '@/hooks/index';
 import { useOtpConfirmation } from '@/hooks/mfa';
 import { CONFIRM } from '@/lib/mfa-constants';
-import { cn } from '@/lib/theme-utils';
 
 type OtpForm = {
   userOtp: string;
@@ -41,7 +39,6 @@ type OTPVerificationFormProps = {
   oobCode?: string;
   contact?: string;
   onBack?: () => void;
-  styling?: MergedStyles;
 };
 
 /**
@@ -97,7 +94,6 @@ export function OTPVerificationForm({
   oobCode,
   contact,
   onBack,
-  styling = {},
 }: OTPVerificationFormProps) {
   const { t } = useTranslator('mfa');
 
@@ -134,7 +130,7 @@ export function OTPVerificationForm({
   );
 
   return (
-    <div style={styling} className="w-full max-w-sm mx-auto text-center">
+    <div className="w-full max-w-sm mx-auto text-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -142,12 +138,7 @@ export function OTPVerificationForm({
           className="space-y-6"
           aria-describedby="otp-description"
         >
-          <p
-            id="otp-description"
-            className={cn(
-              'font-normal text-center block mx-auto text-sm text-(length:--font-size-paragraph)',
-            )}
-          >
+          <p id="otp-description" className="font-normal text-center block mx-auto text-sm">
             {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_TOPT, FACTOR_TYPE_OTP].includes(factorType)
               ? t('enrollment_form.show_otp.enter_opt_code')
               : t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
@@ -157,10 +148,7 @@ export function OTPVerificationForm({
             name="userOtp"
             render={({ field }) => (
               <FormItem>
-                <FormLabel
-                  className="text-sm text-(length:--font-size-label) font-normal"
-                  htmlFor="otp-input"
-                >
+                <FormLabel className="text-sm font-normal" htmlFor="otp-input">
                   {t('enrollment_form.show_otp.one_time_passcode')}
                 </FormLabel>
                 <FormControl>
@@ -174,11 +162,7 @@ export function OTPVerificationForm({
                     value={field.value || ''}
                   />
                 </FormControl>
-                <FormMessage
-                  className="text-sm text-(length:--font-size-paragraph) text-left"
-                  id="otp-error"
-                  role="alert"
-                />
+                <FormMessage className="text-left" id="otp-error" role="alert" />
               </FormItem>
             )}
           />
