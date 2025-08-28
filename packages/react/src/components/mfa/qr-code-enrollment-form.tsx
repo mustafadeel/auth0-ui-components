@@ -6,7 +6,8 @@ import {
   type MFAType,
   type EnrollMfaResponse,
   getComponentStyles,
-  FACTOR_TYPE_TOPT,
+  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_PUSH_NOTIFICATION,
 } from '@auth0-web-ui-components/core';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -80,8 +81,12 @@ export function QRCodeEnrollmentForm({
   }, [phase]);
 
   const handleContinue = React.useCallback(() => {
-    setPhase(QR_PHASE_ENTER_OTP);
-  }, []);
+    if (factorType === FACTOR_TYPE_PUSH_NOTIFICATION) {
+      onClose();
+    } else {
+      setPhase(QR_PHASE_ENTER_OTP);
+    }
+  }, [factorType, onClose]);
 
   const handleBack = React.useCallback(() => {
     setPhase(QR_PHASE_SCAN);
@@ -126,7 +131,7 @@ export function QRCodeEnrollmentForm({
                   'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
                 )}
               >
-                {factorType === FACTOR_TYPE_TOPT
+                {factorType === FACTOR_TYPE_OTP
                   ? t('enrollment_form.show_otp.title')
                   : t('enrollment_form.show_auth0_guardian_title')}
               </p>

@@ -48,11 +48,11 @@ export interface UserMFAMgmtProps {
  */
 export type UseMFAResult = {
   /**
-   * Fetch the list of MFA authenticators.
+   * Fetch the list of MFA authenticators grouped by factor type.
    * @param onlyActive - Whether to return only active authenticators.
-   * @returns A promise resolving to array of authenticators.
+   * @returns A promise resolving to factors grouped by type.
    */
-  fetchFactors: (onlyActive?: boolean) => Promise<Authenticator[]>;
+  fetchFactors: (onlyActive?: boolean) => Promise<Record<MFAType, Authenticator[]>>;
 
   /**
    * Enroll a new MFA factor (e.g., SMS, TOTP, Email).
