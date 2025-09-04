@@ -91,7 +91,6 @@ function OrgDeleteComponent({
     ? t('org_name_field_error', { orgName: organizationName })
     : '';
 
-  console.log(modalState.hasError, organizationName, 'chand');
   return (
     <>
       <div style={currentStyles.variables} className="w-full">
