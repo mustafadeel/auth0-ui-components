@@ -5,8 +5,9 @@ import type {
   ActionButton,
   OrganizationDetailSchemaValidation,
 } from '@auth0-web-ui-components/core';
-import { FormActionsProps } from '@/components/ui/form-actions';
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
+
+import type { FormActionsProps } from '@/components/ui/form-actions';
 
 export interface OrgDetailsClasses {
   'OrgDetails-card'?: string;

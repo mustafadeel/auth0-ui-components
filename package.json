@@ -65,6 +65,7 @@
     "vitest": "^3.2.3"
   },
   "dependencies": {
+    "eslint-plugin-import": "^2.32.0",
     "react-qr-barcode-scanner": "^2.1.6"
   }
 }
