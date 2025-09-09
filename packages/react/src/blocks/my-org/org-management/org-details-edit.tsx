@@ -132,6 +132,7 @@ function OrgDetailsEditComponent({
         label: formActions.saveAction?.label,
         disabled: formActions.saveAction?.disable || readOnly,
         onClick: handleSubmit,
+        className: formActions.saveAction?.className,
       },
       ...formActions,
     }),
