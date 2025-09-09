@@ -8,7 +8,7 @@ export interface QRCodeDisplayerProps {
   /**
    * The URI/data to encode in the QR code (required)
    */
-  barcodeUri: string;
+  value: string;
   /**
    * Size of the QR code in pixels
    * @default 150
@@ -36,7 +36,7 @@ export interface QRCodeDisplayerProps {
 }
 
 export function QRCodeDisplayer({
-  barcodeUri,
+  value,
   size = 150,
   className,
   alt = 'QR Code',
@@ -49,7 +49,7 @@ export function QRCodeDisplayer({
 
   const { isDarkMode } = useTheme();
 
-  const qrColors = React.useMemo(
+  const qrCodeColorScheme = React.useMemo(
     () => ({
       dark: isDarkMode ? '#FFFFFF' : '#000000',
       light: isDarkMode ? '#000000' : '#FFFFFF',
@@ -58,7 +58,7 @@ export function QRCodeDisplayer({
   );
 
   React.useEffect(() => {
-    if (!barcodeUri) {
+    if (!value) {
       setQrUrl(null);
       setHasError(true);
       setIsLoading(false);
@@ -67,10 +67,10 @@ export function QRCodeDisplayer({
 
     const generateQRCode = async () => {
       try {
-        const dataURL = await QRCode.toDataURL(barcodeUri, {
+        const dataURL = await QRCode.toDataURL(value, {
           width: size,
           margin: 1,
-          color: qrColors,
+          color: qrCodeColorScheme,
         });
         setQrUrl(dataURL);
         setHasError(false);
@@ -84,7 +84,7 @@ export function QRCodeDisplayer({
 
     setIsLoading(true);
     generateQRCode();
-  }, [barcodeUri, size, qrColors]);
+  }, [value, size, qrCodeColorScheme]);
 
   const wrapperProps = {
     className: cn(

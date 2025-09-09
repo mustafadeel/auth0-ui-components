@@ -101,7 +101,7 @@ export function QRCodeEnrollmentForm({
               <div className="flex justify-center items-center mb-6">
                 <QRCodeDisplayer
                   size={150}
-                  barcodeUri={otpData.barcodeUri || ''}
+                  value={otpData.barcodeUri || ''}
                   alt={t('enrollment_form.show_otp.qr_code_description')}
                 />
               </div>
