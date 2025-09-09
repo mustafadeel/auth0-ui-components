@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useTheme, useTranslator } from '@/hooks';
+import { Flag } from 'lucide-react';
 import { getComponentStyles, OrganizationDetailFormValues } from '@auth0-web-ui-components/core';
 import { OrgDetailsEditProps } from '@/types/my-org/org-management/ord-details-edit-types';
 import { withCoreClient } from '@/hoc';
@@ -30,9 +31,12 @@ function OrgDetailsEditComponent({
   hideHeader = false,
   backButton,
 }: OrgDetailsEditProps): React.JSX.Element {
+  const { details: orgdetailsMessages = {}, delete: orgdeleteMessages = {} } = customMessages;
   const { t } = useTranslator('org_management.org_details_edit', customMessages);
   const { isDarkMode } = useTheme();
   const [isDeleting, setIsDeleting] = React.useState(false);
+
+  // fetch details from hook
   const organization = {
     id: 'org_12345',
     name: 'acme-corp',
@@ -45,7 +49,6 @@ function OrgDetailsEditComponent({
       },
     },
   };
-  // fetch details from hook
 
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
@@ -53,26 +56,33 @@ function OrgDetailsEditComponent({
   );
 
   const handleSubmit = React.useCallback(
-    async (data: OrganizationDetailFormValues & { id?: string }) => {
-      const saveAction = formActions.saveAction;
+    async (data: OrganizationDetailFormValues & { id?: string }): Promise<boolean> => {
+      const { saveAction } = formActions;
       if (saveAction?.onBefore) {
         const canProceed = saveAction.onBefore(
           data as OrganizationDetailFormValues & { id: string },
         );
         if (!canProceed) {
-          return;
+          return false;
         }
       }
 
       try {
         //await onSave(data); will be a hook
-        toast.success(t('messages.organization_saved'));
+        toast.success(t('save_org_changes_message', { orgName: organization.display_name }), {
+          className: 'text-success-foreground',
+          icon: <Flag className="h-4 w-4" />,
+        });
         if (saveAction?.onAfter) {
           saveAction.onAfter(data as OrganizationDetailFormValues & { id: string });
         }
+        return true;
       } catch (error) {
-        toast.error(t('errors.save_organization'));
-        throw error;
+        toast.error(t('org_changes_error_message'), {
+          className: 'text-destructive-foreground',
+          icon: <Flag className="h-4 w-4" />,
+        });
+        return false;
       }
     },
     [formActions.saveAction, t],
@@ -80,7 +90,7 @@ function OrgDetailsEditComponent({
 
   const handleDelete = React.useCallback(
     async (orgId: string) => {
-      const deleteAction = formActions.deleteAction;
+      const { deleteAction } = formActions;
       if (deleteAction?.onBefore) {
         const canProceed = deleteAction.onBefore(
           organization as OrganizationDetailFormValues & { id: string },
@@ -94,14 +104,19 @@ function OrgDetailsEditComponent({
       try {
         //await onDelete(orgId); will be a hook
         console.log(orgId, organizationId);
-        toast.success(t('messages.organization_deleted'));
+        toast.success(t('delete_org_message', { orgName: organization.display_name }), {
+          className: 'text-success-foreground',
+          icon: <Flag className="h-4 w-4" />,
+        });
 
         if (deleteAction?.onAfter) {
           deleteAction.onAfter(organization as OrganizationDetailFormValues & { id: string });
         }
       } catch (error) {
-        toast.error(t('errors.delete_organization'));
-        throw error;
+        toast.error(t('org_changes_error_message'), {
+          className: 'text-destructive-foreground',
+          icon: <Flag className="h-4 w-4" />,
+        });
       } finally {
         setIsDeleting(false);
       }
@@ -144,7 +159,7 @@ function OrgDetailsEditComponent({
           organization={organization}
           isLoading={isLoading}
           schemaValidation={schemaValidation}
-          customMessages={customMessages.details}
+          customMessages={orgdetailsMessages}
           styling={styling}
           readOnly={readOnly}
           formActions={enhancedFormActions}
@@ -157,7 +172,7 @@ function OrgDetailsEditComponent({
         isLoading={isDeleting}
         schemaValidation={schemaValidation}
         styling={styling}
-        customMessages={customMessages.delete}
+        customMessages={orgdeleteMessages}
       />
     </div>
   );

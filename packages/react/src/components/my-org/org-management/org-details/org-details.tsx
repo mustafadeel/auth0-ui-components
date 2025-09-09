@@ -94,13 +94,21 @@ function OrgDetailsComponent({
   const onValid = React.useCallback(
     async (values: OrganizationDetailFormValues) => {
       if (formActions?.nextAction?.onClick) {
-        await formActions.nextAction.onClick({
+        const success = await formActions.nextAction.onClick({
           ...values,
           ...(organization?.id && { id: organization.id }),
         });
+
+        if (success) {
+          form.reset(values, {
+            keepValues: true,
+            keepDirty: false,
+            keepTouched: false,
+          });
+        }
       }
     },
-    [formActions?.nextAction, organization],
+    [formActions?.nextAction, organization, form],
   );
 
   const handlePreviousAction = React.useCallback(

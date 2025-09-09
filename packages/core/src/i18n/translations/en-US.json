@@ -63,7 +63,10 @@
       "header": {
         "backButtonText": "Back",
         "title": "${orgName}"
-      }
+      },
+      "save_org_changes_message": "The changes have been saved for ${orgName}.",
+      "delete_org_message": "${orgName} has been deleted.",
+      "org_changes_error_message": "There was an issue processing your request. Please try again or contact support if the issue persists."
     }
   },
   "mfa": {

@@ -15,7 +15,7 @@ export interface OrgDetailsFormActions extends Omit<FormActionsProps, 'nextActio
   nextAction?: {
     label?: string;
     disabled?: boolean;
-    onClick?: (data: OrganizationDetailFormValues & { id?: string }) => void | Promise<void>;
+    onClick?: (data: OrganizationDetailFormValues & { id?: string }) => boolean | Promise<boolean>;
   };
 }
 
