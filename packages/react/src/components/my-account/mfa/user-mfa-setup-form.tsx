@@ -38,7 +38,7 @@ export function UserMFASetupForm({
   confirmEnrollment,
   onSuccess,
   onError,
-  schemaValidation,
+  schema,
   styling = {
     variables: {
       common: {},
@@ -139,7 +139,7 @@ export function UserMFASetupForm({
             onError={onError}
             onSuccess={onSuccess}
             onClose={onClose}
-            schemaValidation={schemaValidation}
+            schema={schema}
             styling={styling}
           />
         );

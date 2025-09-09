@@ -4,10 +4,10 @@ import {
   FACTOR_TYPE_PUSH_NOTIFICATION,
 } from '@auth0-web-ui-components/core';
 import * as React from 'react';
-import QRCode from 'react-qr-code';
 
 import { Button } from '@/components/ui/button';
 import { CopyableTextField } from '@/components/ui/copyable-text-field';
+import { QRCodeDisplayer } from '@/components/ui/qr-code';
 import { Spinner } from '@/components/ui/spinner';
 import { useTheme, useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/my-account/mfa';
@@ -97,16 +97,16 @@ export function QRCodeEnrollmentForm({
           <div className="w-full max-w-sm mx-auto text-center">
             <div className="mb-6">
               <div className="flex justify-center items-center mb-6">
-                <QRCode
+                <QRCodeDisplayer
                   size={150}
                   value={otpData.barcodeUri || ''}
-                  aria-label={t('enrollment_form.show_otp.qr_code_description')}
+                  alt={t('enrollment_form.show_otp.qr_code_description')}
                 />
               </div>
               <p
                 id="qr-description"
                 className={cn(
-                  'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
+                  'font-normal block text-sm text-center text-(length:--font-size-paragraph) text-primary',
                 )}
               >
                 {factorType === FACTOR_TYPE_OTP
