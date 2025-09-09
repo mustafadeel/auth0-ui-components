@@ -20,7 +20,7 @@ import { OrgDetailsFormActions } from '@/types/my-org/org-management/org-details
 function OrgDetailsEditComponent({
   organizationId,
   isLoading = false,
-  schemaValidation,
+  schema,
   customMessages = {},
   styling = {
     variables: { common: {}, light: {}, dark: {} },
@@ -159,7 +159,7 @@ function OrgDetailsEditComponent({
         <OrgDetails
           organization={organization}
           isLoading={isLoading}
-          schemaValidation={schemaValidation}
+          schema={schema}
           customMessages={orgdetailsMessages}
           styling={styling}
           readOnly={readOnly}
@@ -171,7 +171,7 @@ function OrgDetailsEditComponent({
         organization={organization}
         onDelete={handleDelete}
         isLoading={isDeleting}
-        schemaValidation={schemaValidation}
+        schema={schema}
         styling={styling}
         customMessages={orgdeleteMessages}
       />
