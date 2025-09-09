@@ -108,7 +108,7 @@ export function QRCodeEnrollmentForm({
               <p
                 id="qr-description"
                 className={cn(
-                  'font-normal block text-sm text-center text-(length:--font-size-paragraph)',
+                  'font-normal block text-sm text-center text-(length:--font-size-paragraph) text-primary',
                 )}
               >
                 {factorType === FACTOR_TYPE_OTP
