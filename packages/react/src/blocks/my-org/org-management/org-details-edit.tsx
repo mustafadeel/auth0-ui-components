@@ -148,7 +148,7 @@ function OrgDetailsEditComponent({
             backButton={
               backButton && {
                 ...backButton,
-                text: backButton.text || t('header.backButtonText'),
+                text: backButton.text || t('header.back_button_text'),
               }
             }
           />

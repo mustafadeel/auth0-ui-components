@@ -61,7 +61,7 @@
     },
     "org_details_edit": {
       "header": {
-        "backButtonText": "戻る",
+        "back_button_text": "戻る",
         "title": "${orgName}"
       },
       "save_org_changes_message": "${orgName}の変更が保存されました。",

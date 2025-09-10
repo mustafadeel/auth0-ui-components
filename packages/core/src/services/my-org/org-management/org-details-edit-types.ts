@@ -7,7 +7,7 @@ import { OrgDetailsCustomMessages } from './org-details-types';
 export interface OrgEditCustomMessages {
   header?: {
     title?: string;
-    backButtonText?: string;
+    back_button_text?: string;
   };
   details?: OrgDetailsCustomMessages;
   delete?: OrgDeletesCustomMessages;
