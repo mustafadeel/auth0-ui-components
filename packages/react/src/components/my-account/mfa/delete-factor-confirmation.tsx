@@ -56,17 +56,7 @@ export function DeleteFactorConfirmation({
             {t(`delete_mfa_${factorToDelete?.type}_consent`)}
           </p>
 
-          <div className="flex flex-col space-y-3 w-full mt-6">
-            <Button
-              variant="destructive"
-              size="lg"
-              className="text-sm"
-              onClick={() => factorToDelete && onConfirm(factorToDelete.id)}
-              disabled={isDeletingFactor}
-              aria-label={t('confirm')}
-            >
-              {isDeletingFactor ? t('deleting') : t('confirm')}
-            </Button>
+          <div className="flex flex-row justify-end gap-3 w-full mt-6">
             <Button
               variant="outline"
               size="lg"
@@ -76,6 +66,16 @@ export function DeleteFactorConfirmation({
               aria-label={t('cancel')}
             >
               {t('cancel')}
+            </Button>
+            <Button
+              variant="destructive"
+              size="lg"
+              className="text-sm"
+              onClick={() => factorToDelete && onConfirm(factorToDelete.id)}
+              disabled={isDeletingFactor}
+              aria-label={t('confirm')}
+            >
+              {isDeletingFactor ? t('deleting') : t('confirm')}
             </Button>
           </div>
         </div>

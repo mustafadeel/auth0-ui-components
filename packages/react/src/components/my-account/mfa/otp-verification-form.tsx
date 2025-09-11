@@ -200,17 +200,7 @@ export function OTPVerificationForm({
             )}
           />
 
-          <div className="flex flex-col gap-3 justify-center">
-            <Button
-              type="submit"
-              className="text-sm"
-              size="lg"
-              disabled={userOtp?.length !== 6 || loading}
-              aria-label={buttonText}
-            >
-              {buttonText}
-            </Button>
-
+          <div className="flex flex-row justify-end gap-3">
             <Button
               type="button"
               className="text-sm"
@@ -220,6 +210,16 @@ export function OTPVerificationForm({
               aria-label={t('back')}
             >
               {t('back')}
+            </Button>
+
+            <Button
+              type="submit"
+              className="text-sm"
+              size="lg"
+              disabled={userOtp?.length !== 6 || loading}
+              aria-label={buttonText}
+            >
+              {buttonText}
             </Button>
           </div>
         </form>

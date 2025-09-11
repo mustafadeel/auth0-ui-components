@@ -179,16 +179,7 @@ export function ContactInputForm({
                       </FormItem>
                     )}
                   />
-                  <div className="flex flex-col gap-3 justify-center">
-                    <Button
-                      type="submit"
-                      size="lg"
-                      className="text-sm"
-                      disabled={!form.formState.isValid || loading}
-                      aria-label={t('submit')}
-                    >
-                      {t('submit')}
-                    </Button>
+                  <div className="flex flex-row justify-end gap-3">
                     <Button
                       type="button"
                       className="text-sm"
@@ -198,6 +189,15 @@ export function ContactInputForm({
                       aria-label={t('cancel')}
                     >
                       {t('cancel')}
+                    </Button>
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="text-sm"
+                      disabled={!form.formState.isValid || loading}
+                      aria-label={t('submit')}
+                    >
+                      {t('submit')}
                     </Button>
                   </div>
                 </form>
