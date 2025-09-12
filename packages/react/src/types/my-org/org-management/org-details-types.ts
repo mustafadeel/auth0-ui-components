@@ -1,8 +1,9 @@
 import type {
-  OrganizationDetailFormValues,
+  Organization,
   OrgDetailsCustomMessages,
   SharedComponentProps,
   OrganizationDetailSchemaValidation,
+  OrganizationDetailFormValues,
 } from '@auth0-web-ui-components/core';
 import type { UseFormReturn } from 'react-hook-form';
 
@@ -14,10 +15,8 @@ export interface OrgDetailsClasses {
 
 export interface OrgDetailsFormActions extends Omit<FormActionsProps, 'nextAction'> {
   nextAction?: {
-    label?: string;
-    disabled?: boolean;
-    onClick?: (data: OrganizationDetailFormValues & { id?: string }) => boolean | Promise<boolean>;
-    className?: string;
+    disabled: boolean;
+    onClick?: (data: Organization) => boolean | Promise<boolean>;
   };
 }
 
@@ -27,7 +26,7 @@ export interface OrgDetailsProps
     OrgDetailsClasses,
     OrganizationDetailSchemaValidation
   > {
-  organization?: Partial<OrganizationDetailFormValues> & { id?: string };
+  organization?: Partial<Organization>;
   isLoading?: boolean;
   formActions: OrgDetailsFormActions;
 }

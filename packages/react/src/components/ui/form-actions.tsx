@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/theme-utils';
 
-export interface FormActionsProps {
+export interface FormActionsProps<T = void> {
   hasUnsavedChanges?: boolean;
   isLoading?: boolean;
-  nextAction?: Partial<ActionButton>;
+  nextAction?: Partial<ActionButton<T>>;
   previousAction?: Partial<ActionButton>;
   showPrevious?: boolean;
   showUnsavedChanges?: boolean;

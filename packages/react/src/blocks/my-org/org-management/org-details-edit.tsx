@@ -1,4 +1,4 @@
-import type { OrganizationDetailFormValues } from '@auth0-web-ui-components/core';
+import type { OrganizationEdit, Organization } from '@auth0-web-ui-components/core';
 import { getComponentStyles } from '@auth0-web-ui-components/core';
 import { Flag } from 'lucide-react';
 import * as React from 'react';
@@ -9,7 +9,7 @@ import { OrgDetails } from '@/components/my-org/org-management/org-details';
 import { Header } from '@/components/ui/header';
 import { withCoreClient } from '@/hoc';
 import { useTheme, useTranslator } from '@/hooks';
-import type { OrgDetailsEditProps } from '@/types/my-org/org-management/ord-details-edit-types';
+import type { OrgDetailsEditProps } from '@/types/my-org/org-management/org-details-edit-types';
 import type { OrgDetailsFormActions } from '@/types/my-org/org-management/org-details-types';
 
 /**
@@ -29,16 +29,17 @@ function OrgDetailsEditComponent({
     classes: {},
   },
   readOnly = false,
-  formActions,
+  saveAction,
+  deleteAction,
+  cancelAction,
   hideHeader = false,
   backButton,
 }: OrgDetailsEditProps): React.JSX.Element {
-  const { details: orgdetailsMessages = {}, delete: orgdeleteMessages = {} } = customMessages;
   const { t } = useTranslator('org_management.org_details_edit', customMessages);
   const { isDarkMode } = useTheme();
   const [isDeleting, setIsDeleting] = React.useState(false);
 
-  // fetch details from hook
+  //TODO:  fetch details from hook
   const organization = {
     id: 'org_12345',
     name: 'acme-corp',
@@ -58,25 +59,22 @@ function OrgDetailsEditComponent({
   );
 
   const handleSubmit = React.useCallback(
-    async (data: OrganizationDetailFormValues & { id?: string }): Promise<boolean> => {
-      const { saveAction } = formActions;
+    async (data: Organization): Promise<boolean> => {
       if (saveAction?.onBefore) {
-        const canProceed = saveAction.onBefore(
-          data as OrganizationDetailFormValues & { id: string },
-        );
+        const canProceed = saveAction.onBefore(data as OrganizationEdit);
         if (!canProceed) {
           return false;
         }
       }
 
       try {
-        //await onSave(data); will be a hook
+        //TODO: await onSave(data); will be a hook
         toast.success(t('save_org_changes_message', { orgName: organization.display_name }), {
           className: 'text-success-foreground',
           icon: <Flag className="h-4 w-4" />,
         });
         if (saveAction?.onAfter) {
-          saveAction.onAfter(data as OrganizationDetailFormValues & { id: string });
+          saveAction.onAfter(data as OrganizationEdit);
         }
         return true;
       } catch (error) {
@@ -87,16 +85,13 @@ function OrgDetailsEditComponent({
         return false;
       }
     },
-    [formActions.saveAction, t],
+    [saveAction, t],
   );
 
   const handleDelete = React.useCallback(
     async (orgId: string) => {
-      const { deleteAction } = formActions;
       if (deleteAction?.onBefore) {
-        const canProceed = deleteAction.onBefore(
-          organization as OrganizationDetailFormValues & { id: string },
-        );
+        const canProceed = deleteAction.onBefore(organization as OrganizationEdit);
         if (!canProceed) {
           return;
         }
@@ -104,7 +99,7 @@ function OrgDetailsEditComponent({
 
       setIsDeleting(true);
       try {
-        //await onDelete(orgId); will be a hook
+        //TODO: await onDelete(orgId); will be a hook
         console.log(orgId, organizationId);
         toast.success(t('delete_org_message', { orgName: organization.display_name }), {
           className: 'text-success-foreground',
@@ -112,7 +107,7 @@ function OrgDetailsEditComponent({
         });
 
         if (deleteAction?.onAfter) {
-          deleteAction.onAfter(organization as OrganizationDetailFormValues & { id: string });
+          deleteAction.onAfter(organization as OrganizationEdit);
         }
       } catch (error) {
         toast.error(t('org_changes_error_message'), {
@@ -123,22 +118,18 @@ function OrgDetailsEditComponent({
         setIsDeleting(false);
       }
     },
-    [formActions.deleteAction, organization, t],
+    [deleteAction, organization, t],
   );
 
   const enhancedFormActions = React.useMemo(
     (): OrgDetailsFormActions => ({
-      previousAction: formActions.cancelAction,
-      showPrevious: formActions.showCancel,
+      previousAction: cancelAction,
       nextAction: {
-        label: formActions.saveAction?.label,
-        disabled: formActions.saveAction?.disable || readOnly,
+        disabled: saveAction?.disabled || readOnly,
         onClick: handleSubmit,
-        className: formActions.saveAction?.className,
       },
-      ...formActions,
     }),
-    [formActions, handleSubmit, readOnly, t],
+    [handleSubmit, readOnly, t],
   );
 
   return (
@@ -150,7 +141,7 @@ function OrgDetailsEditComponent({
             backButton={
               backButton && {
                 ...backButton,
-                text: backButton.text || t('header.back_button_text'),
+                text: t('header.back_button_text'),
               }
             }
           />
@@ -162,7 +153,7 @@ function OrgDetailsEditComponent({
           organization={organization}
           isLoading={isLoading}
           schema={schema}
-          customMessages={orgdetailsMessages}
+          customMessages={customMessages.details}
           styling={styling}
           readOnly={readOnly}
           formActions={enhancedFormActions}
@@ -175,7 +166,7 @@ function OrgDetailsEditComponent({
         isLoading={isDeleting}
         schema={schema}
         styling={styling}
-        customMessages={orgdeleteMessages}
+        customMessages={customMessages.delete}
       />
     </div>
   );

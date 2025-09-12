@@ -135,14 +135,13 @@ function OrgDetailsComponent({
                 hasUnsavedChanges={hasUnsavedChanges}
                 isLoading={isLoading}
                 nextAction={{
-                  label: formActions?.nextAction?.label || t('submit_button_label'),
+                  label: t('submit_button_label'),
                   disabled:
                     formActions?.nextAction?.disabled ||
                     !hasUnsavedChanges ||
                     isLoading ||
                     readOnly,
                   type: 'submit',
-                  className: formActions.nextAction?.className,
                 }}
                 previousAction={
                   formActions?.previousAction && {
@@ -151,7 +150,7 @@ function OrgDetailsComponent({
                   }
                 }
                 showPrevious={formActions?.showPrevious}
-                unsavedChangesText={formActions?.unsavedChangesText || t('unsaved_changes_text')}
+                unsavedChangesText={t('unsaved_changes_text')}
                 showUnsavedChanges={formActions?.showUnsavedChanges}
                 align={formActions?.align}
                 className={formActions?.className}
