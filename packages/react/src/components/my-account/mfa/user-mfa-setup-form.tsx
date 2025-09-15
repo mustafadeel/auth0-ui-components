@@ -114,11 +114,22 @@ export function UserMFASetupForm({
             </Card>
           </a>
         </div>
-        <div className="flex flex-row justify-end gap-3 w-full">
-          <Button type="button" className="text-sm" variant="ghost" size="lg" onClick={onClose}>
+        <div className="flex flex-row justify-end gap-3 w-full mt-6 mb-6">
+          <Button
+            type="button"
+            className="text-sm"
+            variant="outline"
+            size="default"
+            onClick={onClose}
+          >
             {t('cancel')}
           </Button>
-          <Button type="button" className="text-sm" size="lg" onClick={() => setPhase(ENTER_QR)}>
+          <Button
+            type="button"
+            className="text-sm"
+            size="default"
+            onClick={() => setPhase(ENTER_QR)}
+          >
             {t('continue')}
           </Button>
         </div>

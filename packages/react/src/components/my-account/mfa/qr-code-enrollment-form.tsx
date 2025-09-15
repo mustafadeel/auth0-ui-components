@@ -123,12 +123,12 @@ export function QRCodeEnrollmentForm({
 
               <div className="mt-3" />
 
-              <div className="flex flex-row justify-end gap-3">
+              <div className="flex flex-row justify-end gap-3 mt-6 mb-6">
                 <Button
                   type="button"
                   className="text-sm"
-                  variant="ghost"
-                  size="lg"
+                  variant="outline"
+                  size="default"
                   onClick={onClose}
                   aria-label={t('cancel')}
                 >
@@ -137,7 +137,7 @@ export function QRCodeEnrollmentForm({
                 <Button
                   type="button"
                   className="text-sm"
-                  size="lg"
+                  size="default"
                   onClick={handleContinue}
                   aria-label={t('continue')}
                 >

@@ -56,10 +56,10 @@ export function DeleteFactorConfirmation({
             {t(`delete_mfa_${factorToDelete?.type}_consent`)}
           </p>
 
-          <div className="flex flex-row justify-end gap-3 w-full mt-6">
+          <div className="flex flex-row justify-end gap-3 w-full mt-6 mb-6">
             <Button
               variant="outline"
-              size="lg"
+              size="default"
               className="text-sm"
               onClick={onCancel}
               disabled={isDeletingFactor}
@@ -69,7 +69,7 @@ export function DeleteFactorConfirmation({
             </Button>
             <Button
               variant="destructive"
-              size="lg"
+              size="default"
               className="text-sm"
               onClick={() => factorToDelete && onConfirm(factorToDelete.id)}
               disabled={isDeletingFactor}
