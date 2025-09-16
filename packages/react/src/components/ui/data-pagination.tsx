@@ -1,0 +1,340 @@
+import { useMemo, useRef, useEffect } from 'react';
+
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { cn } from '@/lib/theme-utils';
+
+export interface DataPaginationLabels {
+  showing: string;
+  to: string;
+  of: string;
+  results: string;
+  totalResults: string;
+  show: string;
+  perPage: string;
+  previous: string;
+  next: string;
+  goToPage: string;
+  goToPrevious: string;
+  goToNext: string;
+  morePages: string;
+}
+
+export const defaultLabels: DataPaginationLabels = {
+  showing: 'Showing',
+  to: 'to',
+  of: 'of',
+  results: 'results',
+  totalResults: 'total results',
+  show: 'Show',
+  perPage: 'per page',
+  previous: 'Previous',
+  next: 'Next',
+  goToPage: 'Go to page {page}',
+  goToPrevious: 'Go to previous page',
+  goToNext: 'Go to next page',
+  morePages: 'More pages',
+};
+
+export interface RegularPaginationState {
+  type: 'regular';
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalItems: number;
+  maxVisiblePages?: number;
+}
+
+export interface CheckpointPaginationState {
+  type: 'checkpoint';
+  pageSize: number;
+  totalItems?: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+  nextCursor?: string;
+  previousCursor?: string;
+  currentCursor?: string;
+}
+
+export type PaginationState = RegularPaginationState | CheckpointPaginationState;
+
+export interface DataPaginationProps {
+  pagination: PaginationState;
+  pageSizeOptions?: number[];
+  showPageSizeSelector?: boolean;
+  showPageInfo?: boolean;
+  showPageNumbers?: boolean;
+  className?: string;
+  labels?: Partial<DataPaginationLabels>;
+  locale?: string;
+  onPageChange?: (page: number) => void;
+  onPageSizeChange?: (pageSize: number) => void;
+  onNextPage?: (cursor?: string) => void;
+  onPreviousPage?: (cursor?: string) => void;
+}
+
+const formatNumber = (num: number, locale?: string): string => {
+  const resolvedLocale =
+    locale ?? (typeof navigator !== 'undefined' ? navigator.language : 'en-US');
+  return num.toLocaleString(resolvedLocale);
+};
+
+const interpolate = (str: string, values: Record<string, string | number>): string =>
+  str.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
+
+const generatePageNumbers = (
+  currentPage: number,
+  totalPages: number,
+  maxVisible: number = 5,
+): (number | 'ellipsis')[] => {
+  if (totalPages <= maxVisible) return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const pages: (number | 'ellipsis')[] = [1];
+  const range = Math.floor((maxVisible - 3) / 2);
+  let start = Math.max(2, currentPage - range);
+  let end = Math.min(totalPages - 1, currentPage + range);
+
+  if (currentPage <= range + 2) end = maxVisible - 2;
+  if (currentPage >= totalPages - range - 1) start = totalPages - (maxVisible - 2);
+
+  if (start > 2) pages.push('ellipsis');
+  for (let i = start; i <= end; i++) pages.push(i);
+  if (end < totalPages - 1) pages.push('ellipsis');
+  pages.push(totalPages);
+
+  return pages;
+};
+
+export function DataPagination({
+  pagination,
+  pageSizeOptions,
+  showPageSizeSelector = true,
+  showPageInfo = true,
+  showPageNumbers = true,
+  className,
+  labels: customLabels,
+  locale,
+  onPageChange,
+  onPageSizeChange,
+  onNextPage,
+  onPreviousPage,
+}: DataPaginationProps) {
+  const labels = useMemo(() => ({ ...defaultLabels, ...customLabels }), [customLabels]);
+  const ariaLiveRegionRef = useRef<HTMLDivElement | null>(null);
+
+  if (!pagination) {
+    return null;
+  }
+
+  const isRegular = pagination.type === 'regular';
+  const regularState = isRegular ? (pagination as RegularPaginationState) : null;
+  const checkpointState = !isRegular ? (pagination as CheckpointPaginationState) : null;
+
+  const allPageSizeOptions = useMemo(() => {
+    if (!pageSizeOptions) return [];
+    const uniqueOptions = new Set([...pageSizeOptions, pagination.pageSize]);
+    return Array.from(uniqueOptions).sort((a, b) => a - b);
+  }, [pageSizeOptions, pagination.pageSize]);
+
+  const pageNumbers = useMemo(
+    () =>
+      regularState
+        ? generatePageNumbers(
+            regularState.currentPage,
+            regularState.totalPages,
+            regularState.maxVisiblePages,
+          )
+        : [],
+    [regularState],
+  );
+
+  useEffect(() => {
+    if (ariaLiveRegionRef.current) {
+      if (isRegular && regularState) {
+        ariaLiveRegionRef.current.textContent = `Page ${regularState.currentPage} loaded.`;
+      } else if (checkpointState) {
+        ariaLiveRegionRef.current.textContent = 'Content loaded.';
+      }
+    }
+  }, [pagination, isRegular, regularState, checkpointState]);
+
+  return (
+    <div
+      className={cn(
+        'flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between',
+        className,
+      )}
+    >
+      <div
+        ref={ariaLiveRegionRef}
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      />
+
+      {showPageInfo && (
+        <div className="text-sm text-muted-foreground whitespace-nowrap">
+          {isRegular && regularState ? (
+            <>
+              {labels.showing}{' '}
+              <span className="font-medium text-foreground">
+                {formatNumber(
+                  regularState.totalItems === 0
+                    ? 0
+                    : (regularState.currentPage - 1) * regularState.pageSize + 1,
+                  locale,
+                )}
+              </span>{' '}
+              {labels.to}{' '}
+              <span className="font-medium text-foreground">
+                {formatNumber(
+                  Math.min(
+                    regularState.currentPage * regularState.pageSize,
+                    regularState.totalItems,
+                  ),
+                  locale,
+                )}
+              </span>{' '}
+              {labels.of}{' '}
+              <span className="font-medium text-foreground">
+                {formatNumber(regularState.totalItems, locale)}
+              </span>{' '}
+              {labels.results}
+            </>
+          ) : checkpointState?.totalItems !== undefined ? (
+            <>
+              <span className="font-medium text-foreground">
+                {formatNumber(checkpointState.totalItems, locale)}
+              </span>{' '}
+              <span>{labels.totalResults}</span>
+            </>
+          ) : null}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        {showPageSizeSelector && allPageSizeOptions.length > 0 && (
+          <div className="flex items-center justify-center gap-2 whitespace-nowrap sm:justify-start">
+            <span className="text-sm text-muted-foreground">{labels.show}</span>
+            <Select
+              value={pagination.pageSize.toString()}
+              onValueChange={(value) => onPageSizeChange?.(Number(value))}
+            >
+              <SelectTrigger className="w-20 h-9">
+                <SelectValue placeholder={formatNumber(pagination.pageSize, locale)} />
+              </SelectTrigger>
+              <SelectContent>
+                {allPageSizeOptions.map((size) => (
+                  <SelectItem key={size} value={size.toString()}>
+                    {formatNumber(size, locale)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <span className="text-sm text-muted-foreground">{labels.perPage}</span>
+          </div>
+        )}
+
+        <Pagination role="navigation" aria-label="Pagination Navigation">
+          <PaginationContent>
+            {isRegular ? (
+              <>
+                <PaginationItem>
+                  <PaginationPrevious
+                    label={labels.previous}
+                    onClick={() => onPageChange?.(Math.max(1, regularState!.currentPage - 1))}
+                    className={cn(
+                      regularState!.currentPage <= 1 && 'pointer-events-none opacity-50',
+                    )}
+                    aria-label={labels.goToPrevious}
+                    aria-disabled={regularState!.currentPage <= 1}
+                  ></PaginationPrevious>
+                </PaginationItem>
+
+                {showPageNumbers &&
+                  pageNumbers.map((page, idx) => (
+                    <PaginationItem key={`page-${idx}`}>
+                      {page === 'ellipsis' ? (
+                        <PaginationEllipsis>
+                          <span className="sr-only">{labels.morePages}</span>
+                        </PaginationEllipsis>
+                      ) : (
+                        <PaginationLink
+                          onClick={() => onPageChange?.(page)}
+                          isActive={regularState!.currentPage === page}
+                          aria-label={interpolate(labels.goToPage, {
+                            page: formatNumber(page, locale),
+                          })}
+                          aria-current={regularState!.currentPage === page ? 'page' : undefined}
+                        >
+                          {formatNumber(page, locale)}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+
+                <PaginationItem>
+                  <PaginationNext
+                    label={labels.next}
+                    onClick={() =>
+                      onPageChange?.(
+                        Math.min(regularState!.totalPages, regularState!.currentPage + 1),
+                      )
+                    }
+                    className={cn(
+                      regularState!.currentPage >= regularState!.totalPages &&
+                        'pointer-events-none opacity-50',
+                    )}
+                    aria-label={labels.goToNext}
+                    aria-disabled={regularState!.currentPage >= regularState!.totalPages}
+                  ></PaginationNext>
+                </PaginationItem>
+              </>
+            ) : (
+              <>
+                <PaginationItem>
+                  <PaginationPrevious
+                    label={labels.previous}
+                    onClick={() => onPreviousPage?.(checkpointState!.previousCursor)}
+                    className={cn(
+                      !checkpointState!.hasPreviousPage && 'pointer-events-none opacity-50',
+                    )}
+                    aria-label={labels.goToPrevious}
+                    aria-disabled={!checkpointState!.hasPreviousPage}
+                  ></PaginationPrevious>
+                </PaginationItem>
+
+                <PaginationItem>
+                  <PaginationNext
+                    label={labels.next}
+                    onClick={() => onNextPage?.(checkpointState!.nextCursor)}
+                    className={cn(
+                      !checkpointState!.hasNextPage && 'pointer-events-none opacity-50',
+                    )}
+                    aria-label={labels.goToNext}
+                    aria-disabled={!checkpointState!.hasNextPage}
+                  ></PaginationNext>
+                </PaginationItem>
+              </>
+            )}
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </div>
+  );
+}
