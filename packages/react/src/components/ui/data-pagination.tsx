@@ -188,7 +188,7 @@ export function DataPagination({
       />
 
       {showPageInfo && (
-        <div className="text-sm text-muted-foreground whitespace-nowrap">
+        <div className="text-sm text-foreground whitespace-nowrap">
           {isRegular && regularState ? (
             <>
               {labels.showing}{' '}
@@ -230,7 +230,7 @@ export function DataPagination({
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         {shouldShowPageSizeSelector && allPageSizeOptions.length > 0 && (
           <div className="flex items-center justify-center gap-2 whitespace-nowrap sm:justify-start">
-            <span className="text-sm text-muted-foreground">{labels.show}</span>
+            <span className="text-sm text-foreground">{labels.show}</span>
             <Select
               value={currentPageSize.toString()}
               onValueChange={(value) => onPageSizeChange?.(Number(value))}
@@ -246,7 +246,7 @@ export function DataPagination({
                 ))}
               </SelectContent>
             </Select>
-            <span className="text-sm text-muted-foreground">{labels.perPage}</span>
+            <span className="text-sm text-foreground">{labels.perPage}</span>
           </div>
         )}
 
@@ -259,7 +259,8 @@ export function DataPagination({
                     label={labels.previous}
                     onClick={() => onPageChange?.(Math.max(1, regularState.currentPage - 1))}
                     className={cn(
-                      regularState.currentPage <= 1 && 'pointer-events-none opacity-50',
+                      regularState.currentPage <= 1 &&
+                        'pointer-events-none opacity-50 text-foreground',
                     )}
                     aria-label={labels.goToPrevious}
                     aria-disabled={regularState.currentPage <= 1}
@@ -298,7 +299,7 @@ export function DataPagination({
                     }
                     className={cn(
                       regularState.currentPage >= regularState.totalPages &&
-                        'pointer-events-none opacity-50',
+                        'pointer-events-none opacity-50 text-foreground',
                     )}
                     aria-label={labels.goToNext}
                     aria-disabled={regularState.currentPage >= regularState.totalPages}
@@ -310,9 +311,10 @@ export function DataPagination({
                 <PaginationItem>
                   <PaginationPrevious
                     label={labels.previous}
-                    onClick={() => onPreviousPage?.()} // No cursor parameter
+                    onClick={() => onPreviousPage?.()}
                     className={cn(
-                      !checkpointState.hasPreviousPage && 'pointer-events-none opacity-50',
+                      !checkpointState.hasPreviousPage &&
+                        'pointer-events-none opacity-50 text-foreground',
                     )}
                     aria-label={labels.goToPrevious}
                     aria-disabled={!checkpointState.hasPreviousPage}
@@ -323,7 +325,10 @@ export function DataPagination({
                   <PaginationNext
                     label={labels.next}
                     onClick={() => onNextPage?.()}
-                    className={cn(!checkpointState.hasNextPage && 'pointer-events-none opacity-50')}
+                    className={cn(
+                      !checkpointState.hasNextPage &&
+                        'pointer-events-none opacity-50 text-foreground',
+                    )}
                     aria-label={labels.goToNext}
                     aria-disabled={!checkpointState.hasNextPage}
                   />
