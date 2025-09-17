@@ -92,7 +92,7 @@ export const FormActions: React.FC<FormActionsProps> = ({
           size={previousButtonProps.size}
           onClick={handlePreviousClick}
           disabled={previousButtonProps.disabled || isLoading}
-          className={previousButtonProps.className}
+          className="FormActions-previous"
         >
           {previousButtonProps.label}
         </Button>
@@ -103,7 +103,7 @@ export const FormActions: React.FC<FormActionsProps> = ({
         variant={nextButtonProps.variant}
         size={nextButtonProps.size}
         disabled={nextButtonProps.disabled || isLoading}
-        className={nextButtonProps.className}
+        className="FormActions-next"
         {...(nextButtonProps.type !== 'submit' && { onClick: handleNextClick })}
       >
         {isLoading ? <Spinner size="sm" aria-hidden="true" /> : nextButtonProps.label}
