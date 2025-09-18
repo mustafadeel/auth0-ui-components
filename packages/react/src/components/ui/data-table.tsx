@@ -9,6 +9,7 @@ import type { SortingState, ColumnDef } from '@tanstack/react-table';
 import { ChevronUpIcon, ChevronDownIcon, ArrowUpDownIcon, Copy } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { InlineCode } from '@/components/ui/inline-code';
 import { Switch } from '@/components/ui/switch';
@@ -41,35 +42,34 @@ export interface BaseColumn<Item> {
 
 export interface TextColumn<Item> extends BaseColumn<Item> {
   type: 'text';
-  noValueLabel?: string;
   render?: (item: Item, value: unknown) => React.ReactNode;
 }
 
 export interface DateColumn<Item> extends BaseColumn<Item> {
   type: 'date';
   format?: 'short' | 'medium' | 'long' | 'relative';
-  noValueLabel?: string;
   render?: (item: Item, value: Date | string | number) => React.ReactNode;
 }
 
 export interface SwitchColumn<Item> extends BaseColumn<Item> {
   type: 'switch';
   onToggle?: (checked: boolean, item: Item) => void;
-  render?: (item: Item, value: boolean) => React.ReactNode;
 }
 
 export interface ButtonColumn<Item> extends BaseColumn<Item> {
   type: 'button';
   buttonText: string;
-  variant?: 'primary' | 'outline' | 'destructive' | 'ghost' | 'link';
+  variant?: 'primary' | 'destructive' | 'outline' | 'ghost' | 'link';
   onClick: (item: Item) => void;
-  render?: (item: Item, value: unknown) => React.ReactNode;
 }
 
 export interface CopyColumn<Item> extends BaseColumn<Item> {
   type: 'copy';
-  noValueLabel?: string;
-  render?: (item: Item, value: unknown) => React.ReactNode;
+}
+
+export interface BadgeColumn<Item> extends BaseColumn<Item> {
+  type: 'badge';
+  variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success';
 }
 
 export interface ActionsColumn<Item> extends Omit<BaseColumn<Item>, 'accessorKey'> {
@@ -89,6 +89,7 @@ export type Column<Item> =
   | SwitchColumn<Item>
   | ButtonColumn<Item>
   | CopyColumn<Item>
+  | BadgeColumn<Item>
   | ActionsColumn<Item>
   | CustomColumn<Item>;
 
@@ -109,36 +110,21 @@ export interface DataTableProps<Item> {
   headerAlign?: AlignmentType;
 }
 
-const resolveAlignment = (
-  columnAlign?: AlignmentType,
-  tableAlign?: AlignmentType,
-  defaultAlign: AlignmentType = 'left',
-): AlignmentType => {
-  return columnAlign ?? tableAlign ?? defaultAlign;
-};
+const ALIGNMENT_CLASSES = {
+  text: {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
+  },
+  flex: {
+    left: 'justify-start',
+    center: 'justify-center',
+    right: 'justify-end',
+  },
+} as const;
 
-const getTextAlignmentClass = (align: AlignmentType): string => {
-  switch (align) {
-    case 'center':
-      return 'text-center';
-    case 'right':
-      return 'text-right';
-    case 'left':
-    default:
-      return 'text-left';
-  }
-};
-
-const getFlexAlignmentClass = (align: AlignmentType): string => {
-  switch (align) {
-    case 'center':
-      return 'justify-center';
-    case 'right':
-      return 'justify-end';
-    case 'left':
-    default:
-      return 'justify-start';
-  }
+const isEmpty = (value: unknown): boolean => {
+  return value === null || value === undefined || value === '';
 };
 
 const formatDate = (value: Date | string | number, format: string = 'medium'): string => {
@@ -176,15 +162,7 @@ const formatDate = (value: Date | string | number, format: string = 'medium'): s
   }
 };
 
-function CopyColumnRenderer<Item>({
-  item,
-  value,
-  column,
-}: {
-  item: Item;
-  value: unknown;
-  column: CopyColumn<Item>;
-}) {
+function CopyButton({ value }: { value: unknown }) {
   const [copied, setCopied] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -205,14 +183,6 @@ function CopyColumnRenderer<Item>({
       console.error('Failed to copy text:', error);
     }
   };
-
-  if (column.render) {
-    return <>{column.render(item, value)}</>;
-  }
-
-  if (!value) {
-    return <span className="text-muted-foreground">{column.noValueLabel ?? '—'}</span>;
-  }
 
   return (
     <InlineCode className="max-w-[200px] flex items-center justify-between gap-2 pr-1">
@@ -247,8 +217,8 @@ function renderTextColumn<Item>(
     return column.render(item, value);
   }
 
-  if (value === null) {
-    return <span className="text-muted-foreground">{column.noValueLabel ?? '—'}</span>;
+  if (isEmpty(value)) {
+    return null;
   }
 
   return <span className="text-foreground">{String(value)}</span>;
@@ -263,8 +233,8 @@ function renderDateColumn<Item>(
     return column.render(item, value);
   }
 
-  if (!value) {
-    return <span className="text-muted-foreground">{column.noValueLabel ?? '—'}</span>;
+  if (isEmpty(value)) {
+    return null;
   }
 
   const formattedDate = formatDate(value, column.format);
@@ -281,10 +251,6 @@ function renderSwitchColumn<Item>(
   value: boolean,
   column: SwitchColumn<Item>,
 ): React.ReactNode {
-  if (column.render) {
-    return column.render(item, value);
-  }
-
   const handleToggle = (checked: boolean) => {
     column.onToggle?.(checked, item);
   };
@@ -296,15 +262,7 @@ function renderSwitchColumn<Item>(
   );
 }
 
-function renderButtonColumn<Item>(
-  item: Item,
-  value: unknown,
-  column: ButtonColumn<Item>,
-): React.ReactNode {
-  if (column.render) {
-    return column.render(item, value);
-  }
-
+function renderButtonColumn<Item>(item: Item, column: ButtonColumn<Item>): React.ReactNode {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     column.onClick(item);
@@ -317,13 +275,29 @@ function renderButtonColumn<Item>(
   );
 }
 
+function renderBadgeColumn<Item>(value: unknown, column: BadgeColumn<Item>): React.ReactNode {
+  if (isEmpty(value)) {
+    return null;
+  }
+
+  return <Badge variant={column.variant}>{String(value)}</Badge>;
+}
+
+function renderCopyColumn(value: unknown): React.ReactNode {
+  if (isEmpty(value)) {
+    return null;
+  }
+
+  return <CopyButton value={value} />;
+}
+
 function EmptyState({ title, subtitle, action }: EmptyStateProps) {
   return (
     <div className="text-center py-12">
       <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-sm text-muted-foreground mb-4">{subtitle}</p>
       {action && (
-        <Button variant={action.variant || 'primary'} onClick={action.onClick}>
+        <Button variant={action.variant} onClick={action.onClick}>
           {action.label}
         </Button>
       )}
@@ -332,13 +306,11 @@ function EmptyState({ title, subtitle, action }: EmptyStateProps) {
 }
 
 function SortIcon({ direction }: { direction: 'asc' | 'desc' | false }) {
-  if (direction === 'asc') {
-    return <ChevronUpIcon className="h-4 w-4" />;
-  }
-  if (direction === 'desc') {
-    return <ChevronDownIcon className="h-4 w-4" />;
-  }
-  return <ArrowUpDownIcon className="h-4 w-4 opacity-50" />;
+  const Icon =
+    direction === 'asc' ? ChevronUpIcon : direction === 'desc' ? ChevronDownIcon : ArrowUpDownIcon;
+  const className = direction ? 'h-4 w-4' : 'h-4 w-4 opacity-50';
+
+  return <Icon className={className} />;
 }
 
 export function DataTable<Item>({
@@ -349,18 +321,12 @@ export function DataTable<Item>({
   emptyState,
   onRowClick,
   className,
-  headerAlign: tableHeaderAlign = 'left',
+  headerAlign = 'left',
 }: DataTableProps<Item>) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const tableColumns = useMemo<ColumnDef<Item>[]>(() => {
     return columns.map((column, index) => {
-      const resolvedHeaderAlign = resolveAlignment(
-        column.headerAlign, // Column-specific header alignment (highest priority)
-        tableHeaderAlign, // Table-level header alignment (medium priority)
-        'left', // Default alignment (lowest priority)
-      );
-
       return {
         id: `column-${index}`,
         accessorKey: column.accessorKey as string,
@@ -372,7 +338,7 @@ export function DataTable<Item>({
           : undefined,
         enableSorting: column.enableSorting !== false && !!column.accessorKey,
         meta: {
-          headerAlign: resolvedHeaderAlign,
+          headerAlign: column.headerAlign || headerAlign || 'left',
           column: column,
         },
         cell: ({ getValue, row }) => {
@@ -390,10 +356,13 @@ export function DataTable<Item>({
               return renderSwitchColumn(item, value as boolean, column);
 
             case 'button':
-              return renderButtonColumn(item, value, column);
+              return renderButtonColumn(item, column);
 
             case 'copy':
-              return <CopyColumnRenderer item={item} value={value} column={column} />;
+              return renderCopyColumn(value);
+
+            case 'badge':
+              return renderBadgeColumn(value, column);
 
             case 'actions':
               return <div onClick={(e) => e.stopPropagation()}>{column.render(item)}</div>;
@@ -402,12 +371,12 @@ export function DataTable<Item>({
               return <>{column.render(item, value)}</>;
 
             default:
-              return <span className="text-foreground">{String(value) ?? '—'}</span>;
+              return value ? <span className="text-foreground">{String(value)}</span> : null;
           }
         },
       };
     });
-  }, [columns, tableHeaderAlign]);
+  }, [columns, headerAlign]);
 
   const table = useReactTable({
     data,
@@ -449,19 +418,19 @@ export function DataTable<Item>({
                     className={cn(
                       canSort && 'cursor-pointer select-none hover:bg-muted/50',
                       'transition-colors',
-                      getTextAlignmentClass(meta.headerAlign),
+                      ALIGNMENT_CLASSES.text[meta.headerAlign],
                     )}
                     style={{
-                      width: meta.column.width || undefined,
-                      minWidth: meta.column.width || undefined,
-                      maxWidth: meta.column.width || undefined,
+                      width: meta.column.width,
+                      minWidth: meta.column.width,
+                      maxWidth: meta.column.width,
                     }}
                     onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                   >
                     <div
                       className={cn(
                         'flex items-center space-x-2',
-                        getFlexAlignmentClass(meta.headerAlign),
+                        ALIGNMENT_CLASSES.flex[meta.headerAlign],
                       )}
                     >
                       <span>{flexRender(header.column.columnDef.header, header.getContext())}</span>
@@ -504,9 +473,9 @@ export function DataTable<Item>({
                       key={cell.id}
                       className="text-left"
                       style={{
-                        width: meta.column.width || undefined,
-                        minWidth: meta.column.width || undefined,
-                        maxWidth: meta.column.width || undefined,
+                        width: meta.column.width,
+                        minWidth: meta.column.width,
+                        maxWidth: meta.column.width,
                       }}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
