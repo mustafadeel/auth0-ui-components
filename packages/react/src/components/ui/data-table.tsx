@@ -63,6 +63,11 @@ export interface ButtonColumn<Item> extends BaseColumn<Item> {
   onClick: (item: Item) => void;
 }
 
+export interface CopyColumnLabels {
+  copyTooltip?: string;
+  copiedTooltip?: string;
+}
+
 export interface CopyColumn<Item> extends BaseColumn<Item> {
   type: 'copy';
 }
@@ -162,7 +167,18 @@ const formatDate = (value: Date | string | number, format: string = 'medium'): s
   }
 };
 
-function CopyButton({ value }: { value: unknown }) {
+const DEFAULT_COPY_LABELS: Required<CopyColumnLabels> = {
+  copyTooltip: 'Copy to clipboard',
+  copiedTooltip: 'Copied!',
+};
+
+function CopyButton({
+  value,
+  labels = DEFAULT_COPY_LABELS,
+}: {
+  value: unknown;
+  labels?: CopyColumnLabels;
+}) {
   const [copied, setCopied] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
 
@@ -195,13 +211,13 @@ function CopyButton({ value }: { value: unknown }) {
             size="sm"
             onClick={handleCopy}
             className="h-6 w-6 p-0 hover:bg-muted/50 shrink-0"
-            aria-label={copied ? 'Copied!' : 'Copy to clipboard'}
+            aria-label={copied ? labels.copiedTooltip : labels.copyTooltip}
           >
             <Copy className="h-3 w-3" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{copied ? 'Copied!' : 'Copy to clipboard'}</p>
+          <p>{copied ? labels.copiedTooltip : labels.copyTooltip}</p>
         </TooltipContent>
       </Tooltip>
     </InlineCode>
