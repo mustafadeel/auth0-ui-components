@@ -9,7 +9,7 @@ export interface FormActionsProps<T = void> {
   hasUnsavedChanges?: boolean;
   isLoading?: boolean;
   nextAction?: Partial<ActionButton<T>>;
-  previousAction?: Partial<ActionButton>;
+  previousAction?: Partial<ActionButton<T>>;
   showPrevious?: boolean;
   showUnsavedChanges?: boolean;
   align?: 'left' | 'right';
