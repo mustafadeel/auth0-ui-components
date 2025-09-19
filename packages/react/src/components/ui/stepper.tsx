@@ -27,7 +27,7 @@ interface StepperProps {
   currentStep?: number;
   className?: string;
   onStepClick?: (stepNumber: number, stepId?: string) => void;
-  allowClickableSteps?: boolean;
+  enableAllSteps?: boolean;
   children: React.ReactNode;
 }
 
@@ -35,16 +35,16 @@ function Stepper({
   currentStep = 0,
   className,
   onStepClick,
-  allowClickableSteps = false,
+  enableAllSteps = false,
   children,
 }: StepperProps) {
   const contextValue: StepperContextValue = React.useMemo(
     () => ({
       currentStep,
-      isClickable: allowClickableSteps && !!onStepClick,
+      isClickable: enableAllSteps && !!onStepClick,
       onStepClick,
     }),
-    [currentStep, allowClickableSteps, onStepClick],
+    [currentStep, enableAllSteps, onStepClick],
   );
 
   const processedChildren = React.useMemo(() => {

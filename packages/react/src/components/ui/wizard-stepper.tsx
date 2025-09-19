@@ -14,7 +14,7 @@ interface WizardStepperProps {
   steps: WizardStep[];
   currentStep?: number;
   onStepClick?: (stepIndex: number, stepId?: string) => void;
-  allowClickableSteps?: boolean;
+  enableAllSteps?: boolean;
   className?: string;
   hideNumbers?: boolean;
 }
@@ -23,7 +23,7 @@ function WizardStepper({
   steps,
   currentStep = 0,
   onStepClick,
-  allowClickableSteps = false,
+  enableAllSteps = false,
   className,
   hideNumbers = true,
 }: WizardStepperProps) {
@@ -33,18 +33,18 @@ function WizardStepper({
 
       if (stepIndex === currentStep) return;
 
-      if (!allowClickableSteps && stepIndex > currentStep) return;
+      if (!enableAllSteps && stepIndex > currentStep) return;
 
       onStepClick(stepIndex, stepId);
     },
-    [currentStep, onStepClick, allowClickableSteps],
+    [currentStep, onStepClick, enableAllSteps],
   );
 
   return (
     <Stepper
       currentStep={currentStep}
       onStepClick={handleStepClick}
-      allowClickableSteps={!!onStepClick}
+      enableAllSteps={!!onStepClick}
       className={className}
     >
       {steps.map((step, index) => (
