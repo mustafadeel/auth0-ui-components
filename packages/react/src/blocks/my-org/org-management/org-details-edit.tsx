@@ -86,7 +86,9 @@ function OrgDetailsEditComponent({
 
   const enhancedFormActions = React.useMemo(
     (): OrgDetailsFormActions => ({
-      previousAction: cancelAction && { onClick: cancelAction },
+      previousAction: cancelAction && {
+        onClick: () => cancelAction?.onAfter?.(organization),
+      },
       nextAction: {
         disabled: saveAction?.disabled || readOnly,
         onClick: handleSubmit,

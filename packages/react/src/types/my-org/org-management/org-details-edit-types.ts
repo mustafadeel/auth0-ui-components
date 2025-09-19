@@ -27,8 +27,8 @@ export interface OrgDetailsEditProps
     OrganizationDetailSchemaValidation
   > {
   organizationId: string;
-  saveAction?: OrgEditSaveAction;
-  cancelAction?: (event?: Event) => void;
+  saveAction?: ComponentAction<Organization>;
+  cancelAction?: ComponentAction<Organization>;
   hideHeader?: boolean;
   backButton?: OrgEditBackButton;
 }
