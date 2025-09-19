@@ -10,7 +10,7 @@ import { cn } from '@/lib/theme-utils';
 interface StepperContextValue {
   currentStep: number;
   isClickable: boolean;
-  onStepClick?: (stepIndex: number, stepId?: string) => void;
+  onStepClick?: (stepNumber: number, stepId?: string) => void;
 }
 
 const StepperContext = React.createContext<StepperContextValue | null>(null);
@@ -26,7 +26,7 @@ const useStepperContext = () => {
 interface StepperProps {
   currentStep?: number;
   className?: string;
-  onStepClick?: (stepIndex: number, stepId?: string) => void;
+  onStepClick?: (stepNumber: number, stepId?: string) => void;
   allowClickableSteps?: boolean;
   children: React.ReactNode;
 }
@@ -73,22 +73,22 @@ function Stepper({
 }
 
 interface StepProps {
-  index: number;
+  step: number;
   id?: string;
   hideNumber?: boolean;
   className?: string;
   children: React.ReactNode;
 }
 
-function Step({ index, id, hideNumber = true, className, children }: StepProps) {
+function Step({ step, id, hideNumber = true, className, children }: StepProps) {
   const { currentStep, isClickable, onStepClick } = useStepperContext();
 
-  const isCurrent = index === currentStep;
-  const isCompleted = index < currentStep;
+  const isCurrent = step === currentStep;
+  const isCompleted = step < currentStep;
 
   const handleClick = () => {
     if (isClickable && onStepClick) {
-      onStepClick(index, id);
+      onStepClick(step, id);
     }
   };
 
@@ -96,7 +96,7 @@ function Step({ index, id, hideNumber = true, className, children }: StepProps) 
     <div
       data-slot="stepper-step"
       data-state={isCurrent ? 'current' : isCompleted ? 'completed' : 'pending'}
-      data-index={index}
+      data-step={step}
       className={cn(
         'flex items-start',
         isClickable && 'cursor-pointer hover:opacity-80 transition-opacity',
@@ -117,7 +117,7 @@ function Step({ index, id, hideNumber = true, className, children }: StepProps) 
         {isCompleted ? (
           <Check className="w-3 h-3" />
         ) : !hideNumber ? (
-          <span className="text-xs font-medium">{index + 1}</span>
+          <span className="text-xs font-medium">{step + 1}</span>
         ) : null}
       </div>
 
