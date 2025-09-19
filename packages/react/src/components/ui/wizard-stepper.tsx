@@ -13,7 +13,7 @@ export interface WizardStep {
 interface WizardStepperProps {
   steps: WizardStep[];
   currentStep?: number;
-  onStepClick?: (stepIndex: number, stepId: string) => void;
+  onStepClick?: (stepIndex: number, stepId?: string) => void;
   allowClickableSteps?: boolean;
   className?: string;
   hideNumbers?: boolean;
@@ -29,7 +29,7 @@ function WizardStepper({
 }: WizardStepperProps) {
   const handleStepClick = React.useCallback(
     (stepIndex: number, stepId?: string) => {
-      if (!onStepClick || !stepId) return;
+      if (!onStepClick) return;
 
       if (stepIndex === currentStep) return;
 
