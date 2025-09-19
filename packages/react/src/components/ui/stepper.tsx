@@ -24,7 +24,7 @@ const useStepperContext = () => {
 };
 
 interface StepperProps {
-  currentStep: number;
+  currentStep?: number;
   className?: string;
   onStepClick?: (stepIndex: number, stepId?: string) => void;
   allowClickableSteps?: boolean;
@@ -32,7 +32,7 @@ interface StepperProps {
 }
 
 function Stepper({
-  currentStep,
+  currentStep = 0,
   className,
   onStepClick,
   allowClickableSteps = false,
