@@ -11,6 +11,7 @@ export interface FormActionsProps<T = void> {
   nextAction?: Partial<ActionButton<T>>;
   previousAction?: Partial<ActionButton<T>>;
   showPrevious?: boolean;
+  showNext?: boolean;
   showUnsavedChanges?: boolean;
   align?: 'left' | 'right';
   className?: string;
@@ -37,6 +38,7 @@ export const FormActions: React.FC<FormActionsProps> = ({
   previousAction,
   className,
   showPrevious = true,
+  showNext = true,
   showUnsavedChanges = true,
   align = 'right',
   unsavedChangesText = 'Unsaved changes',
@@ -98,16 +100,18 @@ export const FormActions: React.FC<FormActionsProps> = ({
         </Button>
       )}
 
-      <Button
-        type={nextButtonProps.type}
-        variant={nextButtonProps.variant}
-        size={nextButtonProps.size}
-        disabled={nextButtonProps.disabled || isLoading}
-        className="FormActions-next"
-        {...(nextButtonProps.type !== 'submit' && { onClick: handleNextClick })}
-      >
-        {isLoading ? <Spinner size="sm" aria-hidden="true" /> : nextButtonProps.label}
-      </Button>
+      {showNext && (
+        <Button
+          type={nextButtonProps.type}
+          variant={nextButtonProps.variant}
+          size={nextButtonProps.size}
+          disabled={nextButtonProps.disabled || isLoading}
+          className="FormActions-next"
+          {...(nextButtonProps.type !== 'submit' && { onClick: handleNextClick })}
+        >
+          {isLoading ? <Spinner size="sm" aria-hidden="true" /> : nextButtonProps.label}
+        </Button>
+      )}
     </div>
   );
 };
