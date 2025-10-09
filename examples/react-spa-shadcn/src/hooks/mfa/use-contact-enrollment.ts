@@ -1,6 +1,6 @@
 import {
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
+  FACTOR_TYPE_PHONE,
   normalizeError,
   type MFAType,
   type EnrollMfaResponse,
@@ -43,7 +43,7 @@ export function useContactEnrollment({
         const options: Record<string, string> =
           factorType === FACTOR_TYPE_EMAIL
             ? { email: data.contact }
-            : factorType === FACTOR_TYPE_SMS
+            : factorType === FACTOR_TYPE_PHONE
               ? { phone_number: data.contact }
               : {};
 

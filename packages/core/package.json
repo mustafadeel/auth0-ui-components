@@ -8,7 +8,7 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs.js",
+      "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "auth0-myorg-sdk": "file:./dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz",
+    "@auth0/myaccount": "file:./dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz",
     "zod": "^3.25.56"
   }
 }

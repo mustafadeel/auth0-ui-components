@@ -4,7 +4,7 @@ import { Spinner } from '../components/ui/spinner';
 import { useTheme, useCoreClient } from '../hooks';
 
 export interface ServiceRequirements {
-  authenticationService?: boolean;
+  myAccountApiService?: boolean;
   myOrgService?: boolean;
 }
 
@@ -32,7 +32,7 @@ export function withServices<P extends object>(
     }
 
     // Check authentication service requirement
-    if (requirements.authenticationService && !coreClient.authenticationApiService) {
+    if (requirements.myAccountApiService && !coreClient.myAccountApiService) {
       return <>{loader || <Spinner />}</>;
     }
 
@@ -54,7 +54,7 @@ export function withServices<P extends object>(
  */
 export const withAuthenticationService = <P extends object>(
   WrappedComponent: React.ComponentType<P>,
-) => withServices(WrappedComponent, { authenticationService: true });
+) => withServices(WrappedComponent, { myAccountApiService: true });
 
 /**
  * HOC that requires MyOrg service (for organization management)
@@ -67,6 +67,6 @@ export const withMyOrgService = <P extends object>(WrappedComponent: React.Compo
  */
 export const withAllServices = <P extends object>(WrappedComponent: React.ComponentType<P>) =>
   withServices(WrappedComponent, {
-    authenticationService: true,
+    myAccountApiService: true,
     myOrgService: true,
   });

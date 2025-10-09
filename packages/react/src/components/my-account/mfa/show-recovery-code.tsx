@@ -1,8 +1,9 @@
-import { getComponentStyles, FACTOR_TYPE_PUSH_NOTIFICATION } from '@auth0-web-ui-components/core';
+import { getComponentStyles, FACTOR_TYPE_RECOVERY_CODE } from '@auth0-web-ui-components/core';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { CopyableTextField } from '@/components/ui/copyable-text-field';
+import { Spinner } from '@/components/ui/spinner';
 import { useTheme, useTranslator, useOtpConfirmation } from '@/hooks';
 import { cn } from '@/lib/theme-utils';
 import type { ShowRecoveryCodeProps } from '@/types';
@@ -13,9 +14,10 @@ export function ShowRecoveryCode({
   onError,
   onSuccess,
   onClose,
-  oobCode,
   userOtp,
-  recoveryCodes,
+  recoveryCode,
+  authSession,
+  authenticationMethodId,
   onBack,
   styling = {
     variables: {
@@ -25,6 +27,7 @@ export function ShowRecoveryCode({
     },
     classes: {},
   },
+  loading = false,
 }: ShowRecoveryCodeProps) {
   const { t } = useTranslator('mfa');
   const { isDarkMode } = useTheme();
@@ -33,10 +36,12 @@ export function ShowRecoveryCode({
     [styling, isDarkMode],
   );
 
-  const isPushNotification = factorType === FACTOR_TYPE_PUSH_NOTIFICATION;
+  const isRecoveryCode = factorType === FACTOR_TYPE_RECOVERY_CODE;
 
-  const { onSubmitOtp, loading } = useOtpConfirmation({
+  const { onSubmitOtp, loading: confirming } = useOtpConfirmation({
     factorType: factorType,
+    authSession,
+    authenticationMethodId,
     confirmEnrollment: confirmEnrollment!,
     onError: onError!,
     onSuccess,
@@ -44,52 +49,66 @@ export function ShowRecoveryCode({
   });
 
   const handleSubmit = React.useCallback(async () => {
-    if (isPushNotification) {
+    if (isRecoveryCode) {
+      await confirmEnrollment(factorType, authSession, authenticationMethodId, {});
+
       onSuccess();
     } else if (userOtp) {
-      await onSubmitOtp({ userOtp }, oobCode);
+      await onSubmitOtp({ userOtp });
     }
-  }, [isPushNotification, onSubmitOtp, userOtp, oobCode, onSuccess]);
+  }, [
+    isRecoveryCode,
+    onSubmitOtp,
+    userOtp,
+    onSuccess,
+    authSession,
+    factorType,
+    confirmEnrollment,
+    authenticationMethodId,
+  ]);
 
-  const buttonText = loading ? t('enrollment_form.show_otp.verifying') : t('submit');
+  const buttonText = confirming ? t('enrollment_form.show_otp.verifying') : t('submit');
 
   return (
     <div style={currentStyles.variables} className="w-full max-w-sm mx-auto text-center">
-      <div className="space-y-6">
-        <div>
-          <p
-            className={cn(
-              'font-normal block text-sm text-center text-(length:--font-size-paragraph) mb-4 text-primary',
-            )}
-          >
-            {t('enrollment_form.recovery_code_description')}
-          </p>
-          {recoveryCodes.length > 0 && <CopyableTextField value={recoveryCodes[0]} />}
+      {loading || confirming ? (
+        <div className="flex items-center justify-center py-16">
+          <Spinner />
         </div>
+      ) : (
+        <div className="space-y-6">
+          <div>
+            <p className={cn('font-normal block text-sm text-center mb-4 text-primary')}>
+              {t('enrollment_form.recovery_code_description')}
+            </p>
+            {recoveryCode && <CopyableTextField value={recoveryCode} />}
+          </div>
 
-        <div className="flex flex-row justify-end gap-3 mt-6 mb-6">
-          <Button
-            type="button"
-            className="text-sm"
-            variant="outline"
-            size="default"
-            onClick={onBack}
-            aria-label={t('back')}
-          >
-            {t('back')}
-          </Button>
-          <Button
-            type="button"
-            className="text-sm"
-            size="default"
-            disabled={!isPushNotification && loading}
-            onClick={handleSubmit}
-            aria-label={buttonText}
-          >
-            {buttonText}
-          </Button>
+          <div className="flex flex-row justify-end gap-3 mt-6 mb-6">
+            <Button
+              type="button"
+              className="text-sm"
+              variant="outline"
+              size="default"
+              onClick={onBack}
+              aria-label={t('back')}
+            >
+              {t('back')}
+            </Button>
+
+            <Button
+              type="button"
+              className="text-sm"
+              size="default"
+              disabled={!isRecoveryCode && loading}
+              onClick={handleSubmit}
+              aria-label={buttonText}
+            >
+              {buttonText}
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

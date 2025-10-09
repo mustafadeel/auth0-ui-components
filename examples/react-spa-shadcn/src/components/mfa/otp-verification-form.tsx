@@ -1,7 +1,7 @@
 import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_TOTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
 } from '@auth0-web-ui-components/core';
 import * as React from 'react';
@@ -137,7 +137,7 @@ export function OTPVerificationForm({
           aria-describedby="otp-description"
         >
           <p id="otp-description" className="font-normal text-center block mx-auto text-sm">
-            {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_OTP].includes(factorType)
+            {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_TOTP].includes(factorType)
               ? t('enrollment_form.show_otp.enter_opt_code')
               : t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
           </p>

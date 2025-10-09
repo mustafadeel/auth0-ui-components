@@ -123,14 +123,16 @@
     "confirmation": "確認",
     "remove_factor": "登録を正常に削除しました。",
     "enroll_factor": "正常に登録されました。",
-    "enroll_otp_mfa": "ワンタイムパスワードの登録",
+    "enroll_totp_mfa": "ワンタイムパスワードの登録",
     "delete_factor": "${factorName}の認証要素を削除",
     "delete_mfa_title": "既存の認証システムを削除",
-    "delete_mfa_sms_consent": "この電話番号をSMS MFAから削除してもよろしいですか？",
+    "delete_mfa_phone_consent": "この電話番号をSMS MFAから削除してもよろしいですか？",
     "delete_mfa_email_consent": "このEメールアドレスを削除してもよろしいですか？",
-    "delete_mfa_otp_consent": "この認証アプリを削除しますか？",
+    "delete_mfa_totp_consent": "この認証アプリを削除しますか？",
     "delete_mfa_push-notification_consent": "プッシュ通知による認証を削除しますか？",
+    "delete_mfa_recovery-code_consent": "このリカバリーコードを削除しますか？",
     "cancel": "キャンセル",
+    "close": "閉じる",
     "next": "次へ",
     "back": "戻る",
     "yes-remove": "はい、削除します",
@@ -157,13 +159,13 @@
         "invalid_request": "必須パラメーターがありません",
         "authorization_pending": "承認保留中: 数秒後にリクエストを再試行してください。"
       },
-      "otp": {
+      "totp": {
         "invalid_request": "必須パラメーターがありません",
         "too_many_entities": "このユーザーのTOTPエンティティの数には上限があります。",
         "unsupported_challenge_type": "OTP Verifier がテナントで無効になっています。ダッシュボードの Guardian MFA セクションで「プッシュ通知」をオンにすると有効にできます（プッシュ通知にはOTPが含まれます）。",
         "invalid_grant": "OTPコードが無効です"
       },
-      "sms": {
+      "phone": {
         "unsupported_challenge_type": "SMS Verifier がテナントで無効になっています。ダッシュボードの Guardian MFA セクションで「SMS」をオンにすると有効にできます。",
         "bad_gateway": "電話番号が無効です。",
         "too_many_entities": "このユーザーのSMSエンティティの数には上限があります。"
@@ -175,7 +177,7 @@
         "too_many_entities": "このユーザーのメールエンティティの数には上限があります。"
       }
     },
-    "sms": {
+    "phone": {
       "title": "電話メッセージ ",
       "description": "電話番号が追加されていません。",
       "button-text": "SMS用電話番号を追加"
@@ -185,7 +187,7 @@
       "description": "プッシュ認証が追加されていません。",
       "button-text": "プッシュ認証を追加"
     },
-    "otp": {
+    "totp": {
       "title": "ワンタイムパスワード",
       "description": "認証システムが追加されていません。",
       "button-text": "認証アプリを追加"
@@ -201,15 +203,18 @@
     },
     "webauthn-roaming": {
       "title": "FIDOセキュリティキーによるWebAuthn",
-      "description": "二要素認証としてWebAuthn対応のセキュリティキー（FIDO2など）を使用します。"
+      "description": "二要素認証としてWebAuthn対応のセキュリティキー（FIDO2など）を使用します。",
+      "button-text": "FIDO セキュリティキーでWebAuthnを追加"
     },
     "webauthn-platform": {
       "title": "デバイス生体認証によるWebAuthn",
-      "description": "二要素認証としてWebAuthn対応のデバイス生体認証を使用します。"
+      "description": "二要素認証としてWebAuthn対応のデバイス生体認証を使用します。",
+      "button-text": "FIDOデバイス生体認証でWebAuthnを追加"
     },
     "recovery-code": {
       "title": "リカバリーコード",
-      "description": "アカウントへのアクセスを回復するために固有のリカバリーコードを使用します。"
+      "description": "アカウントへのアクセスを回復するために固有のリカバリーコードを使用します。",
+      "button-text": "リカバリーコードを再生成"
     },
     "enrollment_form": {
       "email_address": "メールアドレス",

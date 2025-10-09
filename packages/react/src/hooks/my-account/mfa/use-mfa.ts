@@ -21,7 +21,6 @@ export function useMFA(): UseMFAResult {
       'useMFA must be used within Auth0ComponentProvider with initialized CoreClient',
     );
   }
-
   const fetchFactors = useCallback(
     (onlyActive = false) => coreClient.getAuthenticationApiService().mfa.fetchFactors(onlyActive),
     [coreClient],
@@ -40,8 +39,15 @@ export function useMFA(): UseMFAResult {
   );
 
   const confirmEnrollment = useCallback(
-    (factorName: MFAType, options: ConfirmEnrollmentOptions) =>
-      coreClient.getAuthenticationApiService().mfa.confirmEnrollment(factorName, options),
+    (
+      factorType: MFAType,
+      authSession: string,
+      authenticationMethodId: string,
+      options: ConfirmEnrollmentOptions,
+    ) =>
+      coreClient
+        .getAuthenticationApiService()
+        .mfa.confirmEnrollment(factorType, authSession, authenticationMethodId, options),
     [coreClient],
   );
 

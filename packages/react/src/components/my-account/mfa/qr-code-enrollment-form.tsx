@@ -1,6 +1,6 @@
 import {
   getComponentStyles,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_TOTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
 } from '@auth0-web-ui-components/core';
 import * as React from 'react';
@@ -11,17 +11,15 @@ import { QRCodeDisplayer } from '@/components/ui/qr-code';
 import { Spinner } from '@/components/ui/spinner';
 import { useTheme, useTranslator } from '@/hooks';
 import { useOtpEnrollment } from '@/hooks/my-account/mfa';
-import { QR_PHASE_ENTER_OTP, QR_PHASE_SCAN, SHOW_RECOVERY_CODE } from '@/lib/mfa-constants';
+import { QR_PHASE_ENTER_OTP, QR_PHASE_SCAN } from '@/lib/mfa-constants';
 import { cn } from '@/lib/theme-utils';
 import type { QRCodeEnrollmentFormProps } from '@/types';
 
 import { OTPVerificationForm } from './otp-verification-form';
-import { ShowRecoveryCode } from './show-recovery-code';
 
 const PHASES = {
   SCAN: QR_PHASE_SCAN,
   ENTER_OTP: QR_PHASE_ENTER_OTP,
-  SHOW_RECOVERY: SHOW_RECOVERY_CODE,
 } as const;
 
 type Phase = (typeof PHASES)[keyof typeof PHASES];
@@ -64,19 +62,26 @@ export function QRCodeEnrollmentForm({
     }
   }, [otpData?.barcodeUri, fetchOtpEnrollment]);
 
-  const handleContinue = React.useCallback(() => {
+  const handleContinue = React.useCallback(async () => {
     if (factorType === FACTOR_TYPE_PUSH_NOTIFICATION) {
-      // Check if recovery codes exist for push notification
-      if (otpData?.recoveryCodes && otpData.recoveryCodes.length > 0) {
-        setPhase(PHASES.SHOW_RECOVERY);
-      } else {
+      try {
+        await confirmEnrollment(
+          factorType,
+          otpData.authSession,
+          otpData.authenticationMethodId,
+          {},
+        );
+
+        onSuccess();
         resetOtpData();
         onClose();
+      } catch (error) {
+        onError(error instanceof Error ? error : new Error('Unknown error'), 'confirm');
       }
     } else {
       setPhase(QR_PHASE_ENTER_OTP);
     }
-  }, [factorType, otpData?.recoveryCodes, onClose]);
+  }, [factorType, otpData, confirmEnrollment, onSuccess, onError, resetOtpData, onClose]);
 
   const handleBack = React.useCallback(() => {
     setPhase(QR_PHASE_SCAN);
@@ -99,7 +104,7 @@ export function QRCodeEnrollmentForm({
               <div className="flex justify-center items-center mb-6">
                 <QRCodeDisplayer
                   size={150}
-                  value={otpData.barcodeUri || ''}
+                  value={otpData.barcodeUri}
                   alt={t('enrollment_form.show_otp.qr_code_description')}
                 />
               </div>
@@ -109,7 +114,7 @@ export function QRCodeEnrollmentForm({
                   'font-normal block text-sm text-center text-(length:--font-size-paragraph) text-primary',
                 )}
               >
-                {factorType === FACTOR_TYPE_OTP
+                {factorType === FACTOR_TYPE_TOTP
                   ? t('enrollment_form.show_otp.title')
                   : t('enrollment_form.show_auth0_guardian_title')}
               </p>
@@ -117,7 +122,7 @@ export function QRCodeEnrollmentForm({
 
             <div aria-describedby="qr-description">
               <CopyableTextField
-                value={otpData?.secret || otpData?.barcodeUri || ''}
+                value={otpData.manualInputCode || otpData?.barcodeUri}
                 label={t('enrollment_form.show_otp.secret_code')}
               />
 
@@ -158,26 +163,12 @@ export function QRCodeEnrollmentForm({
       onError={onError}
       onSuccess={onSuccess}
       onClose={onClose}
-      oobCode={otpData.oobCode}
-      recoveryCodes={otpData.recoveryCodes}
+      authSession={otpData.authSession}
+      authenticationMethodId={otpData.authenticationMethodId}
       onBack={handleBack}
       styling={styling}
     />
   );
-
-  const renderRecoveryCodeScreen = () => (
-    <ShowRecoveryCode
-      recoveryCodes={otpData.recoveryCodes || []}
-      onSuccess={onClose}
-      styling={styling}
-      onBack={handleBack}
-      factorType={factorType}
-    />
-  );
-
-  if (phase === PHASES.SHOW_RECOVERY) {
-    return renderRecoveryCodeScreen();
-  }
 
   return phase === QR_PHASE_SCAN ? renderQrScreen() : renderOtpScreen();
 }

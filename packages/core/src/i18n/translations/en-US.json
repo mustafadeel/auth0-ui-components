@@ -123,14 +123,16 @@
     "confirmation": "Confirmation",
     "remove_factor": "Enrollment removed successfully.",
     "enroll_factor": "Enrolled successfully.",
-    "enroll_otp_mfa": "Enroll OTP MFA",
+    "enroll_totp_mfa": "Enroll OTP MFA",
     "delete_factor": "Delete authenticator ${factorName}",
     "delete_mfa_title": "Remove existing Authenticator",
-    "delete_mfa_sms_consent": "Are you sure you want to remove this Phone number for SMS?",
+    "delete_mfa_phone_consent": "Are you sure you want to remove this Phone number for SMS?",
     "delete_mfa_email_consent": "Are you sure you want to remove this Email?",
-    "delete_mfa_otp_consent": "Are you sure you want to remove this authenticator?",
+    "delete_mfa_totp_consent": "Are you sure you want to remove this authenticator?",
     "delete_mfa_push-notification_consent": "Are you sure you want to remove this push notification?",
+    "delete_mfa_recovery-code_consent": "Are you sure you want to remove this recovery code?",
     "cancel": "Cancel",
+    "close": "Close",
     "next": "Next",
     "back": "Back",
     "yes-remove": "Yes, remove",
@@ -156,13 +158,13 @@
         "invalid_request": "Missing required parameter",
         "authorization_pending": "Authorization pending: please repeat the request in a few seconds."
       },
-      "otp": {
+      "totp": {
         "invalid_request": "Missing required parameter",
         "too_many_entities": "You reached the limit of entities of the totp type for this user.",
         "unsupported_challenge_type": "OTP Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"Push notifications\" on Guardian MFA section (Push notications include OTP).",
         "invalid_grant": "Invalid Otp Code"
       },
-      "sms": {
+      "phone": {
         "unsupported_challenge_type": "SMS Verifier is disabled for your tenant. You can turn it on from dashboard turning on \"SMS\" on Guardian MFA section.",
         "bad_gateway": "The phone number is invalid.",
         "too_many_entities": "You reached the limit of entities of the sms type for this user."
@@ -174,7 +176,7 @@
         "too_many_entities": "You reached the limit of entities of the email type for this user."
       }
     },
-    "sms": {
+    "phone": {
       "title": "Phone Message",
       "description": "No phone number has been added.",
       "button-text": "Add Phone for SMS"
@@ -184,7 +186,7 @@
       "description": "No push authentication has been added.",
       "button-text": "Add Push Authentication"
     },
-    "otp": {
+    "totp": {
       "title": "One-time Password",
       "description": "No authenticator has been added.",
       "button-text": "Add Authenticator App"
@@ -200,15 +202,18 @@
     },
     "webauthn-roaming": {
       "title": "WebAuthn with FIDO Security Keys",
-      "description": "Use WebAuthn-compliant security keys (e.g., FIDO2) as a second factor."
+      "description": "Use WebAuthn-compliant security keys (e.g., FIDO2) as a second factor.",
+      "button-text": "Add WebAuthn with FIDO Security Keys"
     },
     "webauthn-platform": {
       "title": "WebAuthn with FIDO Device Biometrics",
-      "description": "Use WebAuthn-compliant device biometrics as a second factor."
+      "description": "Use WebAuthn-compliant device biometrics as a second factor.",
+      "button-text": "Add WebAuthn with FIDO Device Biometrics"
     },
     "recovery-code": {
       "title": "Recovery Code",
-      "description": "Use a unique recovery code to regain account access."
+      "description": "Use a unique recovery code to regain account access.",
+      "button-text": "Add Recovery Code"
     },
     "enrollment_form": {
       "email_address": "Email Address",

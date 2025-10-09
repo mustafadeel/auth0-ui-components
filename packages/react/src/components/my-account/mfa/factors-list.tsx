@@ -1,4 +1,4 @@
-import { FACTOR_TYPE_SMS, FACTOR_TYPE_EMAIL } from '@auth0-web-ui-components/core';
+import { FACTOR_TYPE_PHONE, FACTOR_TYPE_EMAIL } from '@auth0-web-ui-components/core';
 import { getComponentStyles } from '@auth0-web-ui-components/core';
 import { MoreVertical, Trash2, Mail, Smartphone } from 'lucide-react';
 import * as React from 'react';
@@ -12,7 +12,7 @@ import { cn } from '@/lib/theme-utils';
 import type { FactorsListProps } from '@/types';
 
 const FACTOR_ICONS = {
-  [FACTOR_TYPE_SMS]: Smartphone,
+  [FACTOR_TYPE_PHONE]: Smartphone,
   [FACTOR_TYPE_EMAIL]: Mail,
 } as const;
 

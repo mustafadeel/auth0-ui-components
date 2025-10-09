@@ -1,7 +1,8 @@
+import { createMyAccountAPIService } from '@core/services/my-account/my-account-api-service';
+import { createMyOrgAPIService } from '@core/services/my-org/my-org-api-service';
+
 import type { I18nInitOptions } from '../i18n';
 import { createI18nService } from '../i18n';
-import { createAuthenticationAPIService } from '../services/authentication-api-service';
-import { createMyOrgAPIService } from '../services/my-org-api-service';
 
 import type {
   ServicesConfig,
@@ -142,7 +143,7 @@ export async function createCoreClient(
   };
 
   // Initialize Authentication API service
-  const authenticationApiService = createAuthenticationAPIService(baseCoreClient);
+  const myAccountApiService = await createMyAccountAPIService(baseCoreClient);
 
   // Initialize MyOrg API service if it's enabled
   const myOrgApiService = servicesConfig.myOrg.enabled
@@ -151,9 +152,9 @@ export async function createCoreClient(
 
   const coreClient: CoreClientInterface = {
     ...baseCoreClient,
-    authenticationApiService,
+    myAccountApiService,
     myOrgApiService,
-    getAuthenticationApiService: () => authenticationApiService,
+    getAuthenticationApiService: () => myAccountApiService,
     getMyOrgApiService: () => {
       if (!myOrgApiService) {
         throw new Error(

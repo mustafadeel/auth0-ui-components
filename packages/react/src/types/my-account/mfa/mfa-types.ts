@@ -1,5 +1,5 @@
 import type {
-  EnrollMfaResponse,
+  CreateAuthenticationMethodResponseContent,
   Authenticator,
   MFAType,
   EnrollOptions,
@@ -50,10 +50,15 @@ export interface ContactInputFormProps
     { email?: RegExp; phone?: RegExp }
   > {
   factorType: MFAType;
-  enrollMfa: (factor: MFAType, options: Record<string, string>) => Promise<EnrollMfaResponse>;
+  enrollMfa: (
+    factorType: MFAType,
+    options: Record<string, string>,
+  ) => Promise<CreateAuthenticationMethodResponseContent>;
   confirmEnrollment: (
-    factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
@@ -76,26 +81,35 @@ export interface DeleteFactorConfirmationProps
 export interface OTPVerificationFormProps
   extends SharedComponentProps<MFAMessages, UserMFAMgmtClasses> {
   factorType: MFAType;
+  authSession: string;
+  authenticationMethodId: string;
   confirmEnrollment: (
-    factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onError: (error: Error, stage: typeof CONFIRM) => void;
   onSuccess: () => void;
   onClose: () => void;
   oobCode?: string;
   contact?: string;
-  recoveryCodes?: string[];
+  recoveryCode?: string;
   onBack?: () => void;
 }
 
 export interface QRCodeEnrollmentFormProps
   extends SharedComponentProps<MFAMessages, UserMFAMgmtClasses> {
   factorType: MFAType;
-  enrollMfa: (factor: MFAType, options: Record<string, string>) => Promise<EnrollMfaResponse>;
+  enrollMfa: (
+    factorType: MFAType,
+    options: Record<string, string>,
+  ) => Promise<CreateAuthenticationMethodResponseContent>;
   confirmEnrollment: (
-    factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
   onSuccess: () => void;
@@ -107,10 +121,15 @@ export interface UserMFASetupFormProps
   open: boolean;
   onClose: () => void;
   factorType: MFAType;
-  enrollMfa: (factor: MFAType, options: Record<string, string>) => Promise<EnrollMfaResponse>;
+  enrollMfa: (
+    factorType: MFAType,
+    options: Record<string, string>,
+  ) => Promise<CreateAuthenticationMethodResponseContent>;
   confirmEnrollment: (
-    factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onSuccess: () => void;
   onError: (error: Error, stage: typeof ENROLL | typeof CONFIRM) => void;
@@ -118,18 +137,23 @@ export interface UserMFASetupFormProps
 
 export interface ShowRecoveryCodeProps
   extends SharedComponentProps<MFAMessages, UserMFAMgmtClasses> {
-  recoveryCodes: string[];
+  recoveryCode: string;
   onSuccess: () => void;
   factorType: MFAType;
+  authSession: string;
+  authenticationMethodId: string;
   confirmEnrollment?: (
-    factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onError?: (error: Error, stage: typeof CONFIRM) => void;
   onClose?: () => void;
   oobCode?: string;
   userOtp?: string;
   onBack?: () => void;
+  loading?: boolean;
 }
 
 export interface FactorsListProps extends SharedComponentProps<MFAMessages, UserMFAMgmtClasses> {
@@ -152,7 +176,7 @@ export type UseMFAResult = {
    * @param onlyActive - Whether to return only active authenticators.
    * @returns A promise resolving to factors grouped by type.
    */
-  fetchFactors: (onlyActive?: boolean) => Promise<Record<MFAType, Authenticator[]>>;
+  fetchFactors: (onlyActive?: boolean) => Promise<unknown>;
 
   /**
    * Enroll a new MFA factor (e.g., SMS, TOTP, Email).
@@ -160,7 +184,10 @@ export type UseMFAResult = {
    * @param options - Optional options like phone number or email.
    * @returns A promise resolving to the enrollment response.
    */
-  enrollMfa: (factorName: MFAType, options?: EnrollOptions) => Promise<EnrollMfaResponse>;
+  enrollMfa: (
+    factorType: MFAType,
+    options?: EnrollOptions,
+  ) => Promise<CreateAuthenticationMethodResponseContent>;
 
   /**
    * Delete an enrolled MFA authenticator by its ID.
@@ -169,10 +196,10 @@ export type UseMFAResult = {
    */
   deleteMfa: (authenticatorId: string) => Promise<void>;
 
-  /**
-   * Confirm MFA enrollment with OOB code and user OTP code.
-   * @param factorName The MFA factor type.
-   * @param options The confirmation codes required to verify enrollment.
-   */
-  confirmEnrollment: (factorName: MFAType, options: ConfirmEnrollmentOptions) => Promise<unknown>;
+  confirmEnrollment: (
+    factorType: MFAType,
+    authSession: string,
+    authenticationMethodId: string,
+    options: ConfirmEnrollmentOptions,
+  ) => Promise<unknown>;
 };

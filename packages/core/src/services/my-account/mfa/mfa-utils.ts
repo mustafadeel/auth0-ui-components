@@ -1,98 +1,171 @@
 import {
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
+  FACTOR_TYPE_PHONE,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_RECOVERY_CODE,
+  FACTOR_TYPE_TOTP,
+  FACTOR_TYPE_WEBAUTHN_PLATFORM,
+  FACTOR_TYPE_WEBAUTHN_ROAMING,
 } from './mfa-constants';
 import type {
-  EnrollMfaParams,
-  ConfirmMfaEnrollmentParams,
   MFAType,
   EnrollOptions,
-  ConfirmEnrollmentOptions,
+  Authenticator,
+  ListFactorsResponseContent,
+  ListAuthenticationMethodsResponseContent,
+  CreateAuthenticationMethodRequestContent,
 } from './mfa-types';
 
-/**
- * Builds the parameters for an MFA enrollment request based on the factor type and options.
- *
- * @param factorName - The type of MFA factor to enroll
- * @param options - Factor-specific enrollment options
- * @returns The parameters required for the enrollment API call
- * @throws Error if required options for the factor type are missing
- */
 export function buildEnrollParams(
-  factorName: MFAType,
+  factorType: MFAType,
   options: EnrollOptions = {},
-): EnrollMfaParams {
-  switch (factorName) {
-    case FACTOR_TYPE_SMS:
-      if (!options.phone_number) {
-        throw new Error('Phone number is required for SMS enrollment');
-      }
-      return {
-        authenticator_types: ['oob'],
-        oob_channels: ['sms'],
-        phone_number: options.phone_number,
-      };
-
+): CreateAuthenticationMethodRequestContent {
+  switch (factorType) {
     case FACTOR_TYPE_EMAIL:
       if (!options.email) {
         throw new Error('Email is required for email enrollment');
       }
       return {
-        authenticator_types: ['oob'],
-        oob_channels: ['email'],
+        type: FACTOR_TYPE_EMAIL,
         email: options.email,
       };
-
-    case FACTOR_TYPE_OTP:
+    case FACTOR_TYPE_PHONE:
+      if (!options.phone_number) {
+        throw new Error('Phone number is required for SMS enrollment');
+      }
       return {
-        authenticator_types: ['otp'],
+        type: FACTOR_TYPE_PHONE,
+        phone_number: options.phone_number,
       };
-
+    case FACTOR_TYPE_TOTP:
+      return { type: FACTOR_TYPE_TOTP };
+    case FACTOR_TYPE_WEBAUTHN_ROAMING:
+      return { type: FACTOR_TYPE_WEBAUTHN_ROAMING };
+    case FACTOR_TYPE_WEBAUTHN_PLATFORM:
+      return { type: FACTOR_TYPE_WEBAUTHN_PLATFORM };
+    case FACTOR_TYPE_RECOVERY_CODE:
+      return { type: FACTOR_TYPE_RECOVERY_CODE };
     case FACTOR_TYPE_PUSH_NOTIFICATION:
-      return {
-        authenticator_types: ['oob'],
-        oob_channels: ['auth0'],
-      };
-
+      return { type: FACTOR_TYPE_PUSH_NOTIFICATION };
     default:
-      throw new Error(`Unsupported factor type: ${factorName}`);
+      throw new Error(`Unsupported factor type: ${factorType}`);
   }
 }
 
-/**
- * Builds the parameters for an MFA confirmation request based on the factor type and options.
- *
- * @param factorName - The type of MFA factor being confirmed
- * @param options - Confirmation options including codes and tokens
- * @param clientId - The client ID (optional, used in non-proxy mode)
- * @param mfaToken - The MFA token for authorization
- * @returns The parameters required for the confirmation API call
- */
-export function buildConfirmParams(
-  factorName: MFAType,
-  options: ConfirmEnrollmentOptions,
-  clientId?: string,
-  mfaToken?: string,
-): ConfirmMfaEnrollmentParams {
-  const baseParams: ConfirmMfaEnrollmentParams = {
-    grant_type:
-      factorName === FACTOR_TYPE_OTP
-        ? 'http://auth0.com/oauth/grant-type/mfa-otp'
-        : 'http://auth0.com/oauth/grant-type/mfa-oob',
-    oob_code: options.oobCode,
-    client_id: clientId,
-    mfa_token: mfaToken,
-  };
+type EnrolledFactor = ListAuthenticationMethodsResponseContent['authentication_methods'][number] & {
+  type: Exclude<string, 'password'>;
+};
 
-  if (factorName === FACTOR_TYPE_OTP) {
-    baseParams.otp = options.userOtpCode;
-  } else if (
-    [FACTOR_TYPE_SMS, FACTOR_TYPE_EMAIL, FACTOR_TYPE_PUSH_NOTIFICATION].includes(factorName)
-  ) {
-    baseParams.binding_code = options.userOtpCode;
+function getFactorDisplayName(type: MFAType, enrolledFactor: EnrolledFactor): string {
+  switch (type) {
+    case FACTOR_TYPE_PHONE:
+      return 'phone_number' in enrolledFactor ? enrolledFactor.phone_number || 'SMS' : 'SMS';
+    case FACTOR_TYPE_EMAIL:
+      return 'email' in enrolledFactor ? enrolledFactor.email || 'Email' : 'Email';
+    case FACTOR_TYPE_RECOVERY_CODE:
+      if (enrolledFactor.id && enrolledFactor.id.includes('|')) {
+        const name = enrolledFactor.id.split('|')[1];
+        return name;
+      }
+      return 'Recovery Codes';
+    case FACTOR_TYPE_TOTP:
+      if (enrolledFactor.id && enrolledFactor.id.includes('|')) {
+        const name = enrolledFactor.id.split('|')[1];
+        return name;
+      }
+      return 'Authenticator App';
+    default:
+      return 'name' in enrolledFactor && enrolledFactor.name ? enrolledFactor.name : type;
+  }
+}
+
+function createAuthenticator(
+  type: MFAType,
+  id: string,
+  enrolled: boolean,
+  created_at: string | null,
+  enrolledFactor?: EnrolledFactor,
+): Authenticator {
+  return {
+    id,
+    type,
+    enrolled,
+    name: enrolledFactor ? getFactorDisplayName(type, enrolledFactor) : type,
+    created_at,
+  };
+}
+
+export function transformMyAccountFactors(
+  availableFactorsResponse: ListFactorsResponseContent,
+  enrolledFactors: ListAuthenticationMethodsResponseContent,
+  onlyActive: boolean,
+): Partial<Record<MFAType, Authenticator[]>> {
+  const result: Partial<Record<MFAType, Authenticator[]>> = {};
+
+  const confirmedFactors = enrolledFactors.authentication_methods.filter(
+    (factor): factor is EnrolledFactor => {
+      const skipTypes = ['password'];
+      return (
+        !skipTypes.includes(factor.type) && (!('confirmed' in factor) || factor.confirmed !== false)
+      );
+    },
+  );
+
+  if (onlyActive) {
+    // Only return confirmed enrolled factors
+    for (const factor of confirmedFactors) {
+      const mfaType = factor.type as MFAType;
+
+      if (!result[mfaType]) {
+        result[mfaType] = [];
+      }
+
+      result[mfaType]!.push(
+        createAuthenticator(mfaType, factor.id, true, factor.created_at, factor),
+      );
+    }
+    return result;
   }
 
-  return baseParams;
+  // Full listing: enrolled + unenrolled placeholders
+  const enrolledByType = new Map<MFAType, EnrolledFactor[]>();
+
+  // Group confirmed enrolled factors by type
+  for (const factor of confirmedFactors) {
+    const mfaType = factor.type as MFAType;
+    if (!enrolledByType.has(mfaType)) {
+      enrolledByType.set(mfaType, []);
+    }
+    enrolledByType.get(mfaType)!.push(factor);
+  }
+
+  // Process all available factor types
+  for (const availableFactor of availableFactorsResponse.factors) {
+    const mfaType = availableFactor.type as MFAType;
+
+    const skipFactors = [FACTOR_TYPE_WEBAUTHN_PLATFORM, FACTOR_TYPE_WEBAUTHN_ROAMING];
+    if (skipFactors.includes(mfaType)) {
+      continue;
+    }
+
+    if (!result[mfaType]) {
+      result[mfaType] = [];
+    }
+
+    const enrolled = enrolledByType.get(mfaType) || [];
+
+    if (enrolled.length > 0) {
+      // Add enrolled factors
+      for (const factor of enrolled) {
+        result[mfaType]!.push(
+          createAuthenticator(mfaType, factor.id, true, factor.created_at, factor),
+        );
+      }
+    } else {
+      // Add placeholder for unenrolled factor type
+      result[mfaType]!.push(createAuthenticator(mfaType, `placeholder-${mfaType}`, false, null));
+    }
+  }
+
+  return result;
 }

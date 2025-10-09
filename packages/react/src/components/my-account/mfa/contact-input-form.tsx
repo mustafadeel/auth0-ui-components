@@ -87,6 +87,8 @@ export function ContactInputForm({
     form.reset();
     setContactData({
       contact: '',
+      authSession: '',
+      authenticationMethodId: '',
     });
     onClose?.();
   };
@@ -216,9 +218,9 @@ export function ContactInputForm({
       onError={onError}
       onSuccess={onSuccess}
       onClose={onClose}
-      oobCode={contactData.oobCode}
       contact={contactData.contact}
-      recoveryCodes={contactData.recoveryCodes}
+      authSession={contactData.authSession}
+      authenticationMethodId={contactData.authenticationMethodId}
       onBack={handleBack}
       styling={styling}
     />

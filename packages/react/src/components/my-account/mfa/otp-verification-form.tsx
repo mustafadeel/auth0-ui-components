@@ -1,7 +1,7 @@
 import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_TOTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
   getComponentStyles,
 } from '@auth0-web-ui-components/core';
@@ -21,8 +21,6 @@ import { OTPField } from '@/components/ui/otp-field';
 import { useTheme, useTranslator, useOtpConfirmation } from '@/hooks';
 import { cn } from '@/lib/theme-utils';
 import type { OTPVerificationFormProps } from '@/types';
-
-import { ShowRecoveryCode } from './show-recovery-code';
 
 type OtpForm = {
   userOtp: string;
@@ -73,9 +71,9 @@ export function OTPVerificationForm({
   onError,
   onSuccess,
   onClose,
-  oobCode,
   contact,
-  recoveryCodes = [],
+  authSession,
+  authenticationMethodId,
   onBack,
   styling = {
     variables: { common: {}, light: {}, dark: {} },
@@ -89,10 +87,10 @@ export function OTPVerificationForm({
     [styling, isDarkMode],
   );
 
-  const [showRecoveryCode, setShowRecoveryCode] = React.useState(false);
-
   const { onSubmitOtp, loading } = useOtpConfirmation({
     factorType,
+    authSession,
+    authenticationMethodId,
     confirmEnrollment,
     onError,
     onSuccess,
@@ -109,12 +107,7 @@ export function OTPVerificationForm({
   }, []);
 
   const handleSubmit = async (data: OtpForm) => {
-    // If recovery codes exist, switch to continue flow, otherwise submit
-    if (recoveryCodes.length > 0) {
-      setShowRecoveryCode(true);
-    } else {
-      await onSubmitOtp(data, oobCode);
-    }
+    await onSubmitOtp(data);
   };
 
   const maskedContact = React.useMemo(
@@ -122,31 +115,7 @@ export function OTPVerificationForm({
     [contact, factorType],
   );
 
-  const showRecovery = showRecoveryCode && recoveryCodes.length > 0;
-  const shouldUseContinueFlow = recoveryCodes.length > 0;
-
-  const buttonText = loading
-    ? t('enrollment_form.show_otp.verifying')
-    : shouldUseContinueFlow
-      ? t('continue')
-      : t('submit');
-
-  if (showRecovery) {
-    return (
-      <ShowRecoveryCode
-        factorType={factorType}
-        confirmEnrollment={confirmEnrollment}
-        onError={onError}
-        onSuccess={onSuccess}
-        onClose={onClose}
-        oobCode={oobCode}
-        userOtp={userOtp}
-        recoveryCodes={recoveryCodes}
-        onBack={() => setShowRecoveryCode(false)}
-        styling={styling}
-      />
-    );
-  }
+  const buttonText = loading ? t('enrollment_form.show_otp.verifying') : t('submit');
 
   return (
     <div style={currentStyles.variables} className="w-full max-w-sm mx-auto text-center">
@@ -164,7 +133,7 @@ export function OTPVerificationForm({
               'text-(length:--font-size-paragraph)',
             )}
           >
-            {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_OTP].includes(factorType)
+            {[FACTOR_TYPE_PUSH_NOTIFICATION, FACTOR_TYPE_TOTP].includes(factorType)
               ? t('enrollment_form.show_otp.enter_opt_code')
               : t('enrollment_form.show_otp.enter_verify_code', { verifier: maskedContact })}
           </p>

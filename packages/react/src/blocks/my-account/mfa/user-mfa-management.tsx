@@ -88,7 +88,7 @@ function UserMFAMgmtComponent({
     setError(null);
     try {
       const factors = await fetchFactors(showActiveOnly);
-      setFactorsByType(factors);
+      setFactorsByType(factors as Record<MFAType, Authenticator[]>);
       onFetch?.();
     } catch (err) {
       setError(t('errors.factors_loading_error'));
@@ -114,7 +114,7 @@ function UserMFAMgmtComponent({
    * Check if there are no active factors across all visible factor types
    */
   const hasNoActiveFactors = React.useMemo(() => {
-    return visibleFactorTypes.every((type) => !factorsByType[type]?.some((f) => f.active));
+    return visibleFactorTypes.every((type) => !factorsByType[type]?.some((f) => f.enrolled));
   }, [visibleFactorTypes, factorsByType]);
 
   /**
@@ -263,9 +263,7 @@ function UserMFAMgmtComponent({
     <div style={currentStyles.variables}>
       <Toaster position="top-right" />
       {loading ? (
-        <div className="flex items-center justify-center py-16">
-          {loader || <Spinner aria-label={t('loading')} />}
-        </div>
+        <div className="flex items-center justify-center py-16">{loader || <Spinner />}</div>
       ) : (
         <Card
           className={cn('py-10 px-8 sm:py-8 sm:px-6', currentStyles.classes?.['UserMFAMgmt-card'])}
@@ -304,7 +302,7 @@ function UserMFAMgmtComponent({
                   >
                     {visibleFactorTypes.map((factorType) => {
                       const factors = factorsByType[factorType] || [];
-                      const activeFactors = factors.filter((f) => f.active);
+                      const activeFactors = factors.filter((f) => f.enrolled);
                       const isEnabledFactor = factorConfig?.[factorType]?.enabled !== false;
                       const hasActiveFactors = activeFactors.length > 0;
 

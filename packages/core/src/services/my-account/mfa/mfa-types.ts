@@ -1,74 +1,40 @@
+import type { Auth0MyAccount } from '@auth0/myaccount';
 import type { SafeAny } from '@core/types';
 
-/**
- * Represents an MFA authenticator linked to a user.
- * @property {string} id - Unique identifier of the authenticator.
- * @property {string} authenticator_type - Type of the authenticator.
- * @property {string[]} [oob_channels] - Optional out-of-band channels supported.
- * @property {string} [name] - Optional name of the authenticator.
- * @property {boolean} active - Whether the authenticator is active.
- */
+export type ListFactorsResponseContent = Auth0MyAccount.ListFactorsResponseContent;
+export type ListAuthenticationMethodsResponseContent =
+  Auth0MyAccount.ListAuthenticationMethodsResponseContent;
+export type CreateAuthenticationMethodRequestContent =
+  Auth0MyAccount.CreateAuthenticationMethodRequestContent;
+export type CreateAuthenticationMethodResponseContent =
+  Auth0MyAccount.CreateAuthenticationMethodResponseContent;
+export type PathAuthenticationMethodId = Auth0MyAccount.PathAuthenticationMethodId;
+export type VerifyAuthenticationMethodRequestContent =
+  Auth0MyAccount.VerifyAuthenticationMethodRequestContent;
+export type VerifyAuthenticationMethodResponseContent =
+  Auth0MyAccount.VerifyAuthenticationMethodResponseContent;
+
 export interface Authenticator {
   id: string;
-  authenticator_type: AuthenticatorType;
-  oob_channel?: OobChannel[];
+  type: MFAType;
+  enrolled: boolean;
+  email?: string;
   name?: string;
-  active: boolean;
-  factorName?: MFAType;
+  confirmed?: boolean;
+  created_at: string | null;
 }
 
 /**
  * Represents the type of an MFA authenticator.
  */
-export type MFAType = 'sms' | 'push-notification' | 'otp' | 'email';
-
-export type AuthenticatorType = 'otp' | 'oob';
-export type OobChannel = 'auth0' | 'sms' | 'voice' | 'email';
-
-/**
- * Parameters required to enroll a new MFA (Multi-Factor Authentication) authenticator via the `/mfa/associate` endpoint.
- */
-export interface EnrollMfaParams {
-  authenticator_types: AuthenticatorType[];
-  oob_channels?: OobChannel[];
-  phone_number?: string;
-  email?: string;
-}
-
-/**
- * Response from the `/mfa/associate` endpoint after enrolling an MFA authenticator.
- */
-export interface EnrollMfaResponse {
-  oob_code?: string;
-  binding_method?: string;
-  authenticator_type?: string;
-  oob_channels?: string;
-  recovery_codes?: string[];
-  barcode_uri?: string;
-  secret?: string;
-}
-
-/**
- * Parameters required to confirm an MFA enrollment, typically sent to an OAuth token endpoint
- * to verify the user's possession of the factor.
- * @property {'http://auth0.com/oauth/grant-type/mfa-otp' | 'http://auth0.com/oauth/grant-type/mfa-oob'} grant_type - The grant type specifying the MFA method.
- * @property {string} [client_id] - The application's client ID.
- * @property {string} [mfa_token] - The access token with MFA scopes, obtained after login.
- * @property {string} [oob_code] - The out-of-band code received from the enrollment initiation step.
- * @property {string} [binding_code] - The code entered by the user to bind an OOB factor (e.g., the code from an SMS or email).
- * @property {string} [otp] - The time-based one-time password from an authenticator app (for TOTP).
- */
-export interface ConfirmMfaEnrollmentParams {
-  grant_type:
-    | 'http://auth0.com/oauth/grant-type/mfa-otp'
-    | 'http://auth0.com/oauth/grant-type/mfa-oob';
-  client_id?: string;
-  mfa_token?: string;
-  oob_code?: string;
-  binding_code?: string;
-  otp?: string;
-  client_secret?: string;
-}
+export type MFAType =
+  | 'phone'
+  | 'push-notification'
+  | 'totp'
+  | 'email'
+  | 'webauthn-roaming'
+  | 'webauthn-platform'
+  | 'recovery-code';
 
 /**
  * Options for enrolling in MFA factors.
@@ -82,7 +48,6 @@ export interface EnrollOptions {
  * Options for confirming MFA enrollment.
  */
 export interface ConfirmEnrollmentOptions {
-  oobCode?: string;
   userOtpCode?: string;
 }
 
@@ -90,17 +55,18 @@ export interface ConfirmEnrollmentOptions {
  * Interface for MFA controller.
  */
 export interface MFAControllerInterface {
-  fetchFactors(
-    onlyActive?: boolean,
-    ignoreCache?: boolean,
-  ): Promise<Record<MFAType, Authenticator[]>>;
+  fetchFactors(onlyActive?: boolean): Promise<unknown>;
   enrollFactor(
-    factorName: string,
+    factorType: string,
     options?: SafeAny,
-    ignoreCache?: boolean,
-  ): Promise<EnrollMfaResponse>;
-  deleteFactor(authenticatorId: string, ignoreCache?: boolean): Promise<void>;
-  confirmEnrollment(factorName: string, options: SafeAny, ignoreCache?: boolean): Promise<unknown>;
+  ): Promise<CreateAuthenticationMethodResponseContent>;
+  deleteFactor(authenticatorId: string): Promise<void>;
+  confirmEnrollment(
+    factorType: string,
+    authSession: string,
+    authenticationMethodId: string,
+    options: ConfirmEnrollmentOptions,
+  ): Promise<VerifyAuthenticationMethodResponseContent>;
 }
 
 /**

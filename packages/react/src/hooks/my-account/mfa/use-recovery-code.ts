@@ -8,7 +8,7 @@ import { useState, useCallback } from 'react';
 import { useTranslator } from '@/hooks';
 import { ENROLL } from '@/lib/mfa-constants';
 
-type UseOtpEnrollmentProps = {
+type UseRecoveryCodeGenerationProps = {
   factorType: MFAType;
   enrollMfa: (
     factorType: MFAType,
@@ -18,40 +18,42 @@ type UseOtpEnrollmentProps = {
   onClose: () => void;
 };
 
-export function useOtpEnrollment({
+export function useRecoveryCodeGeneration({
   factorType,
   enrollMfa,
   onError,
   onClose,
-}: UseOtpEnrollmentProps) {
+}: UseRecoveryCodeGenerationProps) {
   const { t } = useTranslator('mfa');
   const [loading, setLoading] = useState(false);
-  const [otpData, setOtpData] = useState<{
+  const [recoveryCodeData, setRecoveryCodeData] = useState<{
+    recoveryCode: string;
     authSession: string;
-    barcodeUri: string;
     authenticationMethodId: string;
-    manualInputCode?: string;
   }>({
+    recoveryCode: '',
     authSession: '',
-    barcodeUri: '',
     authenticationMethodId: '',
   });
 
-  const fetchOtpEnrollment = useCallback(async () => {
+  const fetchRecoveryCode = useCallback(async () => {
     if (loading) return;
     setLoading(true);
     try {
       const response = await enrollMfa(factorType, {});
-      setOtpData({
+      setRecoveryCodeData({
+        recoveryCode: 'recovery_code' in response ? response.recovery_code : '',
         authSession: 'auth_session' in response ? response.auth_session : '',
-        barcodeUri: 'barcode_uri' in response ? response.barcode_uri : '',
         authenticationMethodId: 'id' in response ? response.id : '',
-        manualInputCode: 'manual_input_code' in response ? response.manual_input_code : '',
       });
     } catch (error) {
       const normalizedError = normalizeError(error, {
         resolver: (code) =>
-          t(`errors.${factorType}.${code}`, {}, 'An unexpected error occurred during enrollment.'),
+          t(
+            `errors.${factorType}.${code}`,
+            {},
+            'An unexpected error occurred during recovery code generation.',
+          ),
       });
       onError(normalizedError, ENROLL);
       onClose();
@@ -60,19 +62,19 @@ export function useOtpEnrollment({
     }
   }, [loading, factorType, enrollMfa, onError, onClose, t]);
 
-  const resetOtpData = useCallback(() => {
-    setOtpData({
+  const resetRecoveryCodeData = useCallback(() => {
+    setRecoveryCodeData({
+      recoveryCode: '',
       authSession: '',
-      barcodeUri: '',
       authenticationMethodId: '',
     });
     setLoading(false);
   }, []);
 
   return {
-    fetchOtpEnrollment,
-    otpData,
-    resetOtpData,
+    fetchRecoveryCode,
+    recoveryCodeData,
+    resetRecoveryCodeData,
     loading,
   };
 }

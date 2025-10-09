@@ -1,9 +1,10 @@
 import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_PHONE,
+  FACTOR_TYPE_TOTP,
   FACTOR_TYPE_PUSH_NOTIFICATION,
+  FACTOR_TYPE_RECOVERY_CODE,
   getComponentStyles,
 } from '@auth0-web-ui-components/core';
 import * as React from 'react';
@@ -15,19 +16,27 @@ import { Card } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { useTheme, useTranslator } from '@/hooks';
+import { useRecoveryCodeGeneration } from '@/hooks/my-account/mfa/use-recovery-code';
 import type { ENTER_OTP } from '@/lib/mfa-constants';
-import { ENTER_QR, ENTER_CONTACT, QR_PHASE_INSTALLATION } from '@/lib/mfa-constants';
+import {
+  ENTER_QR,
+  ENTER_CONTACT,
+  QR_PHASE_INSTALLATION,
+  SHOW_RECOVERY_CODE,
+} from '@/lib/mfa-constants';
 import { cn } from '@/lib/theme-utils';
 import type { UserMFASetupFormProps } from '@/types';
 
 import { ContactInputForm } from './contact-input-form';
 import { QRCodeEnrollmentForm } from './qr-code-enrollment-form';
+import { ShowRecoveryCode } from './show-recovery-code';
 
 type EnrollmentPhase =
   | typeof ENTER_CONTACT
   | typeof ENTER_OTP
   | typeof ENTER_QR
   | typeof QR_PHASE_INSTALLATION
+  | typeof SHOW_RECOVERY_CODE
   | null;
 
 export function UserMFASetupForm({
@@ -57,6 +66,13 @@ export function UserMFASetupForm({
 
   // Initialize phase as null, meaning no UI shown by default
   const [phase, setPhase] = React.useState<EnrollmentPhase>(null);
+  const { fetchRecoveryCode, loading, recoveryCodeData, resetRecoveryCodeData } =
+    useRecoveryCodeGeneration({
+      factorType,
+      enrollMfa,
+      onError,
+      onClose,
+    });
 
   React.useEffect(() => {
     if (!open) {
@@ -68,13 +84,20 @@ export function UserMFASetupForm({
     if (!open) return;
     const phaseMap: Partial<Record<MFAType, EnrollmentPhase>> = {
       [FACTOR_TYPE_EMAIL]: ENTER_CONTACT,
-      [FACTOR_TYPE_SMS]: ENTER_CONTACT,
+      [FACTOR_TYPE_PHONE]: ENTER_CONTACT,
       [FACTOR_TYPE_PUSH_NOTIFICATION]: QR_PHASE_INSTALLATION,
-      [FACTOR_TYPE_OTP]: ENTER_QR,
+      [FACTOR_TYPE_TOTP]: ENTER_QR,
+      [FACTOR_TYPE_RECOVERY_CODE]: SHOW_RECOVERY_CODE,
     };
 
     setPhase(phaseMap[factorType] ?? null);
   }, [open, factorType]);
+
+  React.useEffect(() => {
+    if (phase === SHOW_RECOVERY_CODE) {
+      fetchRecoveryCode();
+    }
+  }, [phase]);
 
   const renderInstallationPhase = () => (
     <div style={currentStyles?.variables} className="w-full max-w-sm mx-auto">
@@ -164,6 +187,26 @@ export function UserMFASetupForm({
             onSuccess={onSuccess}
             onClose={onClose}
             styling={styling}
+          />
+        );
+      case SHOW_RECOVERY_CODE:
+        return (
+          <ShowRecoveryCode
+            recoveryCode={recoveryCodeData.recoveryCode}
+            authSession={recoveryCodeData.authSession}
+            authenticationMethodId={recoveryCodeData.authenticationMethodId}
+            confirmEnrollment={confirmEnrollment}
+            onSuccess={() => {
+              onSuccess();
+              resetRecoveryCodeData();
+            }}
+            onBack={() => {
+              resetRecoveryCodeData();
+              onClose();
+            }}
+            styling={styling}
+            factorType={factorType}
+            loading={loading}
           />
         );
       default:

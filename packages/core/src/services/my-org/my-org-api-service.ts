@@ -1,10 +1,9 @@
+import type { BaseCoreClientInterface, MyOrgAPIServiceInterface } from '@core/auth/auth-types';
 import type { MyOrgClientOptions } from 'auth0-myorg-sdk';
 import { MyOrgClient } from 'auth0-myorg-sdk';
 
-import type { BaseCoreClientInterface, MyOrgAPIServiceInterface } from '../auth/auth-types';
-
-import { MY_ORG_SCOPES } from './my-org/my-org-api-constants';
-import { createOrganizationDetailsController } from './my-org/org-management/org-details-controller';
+import { MY_ORG_SCOPES } from './my-org-api-constants';
+import { createOrganizationDetailsController } from './org-management';
 
 /**
  * Creates a configured MyOrgClient instance using user-based authentication

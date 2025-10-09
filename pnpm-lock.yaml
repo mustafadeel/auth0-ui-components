@@ -555,6 +555,9 @@ importers:
 
   packages/core:
     dependencies:
+      '@auth0/myaccount':
+        specifier: file:./dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz
+        version: auth0-myaccount@file:packages/core/dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz
       auth0-myorg-sdk:
         specifier: file:./dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz
         version: auth0-my-org@file:packages/core/dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz
@@ -3589,6 +3592,11 @@ packages:
   auth0-my-org@file:packages/core/dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz:
     resolution: {integrity: sha512-KRF8KDzI4AGdSeJLPNuXe8uVohDJohIKKk9fpjZBqoETqMxziA6ax1F6wlSPHYff3dQWDN1MNQOyjpjEjUJL/w==, tarball: file:packages/core/dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz}
     version: 0.0.353
+    engines: {node: '>=18.0.0'}
+
+  auth0-myaccount@file:packages/core/dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz:
+    resolution: {integrity: sha512-9Hzf76MdmnGsjeFQ3rI28oFPtUTPbCiknKWmNtI/D+PTY/5WJ6QCP+0IDiDxUCXB1p021Nr3UvwKyByVMIWPcg==, tarball: file:packages/core/dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz}
+    version: 0.0.309
     engines: {node: '>=18.0.0'}
 
   autoprefixer@10.4.21:
@@ -10787,6 +10795,8 @@ snapshots:
   at-least-node@1.0.0: {}
 
   auth0-my-org@file:packages/core/dependencies/my-org-sdk/auth0-my-org-0.0.353.tgz: {}
+
+  auth0-myaccount@file:packages/core/dependencies/my-account-sdk/auth0-myaccount-0.0.309.tgz: {}
 
   autoprefixer@10.4.21(postcss@8.5.5):
     dependencies:

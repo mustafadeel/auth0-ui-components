@@ -1,3 +1,2 @@
-export * from './my-account/mfa';
-export * from './authentication-api-service';
+export * from './my-account';
 export * from './my-org';

@@ -10,9 +10,13 @@ type OtpForm = {
 
 type UseOtpConfirmationProps = {
   factorType: MFAType;
+  authSession: string;
+  authenticationMethodId: string;
   confirmEnrollment: (
     factor: MFAType,
-    options: { oobCode?: string; userOtpCode?: string },
+    authSession: string,
+    authenticationMethodId: string,
+    options: { userOtpCode?: string },
   ) => Promise<unknown | null>;
   onError: (error: Error, stage: typeof CONFIRM) => void;
   onSuccess: () => void;
@@ -21,6 +25,8 @@ type UseOtpConfirmationProps = {
 
 export function useOtpConfirmation({
   factorType,
+  authSession,
+  authenticationMethodId,
   confirmEnrollment,
   onError,
   onSuccess,
@@ -30,17 +36,21 @@ export function useOtpConfirmation({
   const [loading, setLoading] = useState(false);
 
   const onSubmitOtp = useCallback(
-    async (data: OtpForm, oobCode?: string) => {
+    async (data: OtpForm) => {
       if (loading) return;
       setLoading(true);
 
       try {
         const options = {
-          oobCode,
           userOtpCode: data.userOtp,
         };
 
-        const response = await confirmEnrollment(factorType, options);
+        const response = await confirmEnrollment(
+          factorType,
+          authSession,
+          authenticationMethodId,
+          options,
+        );
         if (response) {
           onSuccess();
           onClose();

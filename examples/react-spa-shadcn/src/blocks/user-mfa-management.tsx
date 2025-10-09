@@ -1,5 +1,5 @@
 import type { Authenticator } from '@auth0-web-ui-components/core';
-import { type MFAType, FACTOR_TYPE_EMAIL, FACTOR_TYPE_SMS } from '@auth0-web-ui-components/core';
+import { type MFAType, FACTOR_TYPE_EMAIL, FACTOR_TYPE_PHONE } from '@auth0-web-ui-components/core';
 import { MoreVertical, Trash2, Mail, Smartphone } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
@@ -380,7 +380,7 @@ function UserMFAMgmtComponent({
                                   )}
                                   {factor.active &&
                                     !(
-                                      factor.factorName === FACTOR_TYPE_SMS ||
+                                      factor.factorName === FACTOR_TYPE_PHONE ||
                                       factor.factorName === FACTOR_TYPE_EMAIL
                                     ) &&
                                     !readOnly && (
@@ -431,7 +431,7 @@ function UserMFAMgmtComponent({
                                     )}
                                 </div>
                                 {factor.active &&
-                                (factor.factorName === FACTOR_TYPE_SMS ||
+                                (factor.factorName === FACTOR_TYPE_PHONE ||
                                   factor.factorName === FACTOR_TYPE_EMAIL) ? (
                                   <Card
                                     className="border rounded-lg shadow-none bg-transparent p-0 w-full mt-2"
@@ -439,7 +439,7 @@ function UserMFAMgmtComponent({
                                   >
                                     <CardContent className="flex flex-row items-center justify-between gap-3 p-3 w-full">
                                       <div className="flex items-center gap-3">
-                                        {factor.factorName === FACTOR_TYPE_SMS ? (
+                                        {factor.factorName === FACTOR_TYPE_PHONE ? (
                                           <Smartphone
                                             className="w-5 h-5 text-muted-foreground"
                                             aria-hidden="true"

@@ -1,9 +1,9 @@
 import {
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
+  FACTOR_TYPE_PHONE,
   normalizeError,
   type MFAType,
-  type EnrollMfaResponse,
+  type CreateAuthenticationMethodResponseContent,
 } from '@auth0-web-ui-components/core';
 import { useState, useCallback } from 'react';
 
@@ -16,7 +16,10 @@ type ContactForm = {
 
 type UseContactEnrollmentProps = {
   factorType: MFAType;
-  enrollMfa: (factor: MFAType, options: Record<string, string>) => Promise<EnrollMfaResponse>;
+  enrollMfa: (
+    factor: MFAType,
+    options: Record<string, string>,
+  ) => Promise<CreateAuthenticationMethodResponseContent>;
   onError: (error: Error, stage: typeof ENROLL) => void;
 };
 
@@ -29,10 +32,12 @@ export function useContactEnrollment({
   const [loading, setLoading] = useState(false);
   const [contactData, setContactData] = useState<{
     contact: string;
-    oobCode?: string;
-    recoveryCodes?: string[];
+    authenticationMethodId: string;
+    authSession: string;
   }>({
     contact: '',
+    authSession: '',
+    authenticationMethodId: '',
   });
 
   const onSubmitContact = useCallback(
@@ -43,19 +48,18 @@ export function useContactEnrollment({
         const options: Record<string, string> =
           factorType === FACTOR_TYPE_EMAIL
             ? { email: data.contact }
-            : factorType === FACTOR_TYPE_SMS
+            : factorType === FACTOR_TYPE_PHONE
               ? { phone_number: data.contact }
               : {};
 
         const response = await enrollMfa(factorType, options);
+        const authenticationMethodId = 'id' in response ? response.id : '';
 
-        if (response?.oob_code) {
-          setContactData({
-            contact: data.contact,
-            oobCode: response?.oob_code,
-            recoveryCodes: response.recovery_codes || [],
-          });
-        }
+        setContactData({
+          contact: data.contact,
+          authenticationMethodId: authenticationMethodId,
+          authSession: response.auth_session,
+        });
       } catch (error) {
         const normalizedError = normalizeError(error, {
           resolver: (code) =>

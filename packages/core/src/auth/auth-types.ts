@@ -123,13 +123,13 @@ export interface BaseCoreClientInterface {
 }
 
 export interface CoreClientInterface extends BaseCoreClientInterface {
-  authenticationApiService: AuthenticationAPIServiceInterface;
+  myAccountApiService: MyAccountAPIServiceInterface;
   myOrgApiService: MyOrgAPIServiceInterface | undefined;
-  getAuthenticationApiService: () => AuthenticationAPIServiceInterface;
+  getAuthenticationApiService: () => MyAccountAPIServiceInterface;
   getMyOrgApiService: () => MyOrgAPIServiceInterface;
 }
 
-export interface AuthenticationAPIServiceInterface {
+export interface MyAccountAPIServiceInterface {
   mfa: MFAControllerInterface;
 }
 

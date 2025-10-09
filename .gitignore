@@ -35,6 +35,5 @@ Thumbs.db
 # Misc
 coverage/
 .cache/
-*.tgz
 .turbo
 .vercel

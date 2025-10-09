@@ -2,9 +2,9 @@ import {
   type MFAType,
   type EnrollMfaResponse,
   FACTOR_TYPE_EMAIL,
-  FACTOR_TYPE_SMS,
+  FACTOR_TYPE_PHONE,
   FACTOR_TYPE_PUSH_NOTIFICATION,
-  FACTOR_TYPE_OTP,
+  FACTOR_TYPE_TOTP,
 } from '@auth0-web-ui-components/core';
 import * as React from 'react';
 
@@ -67,9 +67,9 @@ export function UserMFASetupForm({
     if (!open) return;
     const phaseMap: Partial<Record<MFAType, EnrollmentPhase>> = {
       [FACTOR_TYPE_EMAIL]: ENTER_CONTACT,
-      [FACTOR_TYPE_SMS]: ENTER_CONTACT,
+      [FACTOR_TYPE_PHONE]: ENTER_CONTACT,
       [FACTOR_TYPE_PUSH_NOTIFICATION]: QR_PHASE_INSTALLATION,
-      [FACTOR_TYPE_OTP]: ENTER_QR,
+      [FACTOR_TYPE_TOTP]: ENTER_QR,
     };
 
     setPhase(phaseMap[factorType] ?? null);
