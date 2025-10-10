@@ -127,14 +127,11 @@ jobs:
             cd - > /dev/null
           fi
 
-      - name: Update package versions
+      - name: Update package versions on main push
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           set -e
           echo "Auto-bumping versions for main branch push"
-
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
 
           UPDATED_PACKAGES=()
 
@@ -178,20 +175,13 @@ jobs:
             cd - > /dev/null
           fi
 
-          # Commit version bumps back to main
+          # Store info for PR creation
           if [ ${#UPDATED_PACKAGES[@]} -gt 0 ]; then
-            git add packages/*/package.json
-            
-            commit_msg="chore: bump package versions"$'\n\n'
-            for pkg in "${UPDATED_PACKAGES[@]}"; do
-              commit_msg="$commit_msg- $pkg"$'\n'
-            done
-            
-            git commit -m "$commit_msg"
-            git push origin main
-            
-            echo "Committed version updates to main"
+            echo "HAS_VERSION_UPDATES=true" >> $GITHUB_ENV
+            echo "UPDATED_PACKAGES_LIST=${UPDATED_PACKAGES[@]}" >> $GITHUB_ENV
+            echo "Version updates prepared for PR creation"
           else
+            echo "HAS_VERSION_UPDATES=false" >> $GITHUB_ENV
             echo "No package changes detected"
           fi
 
@@ -318,7 +308,7 @@ jobs:
           git_config_global: true
           git_tag_gpgsign: true
 
-      - name: Create Pull Request with version updates
+      - name: Create Pull Request with version updates (workflow_dispatch)
         id: cpr
         if: |
           github.event_name == 'workflow_dispatch' && 
@@ -354,12 +344,69 @@ jobs:
 
             Commits are signed with GPG key for harish.sundar@okta.com.
 
-      - name: Auto approve
+      - name: Import GPG key for version bump PR
+        if: |
+          github.event_name == 'push' && 
+          github.ref == 'refs/heads/main' &&
+          env.HAS_VERSION_UPDATES == 'true'
+        id: import-gpg-version
+        uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4 # v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_config_global: true
+          git_tag_gpgsign: true
+
+      - name: Create Pull Request with version updates (push)
+        id: cpr-version
+        if: |
+          github.event_name == 'push' && 
+          github.ref == 'refs/heads/main' &&
+          env.HAS_VERSION_UPDATES == 'true'
+        uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # v6.1.0
+        with:
+          token: ${{ secrets.PAT }}
+          commit-message: |
+            chore: bump package versions
+
+            ${{ env.UPDATED_PACKAGES_LIST }}
+          committer: Harish Sundar <harish.sundar@okta.com>
+          author: Harish Sundar <harish.sundar@okta.com>
+          signoff: false
+          branch: version-bump-${{ github.run_id }}
+          delete-branch: true
+          title: "chore: bump package versions"
+          body: |
+            🤖 **Automated version bump after merge to main**
+
+            This PR contains version updates that were automatically applied after detecting changes in packages.
+
+            ## 📦 Updated Packages
+            ${{ env.UPDATED_PACKAGES_LIST }}
+
+            ## 🔗 Related
+            - GitHub Actions Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Triggered by commit: ${{ github.sha }}
+
+            ## ⚠️ Action Required
+            **This PR will be automatically approved.** Version bumps have been calculated and will be committed back to the repository.
+
+            Commits are signed with GPG key for harish.sundar@okta.com.
+
+      - name: Auto approve (workflow_dispatch)
         if: steps.cpr.outputs.pull-request-operation == 'created'
         uses: juliangruber/approve-pull-request-action@f83b836abaed1b3ab639ae61f9117c52ae405f65 # v2.0.7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.cpr.outputs.pull-request-number }}
+
+      - name: Auto approve (push)
+        if: steps.cpr-version.outputs.pull-request-operation == 'created'
+        uses: juliangruber/approve-pull-request-action@f83b836abaed1b3ab639ae61f9117c52ae405f65 # v2.0.7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.cpr-version.outputs.pull-request-number }}
 
       - name: No packages to publish
         if: steps.packages.outputs.packages == ''
