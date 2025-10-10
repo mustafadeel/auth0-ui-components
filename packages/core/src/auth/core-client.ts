@@ -142,7 +142,7 @@ export async function createCoreClient(
     },
   };
 
-  // Initialize Authentication API service
+  // Initialize MyAccount API service
   const myAccountApiService = await createMyAccountAPIService(baseCoreClient);
 
   // Initialize MyOrg API service if it's enabled
@@ -154,7 +154,7 @@ export async function createCoreClient(
     ...baseCoreClient,
     myAccountApiService,
     myOrgApiService,
-    getAuthenticationApiService: () => myAccountApiService,
+    getMyAccountApiService: () => myAccountApiService,
     getMyOrgApiService: () => {
       if (!myOrgApiService) {
         throw new Error(

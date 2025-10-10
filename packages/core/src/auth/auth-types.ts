@@ -125,7 +125,7 @@ export interface BaseCoreClientInterface {
 export interface CoreClientInterface extends BaseCoreClientInterface {
   myAccountApiService: MyAccountAPIServiceInterface;
   myOrgApiService: MyOrgAPIServiceInterface | undefined;
-  getAuthenticationApiService: () => MyAccountAPIServiceInterface;
+  getMyAccountApiService: () => MyAccountAPIServiceInterface;
   getMyOrgApiService: () => MyOrgAPIServiceInterface;
 }
 
