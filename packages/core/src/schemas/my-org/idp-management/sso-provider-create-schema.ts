@@ -5,7 +5,7 @@ import type {
   ProviderSelectionSchema,
   ProviderDetailsSchema,
   SsoProviderSchema,
-} from './create-sso-provider-schema-types';
+} from './sso-provider-create-schema-types';
 
 /**
  * Creates a schema for Step 1: Provider Selection

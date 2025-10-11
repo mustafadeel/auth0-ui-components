@@ -94,12 +94,27 @@
         }
       }
     },
+    "edit_sso_provider": {
+      "delete_sso_provider": {
+        "title": "このプロバイダーを削除",
+        "description": "一度確認すると、この操作は元に戻すことができません。",
+        "delete_button_label": "削除",
+        "modal": {
+          "title": "${providerName}を削除",
+          "description": "このプロバイダーでサインインするユーザーはアクセスできなくなります。この操作は元に戻すことができません。このプロバイダーを削除してもよろしいですか？",
+          "actions": {
+            "cancel_button_label": "キャンセル",
+            "delete_button_label": "削除"
+          }
+        }
+      }
+    },
     "delete_sso_provider": {
       "model_content": {
-        "description": "削除を確認するためにプロバイダー名を入力してください。",
+        "description": "確認のためにプロバイダー名を入力してください。",
         "field": {
           "label": "プロバイダー名",
-          "placeholder": "プロバイダー名を入力してください"
+          "placeholder": "プロバイダー名を入力"
         }
       }
     }

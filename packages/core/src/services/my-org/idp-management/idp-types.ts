@@ -1,19 +1,6 @@
-export interface OktaOptions {}
-export interface AdfsOptions {}
-export interface GoogleAppsOptions {}
-export interface OidcOptions {}
-export interface PingFederateOptions {}
-export interface SamlpOptions {}
-export interface WaadOptions {}
+import type { Auth0MyOrg } from 'auth0-myorg-sdk';
 
-type IdpOptions =
-  | OktaOptions
-  | AdfsOptions
-  | GoogleAppsOptions
-  | OidcOptions
-  | PingFederateOptions
-  | SamlpOptions
-  | WaadOptions;
+export type IdentityProvider = Auth0MyOrg.IdpKnown;
 
 export type IdpStrategy =
   | 'adfs'
@@ -23,19 +10,6 @@ export type IdpStrategy =
   | 'ping-federate'
   | 'samlp'
   | 'waad';
-
-export interface IdentityProvider {
-  id: string;
-  name: string;
-  display_name: string;
-  access_level: string;
-  assign_membership_on_login: boolean;
-  show_as_button: boolean;
-  domains: string[];
-  is_enabled: boolean;
-  strategy: IdpStrategy;
-  options: IdpOptions;
-}
 
 export type IdentityProviderCreate = Omit<IdentityProvider, 'id'>;
 

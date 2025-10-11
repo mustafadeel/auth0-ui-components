@@ -1,1 +1,1 @@
-export * from './create-sso-provider-types';
+export * from './sso-provider-create-types';

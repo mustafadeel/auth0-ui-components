@@ -94,6 +94,21 @@
         }
       }
     },
+    "edit_sso_provider": {
+      "delete_sso_provider": {
+        "title": "Delete this provider",
+        "description": "Once confirmed, this operation cannot be undone.",
+        "delete_button_label": "Delete",
+        "modal": {
+          "title": "Delete ${providerName}",
+          "description": "Users who sign in through this provider will lose access. The action cannot be undone. Are you sure you want to delete this provider?",
+          "actions": {
+            "cancel_button_label": "Cancel",
+            "delete_button_label": "Delete"
+          }
+        }
+      }
+    },
     "delete_sso_provider": {
       "model_content": {
         "description": "Type in the name of the provider to confirm.",
