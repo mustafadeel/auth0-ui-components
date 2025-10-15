@@ -61,7 +61,7 @@
     },
     "org_details_edit": {
       "header": {
-        "back_button_text": "Back",
+        "back_button_text": "Back to Organizations",
         "title": "${orgName}"
       },
       "save_org_changes_message": "The changes have been saved for ${orgName}.",

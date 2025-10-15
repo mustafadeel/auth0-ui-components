@@ -9,8 +9,15 @@
     "cssVariables": true
   },
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils"
+    "components": "src/components",
+    "ui": "src/components/ui",
+    "hooks": "src/hooks",
+    "providers": "src/providers",
+    "types": "src/types",
+    "hoc": "src/hoc",
+    "lib": "src/lib",
+    "blocks": "src/blocks",
+    "utils": "src/lib/utils"
   },
   "registries": [
     {

@@ -15,11 +15,6 @@
           "target": "auth0-ui-components/blocks/my-account/mfa/user-mfa-management.tsx"
         },
         {
-          "path": "src/blocks/index.ts",
-          "type": "registry:file",
-          "target": "auth0-ui-components/blocks/index.ts"
-        },
-        {
           "path": "src/components/my-account/mfa/user-mfa-setup-form.tsx",
           "type": "registry:component",
           "target": "auth0-ui-components/components/my-account/mfa/user-mfa-setup-form.tsx"
@@ -73,6 +68,11 @@
           "path": "src/components/ui/button.tsx",
           "type": "registry:component",
           "target": "auth0-ui-components/components/ui/button.tsx"
+        },
+        {
+          "path": "src/components/ui/list.tsx",
+          "type": "registry:component",
+          "target": "auth0-ui-components/components/ui/list.tsx"
         },
         {
           "path": "src/components/ui/card.tsx",
@@ -135,6 +135,11 @@
           "target": "auth0-ui-components/components/ui/qr-code.tsx"
         },
         {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:component",
+          "target": "auth0-ui-components/components/ui/tooltip.tsx"
+        },
+        {
           "path": "src/hooks/use-translator.ts",
           "type": "registry:hook",
           "target": "auth0-ui-components/hooks/use-translator.ts"
@@ -173,6 +178,11 @@
           "path": "src/hooks/my-account/mfa/use-contact-enrollment.ts",
           "type": "registry:hook",
           "target": "auth0-ui-components/hooks/my-account/mfa/use-contact-enrollment.ts"
+        },
+        {
+          "path": "src/hooks/my-account/mfa/use-recovery-code.ts",
+          "type": "registry:hook",
+          "target": "auth0-ui-components/hooks/my-account/mfa/use-recovery-code.ts"
         },
         {
           "path": "src/hooks/my-account/mfa/index.ts",
@@ -240,11 +250,6 @@
           "target": "auth0-ui-components/types/i18n-types.ts"
         },
         {
-          "path": "src/types/index.ts",
-          "type": "registry:file",
-          "target": "auth0-ui-components/types/index.ts"
-        },
-        {
           "path": "src/lib/theme-utils.ts",
           "type": "registry:file",
           "target": "auth0-ui-components/lib/theme-utils.ts"
@@ -255,14 +260,19 @@
           "target": "auth0-ui-components/lib/mfa-constants.ts"
         },
         {
-          "path": "src/lib/svgs/apple-logo.tsx",
+          "path": "src/lib/index.ts",
           "type": "registry:file",
-          "target": "auth0-ui-components/lib/svgs/apple-logo.tsx"
+          "target": "auth0-ui-components/lib/index.ts"
         },
         {
-          "path": "src/lib/svgs/google-logo.tsx",
+          "path": "src/assets/icons/apple-logo.tsx",
           "type": "registry:file",
-          "target": "auth0-ui-components/lib/svgs/google-logo.tsx"
+          "target": "auth0-ui-components/assets/icons/apple-logo.tsx"
+        },
+        {
+          "path": "src/assets/icons/google-logo.tsx",
+          "type": "registry:file",
+          "target": "auth0-ui-components/assets/icons/google-logo.tsx"
         },
         {
           "path": "src/hoc/with-services.tsx",
@@ -309,30 +319,19 @@
         "sonner",
         "react-hook-form",
         "@hookform/resolvers",
-        "react-qr-code",
+        "qrcode",
         "@auth0/auth0-react",
         "clsx",
         "tailwind-merge",
         "class-variance-authority",
         "lucide-react",
         "next-themes",
-        "input-otp"
-      ],
-      "registryDependencies": [
-        "badge",
-        "button",
-        "card",
-        "copyable-text-field",
-        "dialog",
-        "form",
-        "label",
-        "otp-field",
-        "popover",
-        "qr-code",
-        "separator",
-        "sonner",
-        "spinner",
-        "text-field"
+        "input-otp",
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-label",
+        "@radix-ui/react-separator",
+        "@radix-ui/react-slot",
+        "@radix-ui/react-tooltip"
       ]
     },
     {
@@ -350,11 +349,6 @@
           "path": "src/blocks/my-org/org-management/index.ts",
           "type": "registry:file",
           "target": "auth0-ui-components/blocks/my-org/org-management/index.ts"
-        },
-        {
-          "path": "src/blocks/index.ts",
-          "type": "registry:file",
-          "target": "auth0-ui-components/blocks/index.ts"
         },
         {
           "path": "src/components/my-org/org-management/org-details/org-details.tsx",
@@ -412,6 +406,11 @@
           "target": "auth0-ui-components/components/ui/color-picker.tsx"
         },
         {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:component",
+          "target": "auth0-ui-components/components/ui/dialog.tsx"
+        },
+        {
           "path": "src/components/ui/form.tsx",
           "type": "registry:component",
           "target": "auth0-ui-components/components/ui/form.tsx"
@@ -452,11 +451,6 @@
           "target": "auth0-ui-components/components/ui/separator.tsx"
         },
         {
-          "path": "src/components/ui/sonner.tsx",
-          "type": "registry:component",
-          "target": "auth0-ui-components/components/ui/sonner.tsx"
-        },
-        {
           "path": "src/components/ui/spinner.tsx",
           "type": "registry:component",
           "target": "auth0-ui-components/components/ui/spinner.tsx"
@@ -470,6 +464,16 @@
           "path": "src/components/ui/toast.tsx",
           "type": "registry:component",
           "target": "auth0-ui-components/components/ui/toast.tsx"
+        },
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:component",
+          "target": "auth0-ui-components/components/ui/toggle.tsx"
+        },
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:component",
+          "target": "auth0-ui-components/components/ui/sonner.tsx"
         },
         {
           "path": "src/hooks/use-translator.ts",
@@ -507,6 +511,31 @@
           "target": "auth0-ui-components/hooks/index.ts"
         },
         {
+          "path": "src/providers/component-provider.tsx",
+          "type": "registry:file",
+          "target": "auth0-ui-components/providers/component-provider.tsx"
+        },
+        {
+          "path": "src/providers/proxy-provider.tsx",
+          "type": "registry:file",
+          "target": "auth0-ui-components/providers/proxy-provider.tsx"
+        },
+        {
+          "path": "src/providers/spa-provider.tsx",
+          "type": "registry:file",
+          "target": "auth0-ui-components/providers/spa-provider.tsx"
+        },
+        {
+          "path": "src/providers/theme-provider.tsx",
+          "type": "registry:file",
+          "target": "auth0-ui-components/providers/theme-provider.tsx"
+        },
+        {
+          "path": "src/providers/index.ts",
+          "type": "registry:file",
+          "target": "auth0-ui-components/providers/index.ts"
+        },
+        {
           "path": "src/types/my-org/org-management/org-details-types.ts",
           "type": "registry:file",
           "target": "auth0-ui-components/types/my-org/org-management/org-details-types.ts"
@@ -527,14 +556,19 @@
           "target": "auth0-ui-components/types/my-org/org-management/index.ts"
         },
         {
-          "path": "src/types/my-org/index.ts",
+          "path": "src/types/auth-types.ts",
           "type": "registry:file",
-          "target": "auth0-ui-components/types/my-org/index.ts"
+          "target": "auth0-ui-components/types/auth-types.ts"
         },
         {
-          "path": "src/types/index.ts",
+          "path": "src/types/theme-types.ts",
           "type": "registry:file",
-          "target": "auth0-ui-components/types/index.ts"
+          "target": "auth0-ui-components/types/theme-types.ts"
+        },
+        {
+          "path": "src/types/i18n-types.ts",
+          "type": "registry:file",
+          "target": "auth0-ui-components/types/i18n-types.ts"
         },
         {
           "path": "src/hoc/with-services.tsx",
@@ -550,6 +584,41 @@
           "path": "src/lib/theme-utils.ts",
           "type": "registry:file",
           "target": "auth0-ui-components/lib/theme-utils.ts"
+        },
+        {
+          "path": "src/lib/index.ts",
+          "type": "registry:file",
+          "target": "auth0-ui-components/lib/index.ts"
+        },
+        {
+          "path": "src/styles/globals.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/globals.css"
+        },
+        {
+          "path": "src/styles/dark.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/dark.css"
+        },
+        {
+          "path": "src/styles/light.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/light.css"
+        },
+        {
+          "path": "src/styles/themes/default.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/themes/default.css"
+        },
+        {
+          "path": "src/styles/themes/minimal.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/themes/minimal.css"
+        },
+        {
+          "path": "src/styles/themes/rounded.css",
+          "type": "registry:file",
+          "target": "auth0-ui-components/styles/themes/rounded.css"
         }
       ],
       "dependencies": [
@@ -560,24 +629,11 @@
         "tailwind-merge",
         "class-variance-authority",
         "lucide-react",
-        "next-themes"
-      ],
-      "registryDependencies": [
-        "button",
-        "card",
-        "color-picker",
-        "form",
-        "form-actions",
-        "header",
-        "image-preview",
-        "label",
-        "modal",
-        "section",
-        "separator",
-        "sonner",
-        "spinner",
-        "text-field",
-        "toast"
+        "next-themes",
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-label",
+        "@radix-ui/react-separator",
+        "@radix-ui/react-slot"
       ]
     }
   ]

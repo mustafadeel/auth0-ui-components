@@ -9,22 +9,15 @@ import type { SortingState, ColumnDef } from '@tanstack/react-table';
 import { ChevronUpIcon, ChevronDownIcon, ArrowUpDownIcon, Copy } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { InlineCode } from '@/components/ui/inline-code';
-import { Switch } from '@/components/ui/switch';
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from '@/components/ui/table';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
 
+import { Badge } from './badge';
+import { Button } from './button';
+import { InlineCode } from './inline-code';
 import { Spinner } from './spinner';
+import { Switch } from './switch';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './table';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
 interface ActionButton extends Omit<CoreActionButton, 'onClick'> {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

@@ -15,29 +15,48 @@ export default function GettingStarted() {
       {/* Installation */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Installation</h2>
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Install the Auth0 UI Components package using your preferred package manager:
-          </p>
-          <div className="grid md:grid-cols-2 gap-4">
-            <CodeBlock code="npm install @auth0/ui-components-react" language="bash" title="npm" />
-            <CodeBlock code="pnpm add @auth0/ui-components-react" language="bash" title="pnpm" />
-          </div>
+        <div className="space-y-6">
+          {/* NPM Installation */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Shadcn</h3>
-            <p className="text-gray-600 mb-4">
-              If you are using Shadcn, you can add a component like UserMFA as a block to your
-              project:
-            </p>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Option 1: NPM Package</h3>
+            <p className="text-gray-600 mb-4">Install both the core and React packages:</p>
             <CodeBlock
-              code="npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/user-mfa-management.json"
+              code="npm install @auth0-web-ui-components/core @auth0-web-ui-components/react"
               language="bash"
-              title="Shadcn Block Installation"
+              title="npm"
             />
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
               <p className="text-sm text-blue-800">
-                <strong>Note:</strong> This method installs the component in your{' '}
-                <code>src/blocks/</code> directory and includes all necessary UI dependencies.
+                <strong>Note:</strong> This method installs pre-built components from npm and is the
+                recommended approach for most applications.
+              </p>
+            </div>
+          </div>
+
+          {/* Shadcn Installation */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Option 2: Shadcn CLI</h3>
+            <p className="text-gray-600 mb-4">
+              If you're using Shadcn, you can add individual blocks directly to your project. You'll
+              still need to install the core package separately:
+            </p>
+            <div className="space-y-3">
+              <CodeBlock
+                code="npm install @auth0-web-ui-components/core"
+                language="bash"
+                title="1. Install Core Package"
+              />
+              <CodeBlock
+                code="npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/my-account/user-mfa-management.json"
+                language="bash"
+                title="2. Add Shadcn Block (e.g., UserMFA)"
+              />
+            </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> Shadcn installs the React component source code in your{' '}
+                <code>src/auth0-ui-components/</code> directory along with all UI dependencies, but
+                you must install the core package separately via npm.
               </p>
             </div>
           </div>
@@ -148,12 +167,20 @@ import { Auth0ComponentProvider } from '@auth0/ui-components-react';
 const authDetails = {
     domain: import.meta.env.VITE_AUTH0_DOMAIN,
     clientId: import.meta.env.VITE_AUTH0_CLIENT_ID,
+    servicesConfig: {
+      myAccount: {
+        enabled: true, // Enable My Account components (MFA, etc.)
+      },
+      myOrg: {
+        enabled: true, // Enable My Organization components (Organization management)
+      },
+    },
   };
 
 function App() {
   return (
     <Auth0Provider
-      authDetails={authDetails}
+      {...authDetails}
     >
       <Auth0ComponentProvider authDetails={authDetails}>
         {/* Your app components */}
@@ -196,32 +223,107 @@ function SecurityPage() {
 
       {/* Next Steps */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Next Steps</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">Start Building</h2>
+        <p className="text-lg text-gray-600 mb-6">
+          Ready to add Auth0 components to your application? Choose your path:
+        </p>
+
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-3">Explore Components</h3>
-            <p className="text-gray-600 mb-4">
-              Learn about the UserMFAMgmt component's props and customization options.
-            </p>
-            <a href="/components/user-mfa" className="text-blue-600 hover:underline font-medium">
-              View UserMFAMgmt Documentation →
-            </a>
+          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 p-6 text-white shadow-xl">
+            <div className="relative z-10">
+              <div className="mb-3">
+                <svg
+                  className="w-8 h-8 text-white/90"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">My Account Components</h3>
+              <p className="text-white/90 mb-4">
+                Multi-factor authentication and user security management components.
+              </p>
+              <a
+                href="/my-account/user-mfa"
+                className="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-medium transition-colors"
+              >
+                Explore UserMFA
+                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-4 -translate-x-4"></div>
           </div>
-          <div className="bg-white border rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-3">Example Implementation</h3>
-            <p className="text-gray-600 mb-4">
-              See complete working examples in the `react-spa-npm` or `react-spa-shadcn` sample
-              applications.
-            </p>
-            <a
-              href="https://github.com/atko-cic/auth0-ui-components/tree/main/examples"
-              className="text-blue-600 hover:underline font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub →
-            </a>
+
+          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700 p-6 text-white shadow-xl">
+            <div className="relative z-10">
+              <div className="mb-3">
+                <svg
+                  className="w-8 h-8 text-white/90"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">My Organization Components</h3>
+              <p className="text-white/90 mb-4">
+                Organization management and administration components.
+              </p>
+              <a
+                href="/my-org"
+                className="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-medium transition-colors"
+              >
+                Explore My Organization
+                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-4 -translate-x-4"></div>
           </div>
+        </div>
+
+        <div className="mt-8 bg-white border rounded-lg p-6">
+          <h3 className="text-lg font-medium mb-3">Example Implementation</h3>
+          <p className="text-gray-600 mb-4">
+            See complete working examples in the `react-spa-npm` or `react-spa-shadcn` sample
+            applications.
+          </p>
+          <a
+            href="https://github.com/atko-cic/auth0-ui-components/tree/main/examples"
+            className="text-blue-600 hover:underline font-medium"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View on GitHub →
+          </a>
         </div>
       </section>
     </div>

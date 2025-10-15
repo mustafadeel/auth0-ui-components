@@ -1,9 +1,9 @@
-import { CardTitle, CardDescription } from '@/components/ui/card';
-import { DataTable, type Column } from '@/components/ui/data-table';
-import { Section } from '@/components/ui/section';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './accordion';
+import { CardTitle, CardDescription } from './card';
+import { DataTable, type Column } from './data-table';
+import { Section } from './section';
 
 export interface MappingProps<Item> {
   title: string;

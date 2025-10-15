@@ -7,12 +7,37 @@ export default function UserMFA() {
   return (
     <div className="max-w-6xl mx-auto space-y-12">
       {/* Header */}
-      <div className="space-y-4">
-        <h1 className="text-4xl font-bold text-gray-900">UserMFAMgmt Component</h1>
-        <p className="text-xl text-gray-600">
-          A comprehensive Multi-Factor Authentication (MFA) management component for Auth0
-          applications.
-        </p>
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-indigo-700/10 rounded-xl"></div>
+        <div
+          className="relative space-y-4 p-6 border-l-4 border-gradient-to-b from-blue-600 to-purple-600"
+          style={{ borderImage: 'linear-gradient(to bottom, rgb(37 99 235), rgb(147 51 234)) 1' }}
+        >
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full"></div>
+            <span className="text-sm font-medium text-blue-700 bg-blue-50 px-2 py-1 rounded-full flex items-center">
+              <svg
+                className="w-3 h-3 text-blue-600 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              My Account
+            </span>
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900">UserMFAMgmt Component</h1>
+          <p className="text-xl text-gray-600">
+            A comprehensive Multi-Factor Authentication (MFA) management component for Auth0
+            applications.
+          </p>
+        </div>
       </div>
 
       {/* Overview */}
@@ -156,28 +181,48 @@ VITE_AUTH0_AUDIENCE=your-api-audience # Optional`}
       {/* Installation */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Installation</h2>
-        <div className="space-y-4">
-          <p className="text-gray-600">
-            Install the Auth0 UI Components package using your preferred package manager:
-          </p>
-          <div className="grid md:grid-cols-2 gap-4">
-            <CodeBlock code="npm install @auth0/ui-components-react" language="bash" title="npm" />
-            <CodeBlock code="pnpm add @auth0/ui-components-react" language="bash" title="pnpm" />
-          </div>
+        <div className="space-y-6">
+          {/* NPM Installation */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Shadcn</h3>
-            <p className="text-gray-600 mb-4">
-              If you are using Shadcn, you can add the UserMFA component as a block to your project:
-            </p>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Option 1: NPM Package</h3>
+            <p className="text-gray-600 mb-4">Install both the core and React packages:</p>
             <CodeBlock
-              code="npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/user-mfa-management.json"
+              code="npm install @auth0-web-ui-components/core @auth0-web-ui-components/react"
               language="bash"
-              title="Shadcn Block Installation"
+              title="npm"
             />
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
               <p className="text-sm text-blue-800">
-                <strong>Note:</strong> This method installs the component in your{' '}
-                <code>src/blocks/</code> directory and includes all necessary UI dependencies.
+                <strong>Note:</strong> This method installs pre-built components from npm and is the
+                recommended approach for most applications.
+              </p>
+            </div>
+          </div>
+
+          {/* Shadcn Installation */}
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-3">Option 2: Shadcn CLI</h3>
+            <p className="text-gray-600 mb-4">
+              If you're using Shadcn, you can add the UserMFA block directly to your project. You'll
+              still need to install the core package separately:
+            </p>
+            <div className="space-y-3">
+              <CodeBlock
+                code="npm install @auth0-web-ui-components/core"
+                language="bash"
+                title="1. Install Core Package"
+              />
+              <CodeBlock
+                code="npx shadcn@latest add https://auth0-web-ui-components.vercel.app/r/my-account/user-mfa-management.json"
+                language="bash"
+                title="2. Add Shadcn Block"
+              />
+            </div>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> Shadcn installs the React component source code in your{' '}
+                <code>src/auth0-ui-components/</code> directory along with all UI dependencies, but
+                you must install the core package separately via npm.
               </p>
             </div>
           </div>
@@ -525,13 +570,16 @@ function SecurityPage() {
 }
 
 export default function App() {
+  const authDetails = {
+    domain: "your-domain.auth0.com",
+    clientId: "your-client-id"
+  };
   return (
     <Auth0Provider
-      domain="your-domain.auth0.com"
-      clientId="your-client-id"
+      {...authDetails}
       redirectUri={window.location.origin}
     >
-      <Auth0ComponentProvider>
+      <Auth0ComponentProvider authDetails={authDetails}>
         <SecurityPage />
       </Auth0ComponentProvider>
     </Auth0Provider>
@@ -546,16 +594,16 @@ export default function App() {
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Common Issues</h2>
         <div className="space-y-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <h4 className="font-medium text-yellow-900 mb-2">Missing MFA Grant Types</h4>
-            <p className="text-yellow-800 text-sm">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-medium text-gray-900 mb-2">Missing MFA Grant Types</h4>
+            <p className="text-gray-700 text-sm">
               If you see authentication errors, ensure MFA grant types are enabled in your Auth0
               application settings.
             </p>
           </div>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <h4 className="font-medium text-yellow-900 mb-2">MFA Policies Not Configured</h4>
-            <p className="text-yellow-800 text-sm">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <h4 className="font-medium text-gray-900 mb-2">MFA Policies Not Configured</h4>
+            <p className="text-gray-700 text-sm">
               Configure MFA policies in your Auth0 Dashboard under Security → Multi-factor Auth for
               the component to work properly.
             </p>

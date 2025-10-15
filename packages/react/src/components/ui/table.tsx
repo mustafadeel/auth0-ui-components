@@ -1,8 +1,9 @@
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import React from 'react';
 
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
+
+import { Button } from './button';
 
 interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   className?: string;

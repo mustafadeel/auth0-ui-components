@@ -23,6 +23,7 @@
   "scripts": {
     "build": "turbo run build",
     "build:docs": "turbo run build --filter=auth0-ui-components-docs",
+    "build:shadcn": "cd packages/react && pnpm registry:build && cp -r public/r ../../examples/docs-site/public/",
     "dev:docs": "turbo run dev --filter=auth0-ui-components-docs",
     "test": "echo \"No tests configured yet.\"",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",

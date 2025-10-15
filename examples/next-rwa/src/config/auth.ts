@@ -44,9 +44,6 @@ export const auth0Config: Auth0Config = {
   clientSecret: getRequiredEnvVar('AUTH0_CLIENT_SECRET'),
   secret: getRequiredEnvVar('AUTH0_SECRET'),
   baseUrl: getOptionalEnvVar('APP_BASE_URL', 'http://localhost:5173'),
-  scope: getOptionalEnvVar(
-    'AUTH0_SCOPE',
-    'openid profile email enroll read:authenticators remove:authenticators offline_access',
-  ),
+  scope: getOptionalEnvVar('AUTH0_SCOPE', 'openid profile email'),
   audience: getOptionalEnvVar('AUTH0_AUDIENCE', ''),
 };

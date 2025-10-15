@@ -25,8 +25,7 @@ export const auth0 = new Auth0Client({
   authorizationParameters: {
     scope:
       // eslint-disable-next-line no-undef
-      process.env.AUTH0_SCOPE ||
-      'openid profile email read:authenticators remove:authenticators enroll offline_access',
+      process.env.AUTH0_SCOPE || 'openid profile email offline_access',
     // Only include audience if it's defined and not empty
     // eslint-disable-next-line no-undef
     ...(process.env.AUTH0_AUDIENCE && { audience: process.env.AUTH0_AUDIENCE }),

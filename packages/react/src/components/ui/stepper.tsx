@@ -3,9 +3,10 @@
 import { Check } from 'lucide-react';
 import * as React from 'react';
 
-import { Card } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
+
+import { Card } from './card';
+import { Separator } from './separator';
 
 interface StepperContextValue {
   currentStep: number;

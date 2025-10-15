@@ -4,8 +4,9 @@ import { CheckIcon, ChevronRightIcon, CircleIcon } from 'lucide-react';
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
+
+import { Button } from './button';
 
 interface DropdownMenuContextValue {
   open: boolean;

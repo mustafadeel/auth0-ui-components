@@ -112,8 +112,7 @@ export interface AuthDetailsCore {
   scopes?: string | undefined;
   authProxyUrl?: string | undefined;
   contextInterface?: BasicAuth0ContextInterface | undefined;
-  enableMyAccount?: boolean;
-  enableMyOrg?: boolean;
+  servicesConfig: ServicesConfig;
 }
 
 export interface BaseCoreClientInterface {

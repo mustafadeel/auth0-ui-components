@@ -39,7 +39,7 @@ A Next.js Regular Web App (RWA) example that demonstrates Auth0 authentication u
    AUTH0_DOMAIN='https://your-domain.auth0.com'
    AUTH0_CLIENT_ID='your-client-id'
    AUTH0_CLIENT_SECRET='your-client-secret'
-   AUTH0_SCOPE='openid profile email read:authenticators remove:authenticators enroll'
+   AUTH0_SCOPE='openid profile email create:me:authentication_methods read:me:authentication_methods delete:me:authentication_methods update:me:authentication_methods read:me:factors'
    ```
 
 5. Run the development server:

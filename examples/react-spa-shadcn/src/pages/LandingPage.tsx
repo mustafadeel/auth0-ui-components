@@ -2,7 +2,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/auth0-ui-components/components/ui/button';
 
 const LandingPage = () => {
   const { t } = useTranslation();

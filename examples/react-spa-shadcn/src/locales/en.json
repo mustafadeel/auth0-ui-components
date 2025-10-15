@@ -14,6 +14,7 @@
   },
   "profile-drop-down": {
     "profile": "Profile",
+    "manage-org": "Manage Org",
     "sign-out": "Sign out"
   },
   "language-drop-down": {
@@ -29,5 +30,8 @@
         "description": "This is where the UserMFAMgmt component will be placed"
       }
     }
+  },
+  "manage-org": {
+    "title": "Manage Organization"
   }
 }

@@ -1,9 +1,10 @@
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { cn } from '@/lib/theme-utils';
+import { cn } from '../../lib/theme-utils';
+
+import { Button } from './button';
+import { Popover, PopoverContent, PopoverTrigger } from './popover';
 
 const SelectContext = React.createContext<{
   value?: string;

@@ -3,11 +3,12 @@
 import * as React from 'react';
 import type { z } from 'zod';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { FormActions } from '@/components/ui/form-actions';
-import { WizardStepper } from '@/components/ui/wizard-stepper';
-import { useFormErrors } from '@/hooks/use-form-errors';
-import { cn } from '@/lib/theme-utils';
+import { useFormErrors } from '../../hooks/use-form-errors';
+import { cn } from '../../lib/theme-utils';
+
+import { Card, CardContent } from './card';
+import { FormActions } from './form-actions';
+import { WizardStepper } from './wizard-stepper';
 
 export interface StepFormActions<WizardData> {
   showPrevious?: boolean;

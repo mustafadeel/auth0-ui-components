@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import Layout from './components/Layout';
 import GettingStarted from './pages/GettingStarted';
 import HomePage from './pages/HomePage';
+import MyOrgIntroduction from './pages/MyOrgIntroduction';
+import OrgDetailsEdit from './pages/OrgDetailsEdit';
 import UserMFA from './pages/UserMFA';
 import '@auth0-web-ui-components/react/dist/index.css';
 
@@ -36,7 +38,9 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/getting-started" element={<GettingStarted />} />
-          <Route path="/components/user-mfa" element={<UserMFA />} />
+          <Route path="/my-account/user-mfa" element={<UserMFA />} />
+          <Route path="/my-org" element={<MyOrgIntroduction />} />
+          <Route path="/my-org/org-details-edit" element={<OrgDetailsEdit />} />
         </Routes>
       </Auth0ComponentProvider>
     </Layout>

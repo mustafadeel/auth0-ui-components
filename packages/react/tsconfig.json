@@ -10,10 +10,6 @@
     "declaration": true,
     "declarationDir": "dist",
     "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
     "moduleResolution": "node",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "strict": true,

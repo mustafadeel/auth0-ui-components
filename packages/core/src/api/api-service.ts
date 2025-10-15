@@ -59,7 +59,7 @@ async function request<T>(
   }
 
   if (enableLogging) {
-    console.debug(`[APIService] ${method} ${url}`, requestInit);
+    console.debug(`[APIService] ${method} ${url}`, requestInit); // eslint-disable-line
   }
 
   try {
@@ -77,7 +77,7 @@ async function request<T>(
     }
 
     if (enableLogging) {
-      console.debug(`[APIService] Response from ${url}`, data);
+      console.debug(`[APIService] Response from ${url}`, data); // eslint-disable-line
     }
 
     return data as T;

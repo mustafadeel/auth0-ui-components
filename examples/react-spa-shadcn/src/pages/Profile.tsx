@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 
-import { UserMFAMgmt } from '@/blocks/user-mfa-management';
-import Header from '@/components/Header';
+import { UserMFAMgmt } from '@/auth0-ui-components/blocks/my-account/mfa/user-mfa-management';
+
+import Header from '../components/Header';
 
 const Profile = () => {
   const { t } = useTranslation();

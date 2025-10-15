@@ -56,46 +56,49 @@ const CoreUtils = {
    * @returns Promise resolving to updated auth details with access token (if available)
    */
   async initializeAuthDetails(authDetails: AuthDetailsCore): Promise<AuthDetailsCore> {
+    const authDetailsWithServices = {
+      ...authDetails,
+      servicesConfig: CoreUtils.initializeServicesConfig(authDetails),
+    };
+
     if (CoreUtils.isProxyMode(authDetails)) {
-      return authDetails;
+      return authDetailsWithServices;
     }
-    if (authDetails.contextInterface) {
+    if (authDetailsWithServices.contextInterface) {
       try {
-        const tokenRes = await authDetails.contextInterface.getAccessTokenSilently({
+        const tokenRes = await authDetailsWithServices.contextInterface.getAccessTokenSilently({
           cacheMode: 'off',
           detailedResponse: true,
         });
         return {
-          ...authDetails,
+          ...authDetailsWithServices,
           accessToken: tokenRes.access_token,
         };
       } catch (err) {
         return {
-          ...authDetails,
+          ...authDetailsWithServices,
           accessToken: undefined,
         };
       }
     }
-    return authDetails;
+    return authDetailsWithServices;
   },
 
   /**
-   * Creates services configuration from auth details with proper defaults.
+   * Initializes services configuration from auth details with proper defaults.
    *
    * @param authDetails - The authentication details containing service enablement flags
    * @returns ServicesConfig object with proper defaults applied
    */
-  createServicesConfig(authDetails: AuthDetailsCore): ServicesConfig {
+  initializeServicesConfig(authDetails: AuthDetailsCore): ServicesConfig {
     return {
-      myAccount: { enabled: authDetails.enableMyAccount ?? true },
-      myOrg: { enabled: authDetails.enableMyOrg ?? false },
+      myAccount: { enabled: authDetails.servicesConfig.myAccount.enabled ?? false },
+      myOrg: { enabled: authDetails.servicesConfig.myOrg.enabled ?? false },
     };
   },
 
-  async initializeServices(
-    baseCoreClient: BaseCoreClientInterface,
-    servicesConfig: ServicesConfig,
-  ) {
+  async initializeServices(baseCoreClient: BaseCoreClientInterface) {
+    const { servicesConfig, contextInterface } = baseCoreClient.auth;
     const services: {
       myAccountApiService?: MyAccountAPIServiceInterface;
       myOrgApiService?: MyOrgAPIServiceInterface;
@@ -103,7 +106,7 @@ const CoreUtils = {
     const errors: string[] = [];
 
     // Initialize MyAccount API service
-    if (servicesConfig.myAccount.enabled) {
+    if (servicesConfig.myAccount.enabled && contextInterface?.isAuthenticated) {
       try {
         services.myAccountApiService = await createMyAccountAPIService(baseCoreClient);
       } catch (error) {
@@ -113,7 +116,7 @@ const CoreUtils = {
     }
 
     // Initialize MyOrg API service
-    if (servicesConfig.myOrg.enabled) {
+    if (servicesConfig.myOrg.enabled && contextInterface?.isAuthenticated) {
       try {
         services.myOrgApiService = await createMyOrgAPIService(baseCoreClient);
       } catch (error) {
@@ -177,8 +180,6 @@ export async function createCoreClient(
     CoreUtils.initializeAuthDetails(authDetails),
   ]);
 
-  const servicesConfig = CoreUtils.createServicesConfig(authDetails);
-
   // Initialize token manager service
   const tokenManagerService = createTokenManager(auth);
 
@@ -200,10 +201,8 @@ export async function createCoreClient(
     },
   };
 
-  const { myAccountApiService, myOrgApiService } = await CoreUtils.initializeServices(
-    baseCoreClient,
-    servicesConfig,
-  );
+  const { myAccountApiService, myOrgApiService } =
+    await CoreUtils.initializeServices(baseCoreClient);
 
   const coreClient: CoreClientInterface = {
     ...baseCoreClient,

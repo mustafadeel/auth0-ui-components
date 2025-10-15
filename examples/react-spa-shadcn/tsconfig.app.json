@@ -23,7 +23,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/auth0-ui-components/*": ["./src/auth0-ui-components/*"]
     },
 
     /* React 19 + React Router v7 compatibility */

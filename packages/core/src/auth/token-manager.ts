@@ -148,7 +148,7 @@ const TokenUtils = {
  * const tokenManager = createTokenManager(authDetails);
  *
  * // Get token for MFA operations
- * const token = await tokenManager.getToken('read:authenticators', 'mfa');
+ * const token = await tokenManager.getToken('read:me:authentication_methods', 'mfa');
  *
  * // Force fresh token (ignore cache)
  * const freshToken = await tokenManager.getToken('read:users', 'management', true);
@@ -162,7 +162,7 @@ export function createTokenManager(auth: AuthDetailsCore) {
      * In proxy mode, this method returns undefined as tokens should not be sent to proxy endpoints.
      * For non-proxy mode, it attempts silent token retrieval first, falling back to popup if necessary.
      *
-     * @param scope - The OAuth scope required for the token (e.g., 'read:authenticators enroll')
+     * @param scope - The OAuth scope required for the token (e.g., 'read:me:authentication_methods')
      * @param audiencePath - The API audience path (e.g., 'mfa', 'users')
      * @param ignoreCache - Whether to bypass cache and request a fresh token
      * @returns Promise resolving to access token string, or undefined in proxy mode
