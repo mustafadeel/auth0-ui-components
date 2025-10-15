@@ -14,7 +14,9 @@ export function ClientProvider({ children }: ClientProviderProps) {
     <I18nProvider>
       <Auth0ComponentProvider
         authDetails={{
-          authProxyUrl: '/api', // Use the auth proxy base (For example, MFA service will add /mfa/authenticators)
+          authProxyUrl: '/api',
+          enableMyOrg: true,
+          enableMyAccount: true,
         }}
         themeSettings={{
           mode: 'light',

@@ -48,7 +48,14 @@ function OrgDetailsEditComponent({
   );
 
   if (isFetchLoading) {
-    return <Spinner />;
+    return (
+      <div
+        style={currentStyles.variables}
+        className="flex items-center justify-center min-h-96 w-full"
+      >
+        <Spinner />
+      </div>
+    );
   }
 
   return (

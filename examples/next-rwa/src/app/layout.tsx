@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import React from 'react';
 
 import { Navbar } from '@/components/navigation/navbar';
+import { Sidebar } from '@/components/navigation/side-bar';
 import { ClientProvider } from '@/providers/client-provider';
 
 import './globals.css';
@@ -24,7 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ClientProvider>
             <div className="min-h-full bg-white">
               <Navbar />
-              <main className="min-h-full bg-white">{children}</main>
+              <Sidebar />
+              <main className="ml-64 pt-16 min-h-full bg-white overflow-auto">{children}</main>
             </div>
           </ClientProvider>
         </Auth0Provider>
