@@ -16,129 +16,116 @@ import { AuthUtils } from './auth-utils';
 import { createTokenManager } from './token-manager';
 
 /**
- * Pure utility functions for core business logic.
+ * Gets the base URL for API calls, supporting both direct Auth0 domain and proxy mode.
  */
-const CoreUtils = {
-  /**
-   * Gets the base URL for API calls, supporting both direct Auth0 domain and proxy mode.
-   *
-   * @param auth - The authentication details containing domain or proxy URL configuration
-   * @returns The base API URL with trailing slash
-   * @throws {Error} When Auth0 domain is not configured and no proxy URL is provided
-   */
-  getApiBaseUrl(auth: AuthDetailsCore): string {
-    // Use authProxyUrl if provided (proxy mode)
-    if (auth.authProxyUrl) {
-      return auth.authProxyUrl.endsWith('/') ? auth.authProxyUrl : `${auth.authProxyUrl}/`;
-    }
+function getApiBaseUrl(auth: AuthDetailsCore): string {
+  // Use authProxyUrl if provided (proxy mode)
+  if (auth.authProxyUrl) {
+    return auth.authProxyUrl.endsWith('/') ? auth.authProxyUrl : `${auth.authProxyUrl}/`;
+  }
 
-    const domain = auth.domain;
-    if (!domain) {
-      throw new Error('getApiBaseUrl: Auth0 domain is not configured');
-    }
-    return AuthUtils.toURL(domain);
-  },
+  const domain = auth.domain;
+  if (!domain) {
+    throw new Error('getApiBaseUrl: Auth0 domain is not configured');
+  }
+  return AuthUtils.toURL(domain);
+}
 
-  /**
-   * Determines if the client is running in proxy mode by checking for authProxyUrl.
-   *
-   * @param auth - The authentication details to check
-   * @returns True if running in proxy mode, false otherwise
-   */
-  isProxyMode(auth: AuthDetailsCore): boolean {
-    return !!auth.authProxyUrl;
-  },
+/**
+ * Determines if the client is running in proxy mode by checking for authProxyUrl.
+ */
+function isProxyMode(auth: AuthDetailsCore): boolean {
+  return !!auth.authProxyUrl;
+}
 
-  /**
-   * Initializes authentication details by attempting to get an access token if a context interface is available and is not proxy mode.
-   *
-   * @param authDetails - The initial authentication details
-   * @returns Promise resolving to updated auth details with access token (if available)
-   */
-  async initializeAuthDetails(authDetails: AuthDetailsCore): Promise<AuthDetailsCore> {
-    const authDetailsWithServices = {
-      ...authDetails,
-      servicesConfig: CoreUtils.initializeServicesConfig(authDetails),
-    };
+/**
+ * Initializes services configuration from auth details with proper defaults.
+ */
+function initializeServicesConfig(authDetails: AuthDetailsCore): ServicesConfig {
+  return {
+    myAccount: { enabled: authDetails.servicesConfig.myAccount.enabled ?? false },
+    myOrg: { enabled: authDetails.servicesConfig.myOrg.enabled ?? false },
+  };
+}
 
-    if (CoreUtils.isProxyMode(authDetails)) {
-      return authDetailsWithServices;
-    }
-    if (authDetailsWithServices.contextInterface) {
-      try {
-        const tokenRes = await authDetailsWithServices.contextInterface.getAccessTokenSilently({
-          cacheMode: 'off',
-          detailedResponse: true,
-        });
-        return {
-          ...authDetailsWithServices,
-          accessToken: tokenRes.access_token,
-        };
-      } catch (err) {
-        return {
-          ...authDetailsWithServices,
-          accessToken: undefined,
-        };
-      }
-    }
+/**
+ * Initializes authentication details by attempting to get an access token if a context interface is available and is not proxy mode.
+ */
+async function initializeAuthDetails(authDetails: AuthDetailsCore): Promise<AuthDetailsCore> {
+  const authDetailsWithServices = {
+    ...authDetails,
+    servicesConfig: initializeServicesConfig(authDetails),
+  };
+
+  if (isProxyMode(authDetails)) {
     return authDetailsWithServices;
-  },
+  }
 
-  /**
-   * Initializes services configuration from auth details with proper defaults.
-   *
-   * @param authDetails - The authentication details containing service enablement flags
-   * @returns ServicesConfig object with proper defaults applied
-   */
-  initializeServicesConfig(authDetails: AuthDetailsCore): ServicesConfig {
-    return {
-      myAccount: { enabled: authDetails.servicesConfig.myAccount.enabled ?? false },
-      myOrg: { enabled: authDetails.servicesConfig.myOrg.enabled ?? false },
-    };
-  },
-
-  async initializeServices(baseCoreClient: BaseCoreClientInterface) {
-    const { servicesConfig, contextInterface } = baseCoreClient.auth;
-    const services: {
-      myAccountApiService?: MyAccountAPIServiceInterface;
-      myOrgApiService?: MyOrgAPIServiceInterface;
-    } = {};
-    const errors: string[] = [];
-
-    // Initialize MyAccount API service
-    if (servicesConfig.myAccount.enabled && contextInterface?.isAuthenticated) {
-      try {
-        services.myAccountApiService = await createMyAccountAPIService(baseCoreClient);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        errors.push(`MyAccount service: ${message}`);
-      }
+  if (authDetailsWithServices.contextInterface) {
+    try {
+      const tokenRes = await authDetailsWithServices.contextInterface.getAccessTokenSilently({
+        cacheMode: 'off',
+        detailedResponse: true,
+      });
+      return {
+        ...authDetailsWithServices,
+        accessToken: tokenRes.access_token,
+      };
+    } catch (err) {
+      return {
+        ...authDetailsWithServices,
+        accessToken: undefined,
+      };
     }
+  }
+  return authDetailsWithServices;
+}
 
-    // Initialize MyOrg API service
-    if (servicesConfig.myOrg.enabled && contextInterface?.isAuthenticated) {
-      try {
-        services.myOrgApiService = await createMyOrgAPIService(baseCoreClient);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Unknown error';
-        errors.push(`MyOrg service: ${message}`);
-      }
+/**
+ * Initializes API services based on configuration and authentication state.
+ */
+async function initializeServices(baseCoreClient: BaseCoreClientInterface) {
+  const { servicesConfig, contextInterface } = baseCoreClient.auth;
+  const isProxy = baseCoreClient.isProxyMode();
+  const services: {
+    myAccountApiService?: MyAccountAPIServiceInterface;
+    myOrgApiService?: MyOrgAPIServiceInterface;
+  } = {};
+  const errors: string[] = [];
+
+  // Initialize MyAccount API service
+  if (servicesConfig.myAccount.enabled && (isProxy || contextInterface?.isAuthenticated)) {
+    try {
+      services.myAccountApiService = await createMyAccountAPIService(baseCoreClient);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      errors.push(`MyAccount service: ${message}`);
     }
+  }
 
-    const enabledCount =
-      (servicesConfig.myAccount.enabled ? 1 : 0) + (servicesConfig.myOrg.enabled ? 1 : 0);
-
-    if (enabledCount > 0 && errors.length === enabledCount) {
-      const formattedErrors = errors.map((error, index) => `  ${index + 1}. ${error}`).join('\n');
-
-      throw new Error(
-        `Service initialization failed:\n\n${formattedErrors}\n\nPlease check your configuration and network connectivity.`,
-      );
+  // Initialize MyOrg API service
+  if (servicesConfig.myOrg.enabled && (isProxy || contextInterface?.isAuthenticated)) {
+    try {
+      services.myOrgApiService = await createMyOrgAPIService(baseCoreClient);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      errors.push(`MyOrg service: ${message}`);
     }
+  }
 
-    return services;
-  },
-};
+  const enabledCount =
+    (servicesConfig.myAccount.enabled ? 1 : 0) + (servicesConfig.myOrg.enabled ? 1 : 0);
+
+  if (enabledCount > 0 && errors.length === enabledCount) {
+    const formattedErrors = errors.map((error, index) => `  ${index + 1}. ${error}`).join('\n');
+
+    throw new Error(
+      `Service initialization failed:\n\n${formattedErrors}\n\nPlease check your configuration and network connectivity.`,
+    );
+  }
+
+  return services;
+}
 
 /**
  * Creates a core client instance that serves as the foundation for authentication and other main operations.
@@ -146,7 +133,7 @@ const CoreUtils = {
  * This factory function initializes all core services including i18n, token management,
  * and other API services. It handles both direct Auth0 integration and proxy mode.
  *
- * @param authDetails - Authentication configuration including domain, client ID, and optional proxy settings
+ * @param authDetails - Authentication configuration including domain, and optional proxy settings
  * @param i18nOptions - Optional internationalization configuration for language support
  * @returns Promise resolving to a fully initialized core client interface
  *
@@ -155,14 +142,12 @@ const CoreUtils = {
  * // Direct Auth0 integration
  * const coreClient = await createCoreClient({
  *   domain: 'your-domain.auth0.com',
- *   clientId: 'your-client-id',
  *   contextInterface: auth0Client
  * });
  *
  * // Proxy mode
  * const coreClient = await createCoreClient({
  *   authProxyUrl: 'https://your-proxy.com/api',
- *   clientId: 'your-client-id'
  * });
  * ```
  */
@@ -177,7 +162,7 @@ export async function createCoreClient(
         fallbackLanguage: 'en-US',
       },
     ),
-    CoreUtils.initializeAuthDetails(authDetails),
+    initializeAuthDetails(authDetails),
   ]);
 
   // Initialize token manager service
@@ -193,16 +178,15 @@ export async function createCoreClient(
     },
 
     getApiBaseUrl(): string {
-      return CoreUtils.getApiBaseUrl(auth);
+      return getApiBaseUrl(auth);
     },
 
     isProxyMode(): boolean {
-      return CoreUtils.isProxyMode(auth);
+      return isProxyMode(auth);
     },
   };
 
-  const { myAccountApiService, myOrgApiService } =
-    await CoreUtils.initializeServices(baseCoreClient);
+  const { myAccountApiService, myOrgApiService } = await initializeServices(baseCoreClient);
 
   const coreClient: CoreClientInterface = {
     ...baseCoreClient,
