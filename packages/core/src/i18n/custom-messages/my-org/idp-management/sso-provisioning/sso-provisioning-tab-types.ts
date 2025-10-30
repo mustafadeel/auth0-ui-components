@@ -36,7 +36,7 @@ export interface SsoProvisioningDetailsMessages {
       error?: string;
     };
   };
-  field_mappings?: ProvisioningFieldMappingsMessages;
+  mappings?: ProvisioningFieldMappingsMessages;
 }
 
 export interface SsoProvisioningDeleteModalContentMessages {

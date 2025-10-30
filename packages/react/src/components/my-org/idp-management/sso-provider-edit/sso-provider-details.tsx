@@ -2,8 +2,9 @@ import { getComponentStyles } from '@auth0-web-ui-components/core';
 import React from 'react';
 
 import { FormActions } from '../../../../components/ui/form-actions';
-import { useTheme, useTranslator } from '../../../../hooks';
-import { cn } from '../../../../lib';
+import { useTheme } from '../../../../hooks/use-theme';
+import { useTranslator } from '../../../../hooks/use-translator';
+import { cn } from '../../../../lib/theme-utils';
 import type { SsoProviderDetailsProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
 import {
   ProviderConfigureFields,

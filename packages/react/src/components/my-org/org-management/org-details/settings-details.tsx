@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { useTranslator } from '../../../../hooks/index';
-import type { SettingsDetailsProps } from '../../../../types/index';
+import { useTranslator } from '../../../../hooks/use-translator';
+import type { SettingsDetailsProps } from '../../../../types/my-org/org-management/org-details-types';
 import {
   FormControl,
   FormDescription,

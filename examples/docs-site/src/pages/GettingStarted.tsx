@@ -221,6 +221,452 @@ function SecurityPage() {
         </div>
       </section>
 
+      {/* Provider Configuration */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-900">
+          Auth0ComponentProvider Configuration
+        </h2>
+        <p className="text-gray-600 mb-4">
+          The <code className="text-sm bg-gray-100 px-2 py-1 rounded">Auth0ComponentProvider</code>{' '}
+          accepts the following properties to configure the behavior and appearance of Auth0 UI
+          Components:
+        </p>
+
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                  Property
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                  Type
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                  Required
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                  authDetails
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">AuthDetails</code>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">Yes</td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  Authentication configuration including domain, clientId, and optional authProxyUrl
+                  and servicesConfig
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                  i18n
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">I18nOptions</code>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">No</td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  Internationalization settings including currentLanguage and fallbackLanguage
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                  themeSettings
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">ThemeSettings</code>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">No</td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  Theme configuration including mode (light/dark), theme variant
+                  (default/minimal/rounded), and CSS variables
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                  loader
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">React.ReactNode</code>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">No</td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  Custom loading component to display during authentication initialization
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        {/* AuthDetails Object */}
+        <div className="mt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-3">authDetails</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border border-gray-200 rounded-lg">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                    Property
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                    Type
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Required
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    domain
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">string</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">Yes</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Your Auth0 domain (e.g., "your-tenant.auth0.com")
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    clientId
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">string</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">Yes</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Your Auth0 application client ID
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    authProxyUrl
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">string</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">No</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    URL to your authentication proxy server for server-side authentication (enables
+                    Proxy Mode)
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    servicesConfig
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">ServicesConfig</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">No</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Enable/disable specific Auth0 services (myAccount, myOrg)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* i18n Settings */}
+        <div className="mt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-3">i18n</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border border-gray-200 rounded-lg">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                    Property
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                    Type
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Default
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    currentLanguage
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">string</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">"en"</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Current language code (e.g., "en", "es", "fr")
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    fallbackLanguage
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">string</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">"en"</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Fallback language code when translations are missing
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Theme Settings */}
+        <div className="mt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-3">themeSettings</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full border border-gray-200 rounded-lg">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                    Property
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                    Type
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                    Default
+                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Description
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    mode
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">"light" | "dark"</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">"light"</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">Theme color mode</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    theme
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">"default" | "minimal" | "rounded"</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">"default"</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    Theme variant with different styling approaches
+                  </td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    variables
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    <code className="text-xs">ThemeVariables</code>
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">{'{}'}</td>
+                  <td className="px-4 py-2 text-sm text-gray-500">
+                    CSS custom properties for common, light, and dark themes
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          {/* Available CSS Variables */}
+          <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 className="font-medium text-blue-900 mb-3">Available CSS Variables</h4>
+
+            <div className="space-y-4 text-sm text-blue-800">
+              <div>
+                <strong className="block mb-2">Common (applies to all themes):</strong>
+                <div className="grid grid-cols-2 gap-2 ml-4">
+                  <div>
+                    <strong>Typography:</strong>
+                    <ul className="list-disc ml-4 text-xs">
+                      <li>
+                        <code>--font-size-heading</code>
+                      </li>
+                      <li>
+                        <code>--font-size-description</code>
+                      </li>
+                      <li>
+                        <code>--font-size-title</code>
+                      </li>
+                      <li>
+                        <code>--font-size-paragraph</code>
+                      </li>
+                      <li>
+                        <code>--font-size-label</code>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <strong>Border Radius:</strong>
+                    <ul className="list-disc ml-4 text-xs">
+                      <li>
+                        <code>--radius-xs</code> through <code>--radius-9xl</code>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <strong className="block mb-2">
+                  Light & Dark (theme-specific colors and shadows):
+                </strong>
+                <div className="grid grid-cols-2 gap-2 ml-4">
+                  <div>
+                    <strong>Colors:</strong>
+                    <ul className="list-disc ml-4 text-xs">
+                      <li>
+                        <code>--color-page</code>
+                      </li>
+                      <li>
+                        <code>--color-background</code>
+                      </li>
+                      <li>
+                        <code>--color-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-card</code>
+                      </li>
+                      <li>
+                        <code>--color-card-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-primary</code>
+                      </li>
+                      <li>
+                        <code>--color-primary-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-secondary</code>
+                      </li>
+                      <li>
+                        <code>--color-secondary-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-accent</code>
+                      </li>
+                      <li>
+                        <code>--color-accent-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-muted</code>
+                      </li>
+                      <li>
+                        <code>--color-muted-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-border</code>
+                      </li>
+                      <li>
+                        <code>--color-ring</code>
+                      </li>
+                      <li>
+                        <code>--color-info</code>
+                      </li>
+                      <li>
+                        <code>--color-info-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-success</code>
+                      </li>
+                      <li>
+                        <code>--color-success-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-warning</code>
+                      </li>
+                      <li>
+                        <code>--color-warning-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-destructive</code>
+                      </li>
+                      <li>
+                        <code>--color-destructive-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-destructive-border</code>
+                      </li>
+                      <li>
+                        <code>--color-popover</code>
+                      </li>
+                      <li>
+                        <code>--color-popover-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-popover-border</code>
+                      </li>
+                      <li>
+                        <code>--color-input</code>
+                      </li>
+                      <li>
+                        <code>--color-input-foreground</code>
+                      </li>
+                      <li>
+                        <code>--color-input-muted</code>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <strong>Shadows:</strong>
+                    <ul className="list-disc ml-4 text-xs">
+                      <li>
+                        <code>--shadow-bevel-*</code> (xs, sm, md, lg, xl, 2xl)
+                      </li>
+                      <li>
+                        <code>--shadow-button-*</code> (resting, hover, focus)
+                      </li>
+                      <li>
+                        <code>--shadow-button-destructive-*</code>
+                      </li>
+                      <li>
+                        <code>--shadow-button-outlined-*</code>
+                      </li>
+                      <li>
+                        <code>--shadow-input-*</code> (resting, hover, focus)
+                      </li>
+                      <li>
+                        <code>--shadow-input-destructive-*</code>
+                      </li>
+                      <li>
+                        <code>--shadow-checkbox-*</code> (resting, hover)
+                      </li>
+                      <li>
+                        <code>--shadow-switch-*</code> (resting, hover, focus, thumb)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Next Steps */}
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Start Building</h2>

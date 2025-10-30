@@ -22,7 +22,7 @@ import {
   SHOW_RECOVERY_CODE,
 } from '../../../lib/mfa-constants';
 import { cn } from '../../../lib/theme-utils';
-import type { UserMFASetupFormProps } from '../../../types/index';
+import type { UserMFASetupFormProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { Card } from '../../ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../ui/dialog';

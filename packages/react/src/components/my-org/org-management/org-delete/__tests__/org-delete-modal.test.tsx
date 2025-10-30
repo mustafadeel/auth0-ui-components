@@ -4,7 +4,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import * as useCoreClientModule from '../../../../../hooks/use-core-client';
 import { mockCore, renderWithProviders } from '../../../../../internals';
-import type { OrgDeleteModalProps } from '../../../../../types/index';
+import type { OrgDeleteModalProps } from '../../../../../types/my-org/org-management/org-delete-types';
 import { OrgDeleteModal } from '../org-delete-modal';
 
 // ===== Mock packages =====

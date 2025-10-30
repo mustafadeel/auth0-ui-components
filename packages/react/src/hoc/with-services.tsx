@@ -1,7 +1,8 @@
 import * as React from 'react';
 
 import { Spinner } from '../components/ui/spinner';
-import { useTheme, useScopeManager } from '../hooks';
+import { useScopeManager } from '../hooks/use-scope-manager';
+import { useTheme } from '../hooks/use-theme';
 
 export interface ServiceRequirements {
   myAccountApiScopes?: string;

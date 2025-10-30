@@ -4,12 +4,9 @@ import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import * as useCoreClientModule from '../../../../hooks/use-core-client';
-import {
-  createMockOrganization,
-  mockCore,
-  mockToast,
-  renderWithProviders,
-} from '../../../../internals';
+import { createMockOrganization } from '../../../../internals/__mocks__/my-org/org-management/org-details.mocks';
+import { renderWithProviders } from '../../../../internals/test-provider';
+import { mockCore, mockToast } from '../../../../internals/test-setup';
 import type {
   OrgDetailsEditProps,
   OrgEditBackButton,

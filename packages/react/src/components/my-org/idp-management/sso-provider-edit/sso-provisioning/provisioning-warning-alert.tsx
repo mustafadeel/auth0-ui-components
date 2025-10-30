@@ -1,7 +1,7 @@
 import type { SharedComponentProps } from '@auth0-web-ui-components/core';
 import { AlertTriangle } from 'lucide-react';
 
-import { useTranslator } from '../../../../../hooks/index';
+import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
 import { Alert, AlertDescription, AlertTitle } from '../../../../ui/alert';
 

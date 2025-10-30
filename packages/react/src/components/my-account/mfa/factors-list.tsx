@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { cn } from '../../../lib/theme-utils';
-import type { FactorsListProps } from '../../../types/index';
+import type { FactorsListProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '../../ui/popover';

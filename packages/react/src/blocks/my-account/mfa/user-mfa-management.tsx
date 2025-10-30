@@ -18,12 +18,14 @@ import { Button } from '../../../components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '../../../components/ui/card';
 import { List, ListItem } from '../../../components/ui/list';
 import { Spinner } from '../../../components/ui/spinner';
-import { withMyAccountService } from '../../../hoc/';
-import { useTheme, useMFA, useTranslator } from '../../../hooks/index';
+import { withMyAccountService } from '../../../hoc/with-services';
+import { useMFA } from '../../../hooks/my-account/mfa/use-mfa';
+import { useTheme } from '../../../hooks/use-theme';
+import { useTranslator } from '../../../hooks/use-translator';
 import { ENROLL } from '../../../lib/mfa-constants';
 import type { CONFIRM } from '../../../lib/mfa-constants';
 import { cn } from '../../../lib/theme-utils';
-import type { UserMFAMgmtProps } from '../../../types/index';
+import type { UserMFAMgmtProps } from '../../../types/my-account/mfa/mfa-types';
 
 /**
  * UserMFAMgmt Component

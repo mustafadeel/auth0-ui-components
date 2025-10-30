@@ -1,9 +1,10 @@
 import { getComponentStyles } from '@auth0-web-ui-components/core';
 import * as React from 'react';
 
-import { useTheme, useTranslator } from '../../../../hooks/index';
+import { useTheme } from '../../../../hooks/use-theme';
+import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { OrgDeleteModalProps } from '../../../../types/index';
+import type { OrgDeleteModalProps } from '../../../../types/my-org/org-management/org-delete-types';
 import { Label } from '../../../ui/label';
 import { Modal } from '../../../ui/modal';
 import { TextField } from '../../../ui/text-field';

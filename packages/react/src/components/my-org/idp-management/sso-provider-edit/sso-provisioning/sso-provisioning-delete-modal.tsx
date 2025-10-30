@@ -1,7 +1,7 @@
 import type { SsoProvisioningDeleteModalProps } from '@react/types/my-org/idp-management/sso-provisioning/sso-provisioning-tab-types';
 import React from 'react';
 
-import { useTranslator } from '../../../../../hooks';
+import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
 import { Modal } from '../../../../ui/modal';
 

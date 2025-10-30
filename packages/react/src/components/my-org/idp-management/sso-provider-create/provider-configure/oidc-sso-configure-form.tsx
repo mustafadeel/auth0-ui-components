@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
-import type { ProviderConfigureFieldsProps } from '../../../../../types';
+import type { ProviderConfigureFieldsProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
 import { CopyableTextField } from '../../../../ui/copyable-text-field';
 import {
   Form,

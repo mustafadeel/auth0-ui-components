@@ -8,11 +8,11 @@ import { SsoProvisioningTab } from '../../../components/my-org/idp-management/ss
 import { Header } from '../../../components/ui/header';
 import { Spinner } from '../../../components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
-import { withMyOrgService } from '../../../hoc';
-import { useTheme } from '../../../hooks';
-import { useTranslator } from '../../../hooks';
+import { withMyOrgService } from '../../../hoc/with-services';
 import { useSsoProviderEdit } from '../../../hooks/my-org/idp-management/use-sso-provider-edit';
-import { cn } from '../../../lib';
+import { useTheme } from '../../../hooks/use-theme';
+import { useTranslator } from '../../../hooks/use-translator';
+import { cn } from '../../../lib/theme-utils';
 import type { SsoProviderEditProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
 
 export function SsoProviderEditComponent({

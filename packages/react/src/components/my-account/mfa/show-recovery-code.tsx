@@ -5,7 +5,7 @@ import { useOtpConfirmation } from '../../../hooks/my-account/mfa/use-otp-confir
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { cn } from '../../../lib/theme-utils';
-import type { ShowRecoveryCodeProps } from '../../../types/index';
+import type { ShowRecoveryCodeProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { CopyableTextField } from '../../ui/copyable-text-field';
 import { Spinner } from '../../ui/spinner';

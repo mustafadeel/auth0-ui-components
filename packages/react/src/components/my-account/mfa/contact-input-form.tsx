@@ -16,7 +16,7 @@ import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { ENTER_CONTACT, ENTER_OTP } from '../../../lib/mfa-constants';
 import { cn } from '../../../lib/theme-utils';
-import type { ContactInputFormProps } from '../../../types/index';
+import type { ContactInputFormProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '../../ui/form';
 import { Spinner } from '../../ui/spinner';

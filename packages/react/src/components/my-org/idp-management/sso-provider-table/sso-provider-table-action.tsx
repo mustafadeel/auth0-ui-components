@@ -2,7 +2,7 @@ import { MoreHorizontal, Edit, Trash2 } from 'lucide-react';
 import * as React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { SsoProviderTableActionsColumnProps } from '../../../../types';
+import type { SsoProviderTableActionsColumnProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';
 import {
   DropdownMenu,
   DropdownMenuContent,

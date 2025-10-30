@@ -8,7 +8,8 @@ import {
   CardTitle,
   CardDescription,
 } from '../../../../components/ui/card';
-import { useTheme, useTranslator } from '../../../../hooks';
+import { useTheme } from '../../../../hooks/use-theme';
+import { useTranslator } from '../../../../hooks/use-translator';
 import type { SsoProviderTabProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
 import { SsoProviderDelete } from '../sso-provider-delete/provider-delete';
 import { SsoProviderRemoveFromOrg } from '../sso-provider-remove/provider-remove';

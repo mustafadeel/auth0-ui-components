@@ -8,7 +8,8 @@ import {
 import { Trash2, Plus } from 'lucide-react';
 import * as React from 'react';
 
-import { useTheme, useTranslator } from '../../../../../hooks';
+import { useTheme } from '../../../../../hooks/use-theme';
+import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
 import type { ProvisioningManageTokenProps } from '../../../../../types/my-org/idp-management/sso-provisioning/provisioning-manage-token-types';
 import { Badge } from '../../../../ui/badge';

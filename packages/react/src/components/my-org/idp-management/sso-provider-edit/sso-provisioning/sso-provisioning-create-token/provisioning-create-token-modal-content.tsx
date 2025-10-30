@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { useTranslator } from '../../../../../../hooks';
+import { useTranslator } from '../../../../../../hooks/use-translator';
 import { cn } from '../../../../../../lib/theme-utils';
 import type { ProvisioningCreateTokenModalContentProps } from '../../../../../../types/my-org/idp-management/sso-provisioning/provisioning-token-types';
 import { CopyableTextField } from '../../../../../ui/copyable-text-field';

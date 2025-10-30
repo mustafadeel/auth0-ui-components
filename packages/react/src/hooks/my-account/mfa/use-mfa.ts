@@ -6,7 +6,7 @@ import type {
 import { MFAMappers } from '@auth0-web-ui-components/core';
 import { useCallback } from 'react';
 
-import type { UseMFAResult } from '../../../types/index';
+import type { UseMFAResult } from '../../../types/my-account/mfa/mfa-types';
 import { useCoreClient } from '../../use-core-client';
 
 export function useMFA(): UseMFAResult {

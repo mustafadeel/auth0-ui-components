@@ -12,7 +12,7 @@ import { useOtpConfirmation } from '../../../hooks/my-account/mfa/use-otp-confir
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { cn } from '../../../lib/theme-utils';
-import type { OTPVerificationFormProps } from '../../../types/index';
+import type { OTPVerificationFormProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '../../ui/form';
 import { OTPField } from '../../ui/otp-field';

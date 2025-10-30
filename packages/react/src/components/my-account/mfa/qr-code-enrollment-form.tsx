@@ -10,7 +10,7 @@ import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { QR_PHASE_ENTER_OTP, QR_PHASE_SCAN } from '../../../lib/mfa-constants';
 import { cn } from '../../../lib/theme-utils';
-import type { QRCodeEnrollmentFormProps } from '../../../types/index';
+import type { QRCodeEnrollmentFormProps } from '../../../types/my-account/mfa/mfa-types';
 import { Button } from '../../ui/button';
 import { CopyableTextField } from '../../ui/copyable-text-field';
 import { QRCodeDisplayer } from '../../ui/qr-code';

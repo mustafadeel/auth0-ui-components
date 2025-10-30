@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { useTranslator } from '../../../../hooks/index';
-import type { BrandingDetailsProps } from '../../../../types/index';
+import { useTranslator } from '../../../../hooks/use-translator';
+import type { BrandingDetailsProps } from '../../../../types/my-org/org-management/org-details-types';
 import { ColorPicker } from '../../../ui/color-picker';
 import {
   FormControl,

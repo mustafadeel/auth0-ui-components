@@ -14,7 +14,6 @@
   },
   "profile-drop-down": {
     "profile": "プロフィール",
-    "manage-org": "組織を管理",
     "sign-out": "サインアウト"
   },
   "language-drop-down": {
@@ -33,5 +32,8 @@
   },
   "manage-org": {
     "title": "組織を管理"
+  },
+  "domain-management": {
+    "title": "ドメイン管理"
   }
 }

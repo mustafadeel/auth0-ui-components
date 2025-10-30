@@ -1,12 +1,14 @@
 import { getComponentStyles, MY_ORG_DETAILS_EDIT_SCOPES } from '@auth0-web-ui-components/core';
 import * as React from 'react';
 
-import { OrgDetails } from '../../../components/my-org/org-management/org-details';
+import { OrgDetails } from '../../../components/my-org/org-management/org-details/org-details';
 import { Header } from '../../../components/ui/header';
 import { Spinner } from '../../../components/ui/spinner';
-import { withMyOrgService } from '../../../hoc/index';
-import { useTheme, useTranslator, useOrgDetailsEdit } from '../../../hooks/index';
-import type { OrgDetailsEditProps } from '../../../types/my-org/org-management/index';
+import { withMyOrgService } from '../../../hoc/with-services';
+import { useOrgDetailsEdit } from '../../../hooks/my-org/org-management/use-org-details-edit';
+import { useTheme } from '../../../hooks/use-theme';
+import { useTranslator } from '../../../hooks/use-translator';
+import type { OrgDetailsEditProps } from '../../../types/my-org/org-management/org-details-edit-types';
 
 /**
  * OrgDetailsEdit Component

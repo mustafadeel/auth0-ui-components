@@ -29,7 +29,7 @@ const LandingPage = () => {
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 {isAuthenticated ? (
-                  <Button asChild size="lg" className="bg-gray-900 hover:bg-gray-800 text-white">
+                  <Button size="lg" className="bg-gray-900 hover:bg-gray-800 text-white">
                     <Link to="/profile">{t('hero-section.get-started-button')}</Link>
                   </Button>
                 ) : (

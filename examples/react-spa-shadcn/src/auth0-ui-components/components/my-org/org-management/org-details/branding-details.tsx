@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { useTranslator } from '../../../../hooks/index';
-import type { BrandingDetailsProps } from '../../../../types/index';
+import { useTranslator } from '../../../../hooks/use-translator';
+import type { BrandingDetailsProps } from '../../../../types/my-org/org-management/org-details-types';
 import { ColorPicker } from '../../../ui/color-picker';
 import {
   FormControl,
@@ -40,7 +40,13 @@ export function BrandingDetails({
                 {t('sections.branding.fields.logo.label')}
               </FormLabel>
               <FormControl>
-                <ImagePreview error={fieldState.error?.message} {...field} disableFileUpload />
+                <ImagePreview
+                  error={fieldState.error?.message}
+                  // @ts-expect-error readOnly is available but not defined in ImagePreviewProps
+                  readOnly={readOnly}
+                  {...field}
+                  disableFileUpload
+                />
               </FormControl>
               <FormMessage
                 className="text-left text-sm text-(length:--font-size-paragraph)"

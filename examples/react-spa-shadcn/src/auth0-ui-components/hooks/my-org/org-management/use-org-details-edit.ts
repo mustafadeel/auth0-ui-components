@@ -44,7 +44,6 @@ export function useOrgDetailsEdit({
 
       const response = await coreClient.getMyOrgApiClient().organizationDetails.get();
       const orgData = OrgDetailsMappers.fromAPI(response);
-
       setOrganization(orgData);
     } catch (error) {
       const errorMessage =

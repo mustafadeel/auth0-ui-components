@@ -4,6 +4,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import DomainTableDocs from './pages/DomainTableDocs';
 import GettingStarted from './pages/GettingStarted';
 import HomePage from './pages/HomePage';
 import MyOrgIntroduction from './pages/MyOrgIntroduction';
@@ -41,6 +42,7 @@ function AppContent() {
           <Route path="/my-account/user-mfa" element={<UserMFA />} />
           <Route path="/my-org" element={<MyOrgIntroduction />} />
           <Route path="/my-org/org-details-edit" element={<OrgDetailsEdit />} />
+          <Route path="/my-org/domain-table" element={<DomainTableDocs />} />
         </Routes>
       </Auth0ComponentProvider>
     </Layout>

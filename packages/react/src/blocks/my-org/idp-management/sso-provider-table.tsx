@@ -17,7 +17,7 @@ import { withMyOrgService } from '../../../hoc/with-services';
 import { useSsoProviderTable } from '../../../hooks/my-org/idp-management/use-sso-provider-table';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
-import type { SsoProviderTableProps } from '../../../types';
+import type { SsoProviderTableProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';
 
 /**
  * SsoProviderTable Component

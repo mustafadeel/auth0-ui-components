@@ -9,8 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useCoreClient, useTheme } from '../../../../../hooks';
-import { useTranslator } from '../../../../../hooks';
+import { useCoreClient } from '../../../../../hooks/use-core-client';
+import { useTheme } from '../../../../../hooks/use-theme';
+import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
 import type { SsoProvisioningDetailsProps } from '../../../../../types/my-org/idp-management/sso-provisioning/sso-provisioning-tab-types';
 import { CopyableTextField } from '../../../../ui/copyable-text-field';
@@ -132,7 +133,7 @@ export function SsoProvisioningDetails({
       <div className="mt-6">
         <ProvisioningFieldMappings
           provisioningFieldMap={provisioningConfig?.fields ?? null}
-          customMessages={customMessages.field_mappings}
+          customMessages={customMessages.mappings} // TODO: Fix this
         />
       </div>
     </div>

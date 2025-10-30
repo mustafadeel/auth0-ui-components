@@ -20,11 +20,11 @@ import { ProviderSelect } from '../../../components/my-org/idp-management/sso-pr
 import { Header } from '../../../components/ui/header';
 import { Wizard } from '../../../components/ui/wizard';
 import type { StepProps } from '../../../components/ui/wizard';
-import { withMyOrgService } from '../../../hoc';
-import { useTheme } from '../../../hooks';
-import { useTranslator } from '../../../hooks';
+import { withMyOrgService } from '../../../hoc/with-services';
 import { useSsoProviderCreate } from '../../../hooks/my-org/idp-management/use-sso-provider-create';
-import type { SsoProviderCreateProps } from '../../../types';
+import { useTheme } from '../../../hooks/use-theme';
+import { useTranslator } from '../../../hooks/use-translator';
+import type { SsoProviderCreateProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
 
 type FormState = {
   strategy?: IdpStrategy;

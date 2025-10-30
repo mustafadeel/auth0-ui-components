@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { withMyOrgService } from '../../../../hoc/with-services';
 import { useTheme } from '../../../../hooks/use-theme';
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
@@ -30,7 +29,7 @@ import { SettingsDetails } from './settings-details';
  * All data, validation, and business logic are handled via props passed from parent components.
  *
  */
-function OrgDetailsComponent({
+export function OrgDetails({
   organization,
   isLoading = false,
   schema,
@@ -135,7 +134,10 @@ function OrgDetailsComponent({
     <div style={currentStyles.variables} className="w-full space-y-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onValid)} className="space-y-6">
-          <Card className={cn('p-6', currentStyles.classes?.OrgDetails_Card)}>
+          <Card
+            data-testid="org-details-card"
+            className={cn('p-6', currentStyles.classes?.OrgDetails_Card)}
+          >
             <div className="space-y-6">
               <SettingsDetails
                 form={form}
@@ -167,6 +169,8 @@ function OrgDetailsComponent({
                 }}
                 previousAction={{
                   label: t('cancel_button_label'),
+                  disabled:
+                    formActions?.previousAction?.disabled || formActions.isLoading || readOnly,
                   onClick: handlePreviousAction,
                 }}
                 showPrevious={formActions?.showPrevious}
@@ -182,5 +186,3 @@ function OrgDetailsComponent({
     </div>
   );
 }
-
-export const OrgDetails = withMyOrgService(OrgDetailsComponent);

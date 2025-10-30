@@ -63,6 +63,29 @@ export default function MyOrgIntroduction() {
               </a>
             </div>
           </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition-all">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  DomainTable{' '}
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mr-3">
+                    Available
+                  </span>
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Manage organization domains with create, verify, delete, and identity provider
+                  association capabilities in a unified table interface.
+                </p>
+              </div>
+              <a
+                href="/my-org/domain-table"
+                className="ml-4 inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors"
+              >
+                View Docs →
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -85,6 +108,27 @@ export default function MyOrgIntroduction() {
                 <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
                   1
                 </div>
+                <h4 className="font-semibold text-blue-800">Enable Feature Flags</h4>
+              </div>
+              <div className="ml-9">
+                <p className="text-blue-700 text-sm mb-2">
+                  Contact support to enable the needed feature flags for your tenant:
+                </p>
+                <div className="mt-2 bg-yellow-50 border border-yellow-200 rounded p-2">
+                  <p className="text-xs text-yellow-800">
+                    <strong>Note:</strong> These feature flags are required and must be enabled by
+                    Auth0 support before proceeding with the setup.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div>
+              <div className="flex items-center mb-3">
+                <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
+                  2
+                </div>
                 <h4 className="font-semibold text-blue-800">Enable My Organization API</h4>
               </div>
               <div className="ml-9">
@@ -94,11 +138,11 @@ export default function MyOrgIntroduction() {
               </div>
             </div>
 
-            {/* Step 2 */}
+            {/* Step 3 */}
             <div>
               <div className="flex items-center mb-3">
                 <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
-                  2
+                  3
                 </div>
                 <h4 className="font-semibold text-blue-800">Create SPA Application</h4>
               </div>
@@ -116,32 +160,20 @@ export default function MyOrgIntroduction() {
                   <div className="ml-4 space-y-1">
                     <div className="text-xs text-gray-600">- Allowed Callback URLs</div>
                     <div className="text-xs text-gray-600">- Allowed Logout URLs</div>
-                    <div className="text-xs text-gray-600">- Allowed Web Origins</div>
                   </div>
                   <div className="text-xs text-gray-600">• Set Login Experience:</div>
                   <div className="ml-4 space-y-1">
                     <div className="text-xs text-gray-600">- Business users</div>
-                    <div className="text-xs text-gray-600">- Prompt for Organization</div>
+                    <div className="text-xs text-gray-600">
+                      - Prompt for Organization (optional)
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div>
-              <div className="flex items-center mb-3">
-                <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
-                  3
-                </div>
-                <h4 className="font-semibold text-blue-800">Setup Database & User</h4>
-              </div>
-              <div className="ml-9">
-                <div className="bg-white rounded-lg p-3 space-y-2">
-                  <div className="text-xs text-gray-600">• Create a Database connection</div>
-                  <div className="text-xs text-gray-600">
-                    • In Applications tab, enable your new SPA app
-                  </div>
-                  <div className="text-xs text-gray-600">• Create a user in this database</div>
+                <div className="mt-2 bg-blue-50 border border-blue-200 rounded p-2">
+                  <p className="text-xs text-blue-800">
+                    <strong>Note:</strong> This example uses a Single Page Application, but you can
+                    also configure a Regular Web Application (RWA) following similar steps.
+                  </p>
                 </div>
               </div>
             </div>
@@ -151,6 +183,27 @@ export default function MyOrgIntroduction() {
               <div className="flex items-center mb-3">
                 <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
                   4
+                </div>
+                <h4 className="font-semibold text-blue-800">Setup Database & User</h4>
+              </div>
+              <div className="ml-9">
+                <div className="bg-white rounded-lg p-3 space-y-2">
+                  <div className="text-xs text-gray-600">• Create a Database connection</div>
+                  <div className="text-xs text-gray-600">
+                    • In Applications tab, enable your new SPA app
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    • Create a user in this database (for testing purposes)
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 5 */}
+            <div>
+              <div className="flex items-center mb-3">
+                <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
+                  5
                 </div>
                 <h4 className="font-semibold text-blue-800">Setup Role</h4>
               </div>
@@ -163,28 +216,49 @@ export default function MyOrgIntroduction() {
                   <div className="ml-4 space-y-1">
                     <div className="text-xs text-gray-600">- read:my_org:details</div>
                     <div className="text-xs text-gray-600">- update:my_org:details</div>
+                    <div className="text-xs text-gray-600">- create:my_org:identity_providers</div>
+                    <div className="text-xs text-gray-600">- read:my_org:identity_providers</div>
+                    <div className="text-xs text-gray-600">- update:my_org:identity_providers</div>
+                    <div className="text-xs text-gray-600">- delete:my_org:identity_providers</div>
                     <div className="text-xs text-gray-600">
-                      - read:my_org:members (for member components)
+                      - update:my_org:identity_providers_detach
                     </div>
                     <div className="text-xs text-gray-600">
-                      - update:my_org:members (for member components)
+                      - read:my_org:identity_providers_domains
                     </div>
                     <div className="text-xs text-gray-600">
-                      - read:my_org:domains (for domain components)
+                      - create:my_org:identity_provider_domains
                     </div>
                     <div className="text-xs text-gray-600">
-                      - update:my_org:domains (for domain components)
+                      - delete:my_org:identity_provider_domains
                     </div>
+                    <div className="text-xs text-gray-600">- read:my_org:domains</div>
+                    <div className="text-xs text-gray-600">- delete:my_org:domains</div>
+                    <div className="text-xs text-gray-600">- create:my_org:domains</div>
+                    <div className="text-xs text-gray-600">- update:my_org:domains</div>
+                    <div className="text-xs text-gray-600">- read:my_org:scim_tokens</div>
+                    <div className="text-xs text-gray-600">- create:my_org:scim_tokens</div>
+                    <div className="text-xs text-gray-600">- delete:my_org:scim_tokens</div>
+                    <div className="text-xs text-gray-600">
+                      - create:my_org:identity_provider_provisioning
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      - read:my_org:identity_provider_provisioning
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      - delete:my_org:identity_provider_provisioning
+                    </div>
+                    <div className="text-xs text-gray-600">- read:my_org:configuration</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Step 5 */}
+            {/* Step 6 */}
             <div>
               <div className="flex items-center mb-3">
                 <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
-                  5
+                  6
                 </div>
                 <h4 className="font-semibold text-blue-800">Create Organization</h4>
               </div>
@@ -199,29 +273,6 @@ export default function MyOrgIntroduction() {
                   <div className="text-xs text-gray-600">
                     • In Connections: Enable your database
                   </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Step 6 */}
-            <div>
-              <div className="flex items-center mb-3">
-                <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
-                  6
-                </div>
-                <h4 className="font-semibold text-blue-800">Environment Variables</h4>
-              </div>
-              <div className="ml-9">
-                <p className="text-blue-700 text-sm mb-2">
-                  Create a <code>.env</code> file in your project:
-                </p>
-                <div className="bg-white rounded-lg p-3">
-                  <CodeBlock
-                    code={`VITE_AUTH0_DOMAIN=your-domain.auth0.com
-VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
-                    language="bash"
-                    title=".env"
-                  />
                 </div>
               </div>
             </div>
@@ -250,18 +301,20 @@ VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
     "update:my_org:identity_providers",
     "delete:my_org:identity_providers",
     "update:my_org:identity_providers_detach",
+    "read:my_org:identity_providers_domains",
+    "create:my_org:identity_provider_domains",
+    "delete:my_org:identity_provider_domains",
     "read:my_org:domains",
     "delete:my_org:domains",
     "create:my_org:domains",
     "update:my_org:domains",
-    "read:my_org:identity_providers_domains",
-    "create:my_org:identity_provider_domains",
-    "delete:my_org:identity_provider_domains",
     "read:my_org:scim_tokens",
     "create:my_org:scim_tokens",
     "delete:my_org:scim_tokens",
-    "read:my_org:members",
-    "update:my_org:members"
+    "create:my_org:identity_provider_provisioning",
+    "read:my_org:identity_provider_provisioning",
+    "delete:my_org:identity_provider_provisioning",
+    "read:my_org:configuration"
   ],
   "client_id": "{{auth0_client_id}}", // use your app client_id
   "audience": "https://{{auth0_domain}}/my-org/", // use your domain
@@ -270,6 +323,47 @@ VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
                     language="json"
                     title="Client Grant Creation"
                   />
+                </div>
+                <div className="mt-2 bg-blue-50 border border-blue-200 rounded p-2">
+                  <p className="text-xs text-blue-800">
+                    <strong>Note:</strong> You need a Management API token to make this request. For
+                    example, you can get one from{' '}
+                    <strong>Applications → APIs → Auth0 Management API → API Explorer</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step 8 */}
+            <div>
+              <div className="flex items-center mb-3">
+                <div className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mr-3">
+                  8
+                </div>
+                <h4 className="font-semibold text-blue-800">Configure Environment Variables</h4>
+              </div>
+              <div className="ml-9">
+                <p className="text-blue-700 text-sm mb-2">
+                  Create a <code>.env</code> file in your project with your Auth0 configuration. The
+                  exact variables depend on your application type.
+                </p>
+                <div className="bg-white rounded-lg p-3">
+                  <p className="text-xs font-semibold text-gray-700 mb-2">
+                    Example for Single Page Applications (Vite/React):
+                  </p>
+                  <CodeBlock
+                    code={`VITE_AUTH0_DOMAIN=your-domain.auth0.com
+VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
+                    language="bash"
+                    title=".env"
+                  />
+                </div>
+                <div className="mt-2 bg-blue-50 border border-blue-200 rounded p-2">
+                  <p className="text-xs text-blue-800">
+                    <strong>Note:</strong> Environment variable configurations vary by framework and
+                    setup. Check the <code className="bg-blue-100 px-1 rounded">examples/</code>{' '}
+                    directory in the repository for specific implementation examples.
+                  </p>
                 </div>
               </div>
             </div>
@@ -366,21 +460,25 @@ VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">More Components Coming</h3>
+              <h3 className="text-xl font-semibold mb-2">Explore All Components</h3>
               <p className="text-white/90 mb-4">
-                Additional organization management features will be added soon.
+                Check the My Organization section in the sidebar to discover all available
+                components for organization management, domain control, and more.
               </p>
-              <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg font-medium text-white/70">
-                Coming Soon
+              <a
+                href="/my-org"
+                className="inline-flex items-center px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg font-medium transition-colors"
+              >
+                Browse Components
                 <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M9 5l7 7-7 7"
                   />
                 </svg>
-              </div>
+              </a>
             </div>
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-4 -translate-x-4"></div>

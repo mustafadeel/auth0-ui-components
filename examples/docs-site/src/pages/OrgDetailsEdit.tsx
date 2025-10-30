@@ -39,7 +39,7 @@ export default function OrgDetailsEdit() {
 
       {/* Component Preview */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Component preview</h2>
+        <h2 className="text-2xl font-semibold text-gray-900">Component Preview</h2>
         <div className="max-w-none flex justify-center">
           <img
             src="/img/my-org/org-management/org-details-edit.png"
@@ -73,8 +73,8 @@ export default function OrgDetailsEdit() {
                 Auth0 Configuration Required
               </h3>
               <p className="text-blue-800 mb-4">
-                Before using the <b>OrgDetailsEdit</b> component, you need to configure your Auth0
-                tenant with the proper APIs, applications, and permissions.
+                Before using the <b>OrgDetailsEdit</b> component, ensure your tenant is configured
+                with the proper APIs, applications, and permissions.
               </p>
               <p className="text-blue-800 mb-4">
                 <strong>Complete setup guide:</strong>{' '}
@@ -150,7 +150,6 @@ export default function OrgDetailsEdit() {
 export function OrganizationSettingsPage() {
   return (
     <div>
-      <h1>Organization Settings</h1>
       <OrgDetailsEdit />
     </div>
   );
@@ -319,7 +318,7 @@ interface OrgEditBackButton {
 
         <div className="space-y-8">
           <div>
-            <h3 className="text-lg font-medium mb-4">Action Hooks</h3>
+            <h3 className="text-lg font-medium mb-4">Actions</h3>
             <p className="text-gray-600 mb-4">
               Handle form events with lifecycle callbacks. All action properties are optional:
             </p>
@@ -742,10 +741,6 @@ export default function App() {
   return (
     <Auth0Provider
       {...authDetails}
-      authorizationParams={{
-        audience: "https://your-domain.auth0.com/api/v2/",
-        scope: "openid profile email read:my_org:details update:my_org:details"
-      }}
       redirectUri={window.location.origin}
     >
       <Auth0ComponentProvider
@@ -767,97 +762,28 @@ export default function App() {
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Advanced Customization</h2>
         <p className="text-gray-600">
-          For developers who need more granular control, the <b>OrgDetailsEdit</b> component is
-          built from smaller, reusable parts. You can import and use these subcomponents and hooks
-          individually to create a fully custom experience while maintaining the same functionality
-          and API integration.
+          The <b>OrgDetailsEdit</b> component is composed of smaller subcomponents and hooks. You
+          can import them individually to build custom organization editing workflows.
         </p>
-
-        {/* Available Subcomponents */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Available Subcomponents</h3>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <p className="text-blue-800 text-sm mb-4">
-                These components can be imported individually for custom layouts and workflows:
-              </p>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">Core Components</h4>
-                  <ul className="space-y-2 text-sm text-blue-800">
-                    <li>
-                      <code className="bg-blue-100 px-2 py-1 rounded">OrgDetails</code> - Main
-                      organization form
-                    </li>
-                    <li>
-                      <code className="bg-blue-100 px-2 py-1 rounded">SettingsDetails</code> - Name
-                      and display name fields
-                    </li>
-                    <li>
-                      <code className="bg-blue-100 px-2 py-1 rounded">BrandingDetails</code> - Logo
-                      and color fields
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">Delete Components (Future)</h4>
-                  <ul className="space-y-2 text-sm text-blue-800">
-                    <li>
-                      <code className="bg-blue-100 px-2 py-1 rounded">OrgDelete</code> -
-                      Organization deletion UI
-                    </li>
-                    <li>
-                      <code className="bg-blue-100 px-2 py-1 rounded">OrgDeleteModal</code> -
-                      Confirmation modal
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <h3 className="text-lg font-medium mb-4">Available Subcomponents</h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-sm text-blue-800 space-y-2">
+              <code>OrgDetails</code> – Main organization form with settings and branding
+              <br />
+              <code>SettingsDetails</code> – Name and display name fields
+              <br />
+              <code>BrandingDetails</code> – Logo and color customization fields
+              <br />
+              <code>OrgDelete</code> – Organization deletion UI (future)
+              <br />
+              <code>OrgDeleteModal</code> – Confirmation modal for deletion (future)
             </div>
           </div>
-
-          {/* Available Hooks */}
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Available Hooks</h3>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <p className="text-blue-800 text-sm mb-4">
-                These hooks provide the business logic and can be used with completely custom UIs:
-              </p>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-blue-900 mb-2">useOrgDetailsEdit</h4>
-                  <p className="text-sm text-blue-800 mb-2">
-                    Main hook that handles organization data fetching, form management, and API
-                    updates.
-                  </p>
-                  <div className="bg-blue-100 rounded p-3">
-                    <p className="text-xs text-blue-700 font-medium mb-1">Returns:</p>
-                    <ul className="text-xs text-blue-700 space-y-1">
-                      <li>
-                        <code>organization</code> - Current organization data
-                      </li>
-                      <li>
-                        <code>isFetchLoading</code> - Loading state for initial data fetch
-                      </li>
-                      <li>
-                        <code>isSaveLoading</code> - Loading state for save operation
-                      </li>
-                      <li>
-                        <code>isInitializing</code> - Overall initialization state
-                      </li>
-                      <li>
-                        <code>formActions</code> - React Hook Form instance and validation
-                      </li>
-                      <li>
-                        <code>fetchOrgDetails()</code> - Manual refetch function
-                      </li>
-                      <li>
-                        <code>updateOrgDetails(data)</code> - Save function
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+            <h3 className="text-lg font-medium mb-4">Available Hooks</h3>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-sm text-blue-800 space-y-2">
+              <code>useOrgDetailsEdit</code> – Data fetching, form management, and API updates
             </div>
           </div>
         </div>

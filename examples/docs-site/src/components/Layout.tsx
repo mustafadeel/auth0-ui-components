@@ -36,6 +36,7 @@ const navigationSections = [
     items: [
       { name: 'Introduction', href: '/my-org' },
       { name: 'OrgDetailsEdit', href: '/my-org/org-details-edit' },
+      { name: 'DomainTable', href: '/my-org/domain-table' },
     ],
   },
 ];
