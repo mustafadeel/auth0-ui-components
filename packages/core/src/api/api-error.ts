@@ -1,22 +1,6 @@
 import type { ApiError } from './api-types';
 
 /**
- * Creates an ApiError object to represent a failed API call.
- *
- * @param message - A human-readable error message.
- * @param status - The HTTP status code returned by the API.
- * @param data - Optional raw data from the API response.
- * @returns A structured ApiError object.
- */
-export function createApiError(
-  message: string,
-  status: number,
-  data?: Record<string, unknown>,
-): ApiError {
-  return { name: 'ApiError', message, status, data };
-}
-
-/**
  * Type guard to determine if a given value is an ApiError.
  *
  * @param error - The unknown value to test.
@@ -29,6 +13,21 @@ export function isApiError(error: unknown): error is ApiError {
     (error as ApiError).name === 'ApiError' &&
     typeof (error as ApiError).message === 'string' &&
     typeof (error as ApiError).status === 'number'
+  );
+}
+
+/**
+ * Type guard to check if an error has a structured API error body
+ */
+export function hasApiErrorBody(
+  error: unknown,
+): error is { body?: { detail?: string; title?: string; status?: number } } {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'body' in error &&
+    typeof error.body === 'object' &&
+    error.body !== null
   );
 }
 

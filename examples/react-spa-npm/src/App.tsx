@@ -8,6 +8,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/nav-bar';
 import { Sidebar } from './components/side-bar';
 import { config } from './config/env';
+import DomainManagementPage from './views/domain-management-page';
 import HomePage from './views/home-page';
 import MFAPage from './views/mfa-page';
 import OrgManagementPage from './views/org-management-page';
@@ -32,6 +33,7 @@ function AppContent() {
           <Route path="/sso-providers" element={<SsoProviderPage />} />
           <Route path="/sso-provider/create" element={<SsoProviderCreatePage />} />
           <Route path="/sso-provider/edit/:id" element={<SsoProviderEditPage />} />
+          <Route path="/domain-management" element={<DomainManagementPage />} />
         </Routes>
       </main>
     </div>

@@ -4,6 +4,56 @@
     "copied": "Copied!"
   },
   "domain_management": {
+    "domain_table": {
+      "header": {
+        "title": "Domains",
+        "description": "Add a domain to enhance security and streamline login by directing users to your identity provider based on their email domain.",
+        "create_button_text": "Add Domain"
+      },
+      "table": {
+        "empty_message": "You do not have any domains.",
+        "columns": {
+          "domain": "Domain Name",
+          "status": "Status"
+        },
+        "actions": {
+          "configure_button_text": "Configure",
+          "view_button_text": "View",
+          "verify_button_text": "Verify",
+          "delete_button_text": "Delete"
+        }
+      },
+      "notifications": {
+        "general_error": "There was an issue processing your request. Please try again or contact support if the issue persists.",
+        "fetch_providers_error": "There was an issue fetching providers. Please try again or contact support if the issue persists.",
+        "fetch_domains_error": "There was an issue fetching domains. Please try again or contact support if the issue persists.",
+        "domain_create": {
+          "success": "${domainName} has been created.",
+          "error": "There was an issue creating the domain.",
+          "on_before": "Domain is not valid."
+        },
+        "domain_verify": {
+          "success": "${domainName} has been verified.",
+          "error": "There was an issue verifying the domain.",
+          "on_before": "Domain verify validation is not correct.",
+          "verification_failed": "${domainName} could not be verified. Please wait and try again or check with your DNS provider."
+        },
+        "domain_delete": {
+          "success": "${domainName} has been deleted.",
+          "error": "There was an issue deleting the domain."
+        },
+        "domain_associate_provider": {
+          "success": "${domainName} enabled for ${idp} provider.",
+          "error": "There was an issue associating the domain to the provider.",
+          "on_before": "Domain associate to provider validation is not correct."
+        },
+        "domain_delete_provider": {
+          "success": "${domainName} disabled for ${idp} provider.",
+          "error": "There was an issue removing the domain from the provider.",
+          "on_before": "Domain delete from provider validation is not correct."
+        }
+      }
+    },
     "domain_create": {
       "modal": {
         "title": "Add a Domain",
@@ -49,6 +99,37 @@
           "cancel_button_text": "Cancel",
           "delete_button_text": "Delete"
         }
+      }
+    },
+    "domain_verify": {
+      "modal": {
+        "title": "Add DNS records for ${domainName}",
+        "txt_record_name": {
+          "label": "TXT Record Name"
+        },
+        "txt_record_content": {
+          "label": "TXT Record Content"
+        },
+        "verification_status": {
+          "label": "Verification Status:",
+          "pending": "Pending",
+          "description": "Your domain is pending verification. Click 'Verify' to refresh the status, or check back later. DNS changes may take up to 48 hours, but typically process faster."
+        },
+        "actions": {
+          "verify_button_text": "Verify",
+          "delete_button_text": "Delete",
+          "done_button_text": "Done"
+        },
+        "errors": {
+          "verification_failed": "${domainName} could not be verified. Please wait and try again or check with your DNS provider."
+        }
+      }
+    },
+    "shared": {
+      "domain_statuses": {
+        "pending": "Pending",
+        "verified": "Verified",
+        "failed": "Failed"
       }
     }
   },

@@ -6,13 +6,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import { useTranslator } from '../../../hooks/use-translator';
-import type { DomainCreateModalProps } from '../../../types/my-org/domain-management/domain-create-types';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '../../ui/form';
-import { Label } from '../../ui/label';
-import { Modal } from '../../ui/modal';
-import { TextField } from '../../ui/text-field';
+import type { DomainCreateModalProps } from '../../../../types/my-org/domain-management/domain-create-types';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../ui/form';
+import { Label } from '../../../ui/label';
+import { Modal } from '../../../ui/modal';
+import { TextField } from '../../../ui/text-field';
 
 export function DomainCreateModal({
   className,

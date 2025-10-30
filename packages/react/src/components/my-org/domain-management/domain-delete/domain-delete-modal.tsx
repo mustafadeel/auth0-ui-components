@@ -44,7 +44,7 @@ export function DomainDeleteModal({
         nextAction: {
           type: 'button',
           label: t('actions.delete_button_text'),
-          variant: 'primary',
+          variant: 'destructive',
           disabled: isLoading,
           onClick: handleDelete,
         },

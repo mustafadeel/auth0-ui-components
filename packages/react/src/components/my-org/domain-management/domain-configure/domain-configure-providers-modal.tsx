@@ -1,4 +1,4 @@
-import type { IdentityProvider } from '@auth0-web-ui-components/core';
+import type { IdentityProviderAssociatedWithDomain } from '@auth0-web-ui-components/core';
 import React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
@@ -16,6 +16,7 @@ export function DomainConfigureProvidersModal({
   providers,
   isOpen,
   isLoading,
+  isLoadingSwitch,
   onClose,
   onToggleSwitch,
   onOpenProvider,
@@ -24,13 +25,13 @@ export function DomainConfigureProvidersModal({
   const { t } = useTranslator('domain_management.domain_configure_providers.modal', customMessages);
 
   const handleToggleSwitch = React.useCallback(
-    (provider: IdentityProvider, checked: boolean) => {
-      onToggleSwitch(domain!, provider, checked); // Switch component is not rendered if domain is null
+    (provider: IdentityProviderAssociatedWithDomain, newCheckedValue: boolean) => {
+      onToggleSwitch(domain!, provider, newCheckedValue); // Switch component is not rendered if domain is null
     },
     [domain, onToggleSwitch],
   );
 
-  const columns: Column<IdentityProvider>[] = React.useMemo(
+  const columns: Column<IdentityProviderAssociatedWithDomain>[] = React.useMemo(
     () => [
       {
         type: 'text',
@@ -63,15 +64,15 @@ export function DomainConfigureProvidersModal({
               </Button>
             )}
             <Switch
-              checked={provider.is_enabled ?? false}
+              checked={provider.is_associated ?? false}
               onCheckedChange={(checked) => handleToggleSwitch(provider, checked)}
-              disabled={isLoading}
+              disabled={isLoadingSwitch}
             />
           </div>
         ),
       },
     ],
-    [t, isLoading, handleToggleSwitch],
+    [t, onOpenProvider, isLoadingSwitch, handleToggleSwitch],
   );
 
   return (
@@ -89,6 +90,7 @@ export function DomainConfigureProvidersModal({
             <DataTable
               columns={columns}
               data={providers}
+              loading={isLoading}
               emptyState={{
                 title: t('table.empty_message'),
                 action: onCreateProvider

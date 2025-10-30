@@ -7,6 +7,7 @@ export interface DomainConfigureProvidersModalProps {
   customMessages?: Partial<DomainConfigureMessages>;
   isOpen: boolean;
   isLoading: boolean;
+  isLoadingSwitch: boolean;
   domain: Domain | null;
   providers: IdentityProvider[];
   onClose: () => void;

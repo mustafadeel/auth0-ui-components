@@ -4,14 +4,14 @@ import type {
 } from './sso-provider-delete-types';
 
 export interface SsoProviderTableMessages {
-  header: {
+  header?: {
     title?: string;
     description?: string;
     create_button_text?: string;
   };
-  table: {
+  table?: {
     empty_message?: string;
-    columns: {
+    columns?: {
       name?: string;
       identity_provider?: string;
       display_name?: string;
@@ -22,7 +22,7 @@ export interface SsoProviderTableMessages {
       remove_button_text?: string;
     };
   };
-  create_consent_modal: {
+  create_consent_modal?: {
     title?: string;
     description?: string;
     actions?: {
@@ -30,8 +30,8 @@ export interface SsoProviderTableMessages {
       process_button_text?: string;
     };
   };
-  delete_modal: SsoProvideDeleteMessages;
-  remove_modal: {
+  delete_modal?: SsoProvideDeleteMessages;
+  remove_modal?: {
     title?: string;
     description?: string;
     model_content?: SsoProviderDeleteModalContentMessages;
@@ -40,9 +40,34 @@ export interface SsoProviderTableMessages {
       remove_button_text?: string;
     };
   };
-  notifications: {
-    delete_success?: string;
-    remove_success?: string;
+  notifications?: {
     general_error?: string;
+    fetch_providers_error?: string;
+    fetch_domains_error?: string;
+    domain_create?: {
+      success?: string;
+      error?: string;
+      on_before?: string;
+    };
+    domain_verify?: {
+      success?: string;
+      error?: string;
+      on_before?: string;
+      verification_failed?: string;
+    };
+    domain_delete?: {
+      success?: string;
+      error?: string;
+    };
+    domain_associate_provider?: {
+      success?: string;
+      error?: string;
+      on_before?: string;
+    };
+    domain_delete_provider?: {
+      success?: string;
+      error?: string;
+      on_before?: string;
+    };
   };
 }

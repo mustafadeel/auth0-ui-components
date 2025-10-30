@@ -27,6 +27,9 @@ export type UpdateIdentityProviderRequestContentPrivate = ProviderSelectionFormV
   Partial<ProviderDetailsFormValues> &
   Partial<ProviderConfigureFormValues>;
 
+export type CreateIdpDomainRequestContent = Auth0MyOrg.CreateIdpDomainRequestContent;
+export type CreateIdpDomainResponseContent = Auth0MyOrg.CreateIdpDomainResponseContent;
+
 export type IdpStrategy =
   | 'adfs'
   | 'google-apps'
@@ -37,6 +40,10 @@ export type IdpStrategy =
   | 'waad';
 
 export type IdentityProviderCreate = Omit<IdentityProvider, 'id'>;
+
+export type IdentityProviderAssociatedWithDomain = IdentityProvider & {
+  is_associated: boolean;
+};
 
 type Method = 'scim' | 'google-sync';
 
@@ -67,19 +74,4 @@ export interface SCIMToken {
   token: string;
   created_at: string;
   valid_until?: string;
-}
-
-type DomainStatus = 'pending' | 'failed' | 'verified';
-
-export interface DomainCreate {
-  domain: string;
-}
-
-export interface Domain {
-  id: string;
-  org_id: string;
-  domain: string;
-  status: DomainStatus;
-  verification_txt: string;
-  verification_host: string;
 }

@@ -4,6 +4,56 @@
     "copied": "コピーしました"
   },
   "domain_management": {
+    "domain_table": {
+      "header": {
+        "title": "ドメイン",
+        "description": "ドメインを追加してセキュリティを強化し、ユーザーのメールドメインに基づいてアイデンティティプロバイダーへ直接誘導することでログインを効率化します。",
+        "create_button_text": "ドメインを追加"
+      },
+      "table": {
+        "empty_message": "ドメインがありません。",
+        "columns": {
+          "domain": "ドメイン名",
+          "status": "ステータス"
+        },
+        "actions": {
+          "configure_button_text": "設定",
+          "view_button_text": "表示",
+          "verify_button_text": "検証",
+          "delete_button_text": "削除"
+        }
+      },
+      "notifications": {
+        "general_error": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "fetch_providers_error": "プロバイダーの取得中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "fetch_domains_error": "ドメインの取得中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "domain_create": {
+          "success": "${domainName}が作成されました。",
+          "error": "ドメインの作成中に問題が発生しました。",
+          "on_before": "ドメインが有効ではありません。"
+        },
+        "domain_verify": {
+          "success": "${domainName}が検証されました。",
+          "error": "ドメインの検証中に問題が発生しました。",
+          "on_before": "ドメイン検証のバリデーションが正しくありません。",
+          "verification_failed": "${domainName}を検証できませんでした。しばらく待ってから再度お試しいただくか、DNSプロバイダーをご確認ください。"
+        },
+        "domain_delete": {
+          "success": "${domainName}が削除されました。",
+          "error": "ドメインの削除中に問題が発生しました。"
+        },
+        "domain_associate_provider": {
+          "success": "${domainName}が${idp}プロバイダーで有効になりました。",
+          "error": "ドメインをプロバイダーに関連付ける際に問題が発生しました。",
+          "on_before": "ドメインのプロバイダー関連付けバリデーションが正しくありません。"
+        },
+        "domain_delete_provider": {
+          "success": "${domainName}が${idp}プロバイダーで無効になりました。",
+          "error": "ドメインをプロバイダーから削除する際に問題が発生しました。",
+          "on_before": "ドメインのプロバイダー削除バリデーションが正しくありません。"
+        }
+      }
+    },
     "domain_create": {
       "modal": {
         "title": "ドメインの追加",
@@ -49,6 +99,37 @@
           "cancel_button_text": "キャンセル",
           "delete_button_text": "削除"
         }
+      }
+    },
+    "domain_verify": {
+      "modal": {
+        "title": "${domainName}のDNSレコードを追加",
+        "txt_record_name": {
+          "label": "TXTレコード名"
+        },
+        "txt_record_content": {
+          "label": "TXTレコードの内容"
+        },
+        "verification_status": {
+          "label": "検証ステータス:",
+          "pending": "保留中",
+          "description": "ドメインの検証が保留中です。「検証」をクリックしてステータスを更新するか、後でもう一度確認してください。DNS変更には最大48時間かかる場合がありますが、通常はより早く処理されます。"
+        },
+        "actions": {
+          "verify_button_text": "検証",
+          "delete_button_text": "削除",
+          "done_button_text": "完了"
+        },
+        "errors": {
+          "verification_failed": "${domainName}を検証できませんでした。しばらく待ってから再度お試しいただくか、DNSプロバイダーをご確認ください。"
+        }
+      }
+    },
+    "shared": {
+      "domain_statuses": {
+        "pending": "保留中",
+        "verified": "検証済み",
+        "failed": "失敗"
       }
     }
   },
