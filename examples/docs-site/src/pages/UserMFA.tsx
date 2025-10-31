@@ -187,7 +187,7 @@ VITE_AUTH0_AUDIENCE=your-api-audience # Optional`}
             <h3 className="text-lg font-medium text-gray-900 mb-3">Option 1: NPM Package</h3>
             <p className="text-gray-600 mb-4">Install both the core and React packages:</p>
             <CodeBlock
-              code="npm install @auth0-web-ui-components/core @auth0-web-ui-components/react"
+              code="npm install @auth0/web-ui-components-core @auth0/web-ui-components-react"
               language="bash"
               title="npm"
             />
@@ -208,7 +208,7 @@ VITE_AUTH0_AUDIENCE=your-api-audience # Optional`}
             </p>
             <div className="space-y-3">
               <CodeBlock
-                code="npm install @auth0-web-ui-components/core"
+                code="npm install @auth0/web-ui-components-core"
                 language="bash"
                 title="1. Install Core Package"
               />

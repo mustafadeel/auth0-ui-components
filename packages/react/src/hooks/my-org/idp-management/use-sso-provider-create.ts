@@ -3,7 +3,7 @@ import {
   type CreateIdentityProviderRequestContent,
   type CreateIdentityProviderRequestContentPrivate,
   type IdentityProvider,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 import { useCallback, useState } from 'react';
 
 import { showToast } from '../../../components/ui/toast';

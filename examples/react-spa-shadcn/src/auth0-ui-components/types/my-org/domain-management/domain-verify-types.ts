@@ -1,4 +1,4 @@
-import type { DomainVerifyMessages, Domain } from '@auth0-web-ui-components/core';
+import type { DomainVerifyMessages, Domain } from '@auth0/web-ui-components-core';
 
 export interface DomainVerifyModalProps {
   isOpen: boolean;

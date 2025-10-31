@@ -12,7 +12,7 @@ import type {
   CreateIdpProvisioningScimTokenRequestContent,
   ListIdpProvisioningScimTokensResponseContent,
   GetIdPProvisioningConfigResponseContent,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 import type { LucideIcon } from 'lucide-react';
 import type React from 'react';
 

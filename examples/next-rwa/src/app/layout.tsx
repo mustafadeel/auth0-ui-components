@@ -8,7 +8,7 @@ import { Sidebar } from '@/components/navigation/side-bar';
 import { ClientProvider } from '@/providers/client-provider';
 
 import './globals.css';
-import '@auth0-web-ui-components/react/dist/index.css';
+import '@auth0/web-ui-components-react/dist/index.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

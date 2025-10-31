@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { Auth0ComponentProvider } from '@auth0-web-ui-components/react';
+import { Auth0ComponentProvider } from '@auth0/web-ui-components-react';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import HomePage from './pages/HomePage';
 import MyOrgIntroduction from './pages/MyOrgIntroduction';
 import OrgDetailsEdit from './pages/OrgDetailsEdit';
 import UserMFA from './pages/UserMFA';
-import '@auth0-web-ui-components/react/dist/index.css';
+import '@auth0/web-ui-components-react/dist/index.css';
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth0();

@@ -1,4 +1,4 @@
-import { UserMFAMgmt, Auth0ComponentProvider } from '@auth0-web-ui-components/react';
+import { UserMFAMgmt, Auth0ComponentProvider } from '@auth0/web-ui-components-react';
 import React from 'react';
 
 // Mock MFA data matching the exact Authenticator interface from the core service

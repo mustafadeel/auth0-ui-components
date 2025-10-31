@@ -2,7 +2,7 @@ import type {
   Organization,
   SharedComponentProps,
   OrgDeleteMessages,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 
 /**
  * Styling that can be used to override default styles.

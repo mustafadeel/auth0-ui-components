@@ -99,7 +99,7 @@ export default function DomainTableDocs() {
             <h3 className="text-lg font-medium text-gray-900 mb-3">Option 1: NPM Package</h3>
             <p className="text-gray-600 mb-4">Install both the core and React packages:</p>
             <CodeBlock
-              code="npm install @auth0-web-ui-components/core @auth0-web-ui-components/react"
+              code="npm install @auth0/web-ui-components-core @auth0/web-ui-components-react"
               language="bash"
               title="npm"
             />
@@ -120,7 +120,7 @@ export default function DomainTableDocs() {
             </p>
             <div className="space-y-3">
               <CodeBlock
-                code="npm install @auth0-web-ui-components/core"
+                code="npm install @auth0/web-ui-components-core"
                 language="bash"
                 title="1. Install Core Package"
               />
@@ -145,7 +145,7 @@ export default function DomainTableDocs() {
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">Basic Usage</h2>
         <CodeBlock
-          code={`import { DomainTable } from '@auth0-web-ui-components/react';
+          code={`import { DomainTable } from '@auth0/web-ui-components-react';
 
 export function DomainsPage() {
   return (
@@ -711,9 +711,9 @@ interface ComponentAction<T, U = undefined> {
         <h2 className="text-2xl font-semibold text-gray-900">Complete Integration Example</h2>
         <CodeBlock
           code={`import React from 'react';
-import { DomainTable } from '@auth0-web-ui-components/react';
+import { DomainTable } from '@auth0/web-ui-components-react';
 import { Auth0Provider } from '@auth0/auth0-react';
-import { Auth0ComponentProvider } from '@auth0-web-ui-components/react';
+import { Auth0ComponentProvider } from '@auth0/web-ui-components-react';
 
 function DomainsScreen() {
   return (

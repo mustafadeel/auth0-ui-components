@@ -1,4 +1,4 @@
-import type { Domain, DomainDeleteMessages } from '@auth0-web-ui-components/core';
+import type { Domain, DomainDeleteMessages } from '@auth0/web-ui-components-core';
 
 export interface DomainDeleteModalProps {
   className?: string;

@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { UserMFAMgmt } from '@auth0-web-ui-components/react';
-import '@auth0-web-ui-components/react/dist/index.css';
+import { UserMFAMgmt } from '@auth0/web-ui-components-react';
+import '@auth0/web-ui-components-react/dist/index.css';
 import React, { useState } from 'react';
 
 import { MockUserMFAMgmt } from './MockUserMFAMgmt';

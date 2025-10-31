@@ -1,6 +1,6 @@
 {
-  "name": "@auth0-web-ui-components/react",
-  "version": "0.3.17",
+  "name": "@auth0/web-ui-components-react",
+  "version": "0.1.0-alpha.1",
   "private": false,
   "sideEffects": true,
   "main": "./dist/index.js",
@@ -36,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@auth0-web-ui-components/core": "workspace:*",
+    "@auth0/web-ui-components-core": "workspace:*",
     "@hookform/resolvers": "^5.1.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-checkbox": "^1.1.1",

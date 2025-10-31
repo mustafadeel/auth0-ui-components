@@ -1,4 +1,4 @@
-import type { SharedComponentProps } from '@auth0-web-ui-components/core';
+import type { SharedComponentProps } from '@auth0/web-ui-components-core';
 import { AlertTriangle } from 'lucide-react';
 
 import { useTranslator } from '../../../../../hooks/use-translator';

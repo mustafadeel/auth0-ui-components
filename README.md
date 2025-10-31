@@ -8,7 +8,7 @@ This project uses a **monorepo architecture** with multiple packages located in 
 
 ### `packages/core/`
 
-**@auth0-web-ui-components/core** - The foundational package containing core utilities and services.
+**@auth0/web-ui-components-core** - The foundational package containing core utilities and services.
 
 **What it provides:**
 
@@ -19,7 +19,7 @@ This project uses a **monorepo architecture** with multiple packages located in 
 
 ### `packages/react/`
 
-**@auth0-web-ui-components/react** - React-specific UI components and hooks for Auth0 integrations.
+**@auth0/web-ui-components-react** - React-specific UI components and hooks for Auth0 integrations.
 
 **What it provides:**
 

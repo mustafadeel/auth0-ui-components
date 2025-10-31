@@ -10,7 +10,7 @@ import type {
   SsoProvisioningDeleteMessages,
   ProvisioningFieldMappingsMessages,
   ProvisioningFieldMap,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 
 import type { ProvisioningManageTokenClasses } from './provisioning-manage-token-types';
 

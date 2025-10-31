@@ -11,7 +11,7 @@ import type {
   DomainTableMessages,
   CreateOrganizationDomainRequestContent,
   EnhancedTranslationFunction,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 
 export type { Domain };
 

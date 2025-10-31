@@ -6,7 +6,7 @@ import type {
   SsoProviderTabMessages,
   SsoProviderDetailsMessages,
   SsoProviderDetailsSchema,
-} from '@auth0-web-ui-components/core';
+} from '@auth0/web-ui-components-core';
 
 import type { FormActionsProps } from '../../../../components/ui/form-actions';
 

@@ -89,12 +89,12 @@ importers:
 
   examples/docs-site:
     dependencies:
-      '@auth0-web-ui-components/react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@auth0/auth0-react':
         specifier: ^2.0.0
         version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@auth0/web-ui-components-react':
+        specifier: workspace:*
+        version: link:../../packages/react
       '@radix-ui/react-avatar':
         specifier: ^1.1.0
         version: 1.1.10(@types/react-dom@19.1.6(@types/react@19.1.7))(@types/react@19.1.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -192,12 +192,12 @@ importers:
 
   examples/next-rwa:
     dependencies:
-      '@auth0-web-ui-components/react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@auth0/nextjs-auth0':
         specifier: file:dependencies/nextjs-auth0/auth0-nextjs-auth0-4.11.0.tgz
         version: file:examples/next-rwa/dependencies/nextjs-auth0/auth0-nextjs-auth0-4.11.0.tgz(next@15.2.3(@babel/core@7.27.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@auth0/web-ui-components-react':
+        specifier: workspace:*
+        version: link:../../packages/react
       '@tailwindcss/postcss':
         specifier: ^4.1.10
         version: 4.1.10
@@ -259,12 +259,12 @@ importers:
 
   examples/react-spa-npm:
     dependencies:
-      '@auth0-web-ui-components/react':
-        specifier: workspace:*
-        version: link:../../packages/react
       '@auth0/auth0-react':
         specifier: ^2.0.0
         version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@auth0/web-ui-components-react':
+        specifier: workspace:*
+        version: link:../../packages/react
       '@tailwindcss/vite':
         specifier: ^4.1.10
         version: 4.1.10(vite@6.3.5(@types/node@22.15.30)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.44.0)(yaml@2.8.0))
@@ -329,12 +329,12 @@ importers:
 
   examples/react-spa-shadcn:
     dependencies:
-      '@auth0-web-ui-components/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       '@auth0/auth0-react':
         specifier: ^2.3.0
         version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@auth0/web-ui-components-core':
+        specifier: workspace:*
+        version: link:../../packages/core
       '@hookform/resolvers':
         specifier: ^3.10.0
         version: 3.10.0(react-hook-form@7.57.0(react@19.1.0))
@@ -571,7 +571,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@auth0-web-ui-components/core':
+      '@auth0/web-ui-components-core':
         specifier: workspace:*
         version: link:../core
       '@hookform/resolvers':

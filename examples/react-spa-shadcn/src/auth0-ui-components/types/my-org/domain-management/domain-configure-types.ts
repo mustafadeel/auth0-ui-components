@@ -1,4 +1,4 @@
-import type { Domain, DomainConfigureMessages } from '@auth0-web-ui-components/core';
+import type { Domain, DomainConfigureMessages } from '@auth0/web-ui-components-core';
 
 import type { IdentityProvider } from '../idp-management/sso-provider/sso-provider-table-types';
 
