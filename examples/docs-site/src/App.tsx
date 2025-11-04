@@ -13,7 +13,6 @@ import SsoProviderCreateDocs from './pages/SsoProviderCreateDocs';
 import SsoProviderEditDocs from './pages/SsoProviderEditDocs';
 import SsoProviderTableDocs from './pages/SsoProviderTableDocs';
 import UserMFAMgmtDocs from './pages/UserMFAMgmtDocs';
-import '@auth0/web-ui-components-react/dist/index.css';
 
 function AppContent() {
   const { isAuthenticated, isLoading } = useAuth0();
