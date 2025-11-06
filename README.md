@@ -86,7 +86,7 @@ pnpm build:shadcn
 3. Open `docs-site` and serve the registry.
 
 ```bash
-cd examples/docs-site
+cd docs-site
 pnpm install
 pnpm run dev
 ```
