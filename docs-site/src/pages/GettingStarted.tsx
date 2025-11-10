@@ -316,7 +316,7 @@ export default function GettingStarted() {
             </h3>
             <CodeBlock
               code={`import { Auth0Provider } from '@auth0/auth0-react';
-import { Auth0ComponentProvider } from '@auth0/ui-components-react';
+import { Auth0ComponentProvider } from '@auth0/web-ui-components-react';
 
 const authDetails = {
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
@@ -345,7 +345,7 @@ function App() {
             </h3>
             <CodeBlock
               code={`import { useAuth0 } from '@auth0/auth0-react';
-import { OrgDetailsEdit } from '@auth0/ui-components-react';
+import { OrgDetailsEdit } from '@auth0/web-ui-components-react';
 // For shadcn users:
 // import { OrgDetailsEdit } from '@/auth0-ui-components/blocks/my-org/org-management/org-details-edit';
 
