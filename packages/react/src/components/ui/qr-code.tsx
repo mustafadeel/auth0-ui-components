@@ -1,4 +1,4 @@
-import QRCode from 'qrcode';
+import { toDataURL } from 'qrcode';
 import * as React from 'react';
 
 import { useTheme } from '../../hooks/use-theme';
@@ -69,7 +69,7 @@ export function QRCodeDisplayer({
 
     const generateQRCode = async () => {
       try {
-        const dataURL = await QRCode.toDataURL(value, {
+        const dataURL = await toDataURL(value, {
           width: size,
           margin: 1,
           color: qrCodeColorScheme,
