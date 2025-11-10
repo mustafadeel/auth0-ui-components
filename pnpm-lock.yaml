@@ -575,8 +575,8 @@ importers:
   packages/react:
     dependencies:
       '@auth0/web-ui-components-core':
-        specifier: 1.0.0-beta.3
-        version: 1.0.0-beta.3
+        specifier: 1.0.0-beta.4
+        version: 1.0.0-beta.4
       '@hookform/resolvers':
         specifier: ^5.1.0
         version: 5.1.1(react-hook-form@7.57.0(react@19.1.0))
@@ -752,8 +752,8 @@ packages:
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
 
-  '@auth0/web-ui-components-core@1.0.0-beta.3':
-    resolution: {integrity: sha512-qpZCSinkAndc7Vux9HNUdFntQDhGHJB1r5AV/wNqQN/Af6EqdXoLfZSRxdoPK2xjF2FASX3nCQUx47wcpe+5ZQ==}
+  '@auth0/web-ui-components-core@1.0.0-beta.4':
+    resolution: {integrity: sha512-RsV81efnLJ5Gray7yYnjtY+koRLU82nzsQMYFU+RG42FSKQ8IQ1Sb0Gkx5JARjasRbVVDB9IFJM8IAKi/H50DA==}
     engines: {node: '>=18'}
 
   '@babel/code-frame@7.27.1':
@@ -7394,7 +7394,7 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
       swr: 2.3.6(react@19.1.0)
 
-  '@auth0/web-ui-components-core@1.0.0-beta.3':
+  '@auth0/web-ui-components-core@1.0.0-beta.4':
     dependencies:
       '@auth0/myaccount-js': 1.0.0-beta.0
       '@auth0/myorganization-js': 1.0.0-beta.0
