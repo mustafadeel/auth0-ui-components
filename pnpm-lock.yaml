@@ -92,9 +92,6 @@ importers:
       '@auth0/auth0-react':
         specifier: ^2.0.0
         version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@auth0/web-ui-components-react':
-        specifier: workspace:*
-        version: link:../packages/react
       '@radix-ui/react-avatar':
         specifier: ^1.1.0
         version: 1.1.10(@types/react-dom@19.2.2(@types/react@19.1.7))(@types/react@19.1.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -219,12 +216,18 @@ importers:
       next:
         specifier: 15.2.3
         version: 15.2.3(@babel/core@7.27.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      postcss:
+        specifier: ^8.5.5
+        version: 8.5.5
       react:
         specifier: ^19.1.0
         version: 19.1.0
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      react-hook-form:
+        specifier: ^7.57.0
+        version: 7.57.0(react@19.1.0)
       react-i18next:
         specifier: ^15.5.3
         version: 15.5.3(i18next@25.2.1(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -277,6 +280,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
+      react-hook-form:
+        specifier: ^7.57.0
+        version: 7.57.0(react@19.1.0)
       react-i18next:
         specifier: ^15.5.3
         version: 15.5.3(i18next@25.2.1(typescript@5.8.3))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(typescript@5.8.3)
@@ -646,9 +652,6 @@ importers:
       react-dom:
         specifier: ^16.11.0 || ^17 || ^18 || ^19
         version: 19.1.0(react@19.1.0)
-      react-hook-form:
-        specifier: ^7.57.0
-        version: 7.57.0(react@19.1.0)
       shadcn:
         specifier: 2.6.0-canary.3
         version: 2.6.0-canary.3(@types/node@22.15.30)(typescript@5.8.3)
@@ -658,6 +661,9 @@ importers:
       tailwind-merge:
         specifier: ^3.3.0
         version: 3.3.0
+      tailwindcss:
+        specifier: ^3.0.0 || ^4.0.0
+        version: 4.1.10
       zod:
         specifier: ^3.25.56
         version: 3.25.56
@@ -665,12 +671,6 @@ importers:
       '@auth0/auth0-react':
         specifier: ^2.0.0
         version: 2.3.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tailwindcss/postcss':
-        specifier: ^4.1.10
-        version: 4.1.10
-      '@tailwindcss/typography':
-        specifier: ^0.5.16
-        version: 0.5.16(tailwindcss@4.1.10)
       '@testing-library/jest-dom':
         specifier: ^6.6.3
         version: 6.6.3
@@ -689,12 +689,12 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^3.2.4
         version: 3.2.4(vitest@3.2.3(@types/node@22.15.30)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(msw@2.10.2(@types/node@22.15.30)(typescript@5.8.3))(terser@5.44.0)(yaml@2.8.0))
+      react-hook-form:
+        specifier: ^7.57.0
+        version: 7.57.0(react@19.1.0)
       rimraf:
         specifier: ^5.0.0
         version: 5.0.10
-      tailwindcss:
-        specifier: ^4.1.10
-        version: 4.1.10
 
 packages:
 
