@@ -283,6 +283,7 @@ export const SamlpProviderForm = React.forwardRef<
                             components: {
                               link: (children: string) => (
                                 <Link
+                                  key="samlp-sign-request-link"
                                   href={SAMLP_HELP_LINKS.sign_request}
                                   target="_blank"
                                   rel="noopener noreferrer"

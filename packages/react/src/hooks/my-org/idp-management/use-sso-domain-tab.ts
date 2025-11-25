@@ -31,6 +31,7 @@ export function useSsoDomainTab(
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdatingId, setIsUpdatingId] = useState<string | null>(null);
 
   const fetchProviderfromDomain = useCallback(
     async (domainId: string): Promise<string | undefined> => {
@@ -45,7 +46,9 @@ export function useSsoDomainTab(
       const isIdpEnabled = response.identity_providers?.some((idp) => idp.id === idpId);
 
       if (isIdpEnabled) {
-        setIdpDomains([...idpDomains, domainId]);
+        setIdpDomains((prevIdpDomains) =>
+          prevIdpDomains.includes(domainId) ? prevIdpDomains : [...prevIdpDomains, domainId],
+        );
       }
     },
     [coreClient],
@@ -56,7 +59,9 @@ export function useSsoDomainTab(
       try {
         setIsLoading(true);
 
-        fetchedDomains.map(async (domain) => await fetchProviderfromDomain(domain.id));
+        await Promise.all(
+          fetchedDomains.map(async (domain) => await fetchProviderfromDomain(domain.id)),
+        );
       } catch (error) {
         handleError(error, {
           fallbackMessage: t('general_error'),
@@ -122,7 +127,7 @@ export function useSsoDomainTab(
         }
       }
 
-      const response = await coreClient!
+      const updatedDomain = await coreClient!
         .getMyOrgApiClient()
         .organization.domains.verify.create(selectedDomain.id);
 
@@ -132,7 +137,14 @@ export function useSsoDomainTab(
 
       setIsVerifying(false);
 
-      return response.status === 'verified';
+      if (updatedDomain.status === 'verified') {
+        setDomainsList((prevDomains) =>
+          prevDomains.map((prevDomain) =>
+            prevDomain.id === selectedDomain.id ? { ...prevDomain, ...updatedDomain } : prevDomain,
+          ),
+        );
+      }
+      return updatedDomain.status === 'verified';
     },
     [domains, t, coreClient],
   );
@@ -175,6 +187,11 @@ export function useSsoDomainTab(
         domain: domain.domain,
       });
 
+      // Update IdP domains
+      setIdpDomains((prevIdpDomains) =>
+        prevIdpDomains.includes(domain.id) ? prevIdpDomains : [...prevIdpDomains, domain.id],
+      );
+
       if (domains?.associateToProviderAction?.onAfter) {
         await domains.associateToProviderAction.onAfter(domain, provider);
       }
@@ -199,11 +216,14 @@ export function useSsoDomainTab(
         .getMyOrgApiClient()
         .organization.identityProviders.domains.delete(provider.id!, selectedDomain.domain);
 
+      // Update IdP domains
+      setIdpDomains((prevDomains) =>
+        prevDomains.filter((prevDomain) => prevDomain !== selectedDomain.id),
+      );
+
       if (domains?.deleteFromProviderAction?.onAfter) {
         await domains.deleteFromProviderAction.onAfter(selectedDomain);
       }
-
-      await getAllProviderDomains(domainsList);
     },
     [domains, t, coreClient, domainsList],
   );
@@ -310,6 +330,7 @@ export function useSsoDomainTab(
   const handleVerifyActionColumn = useCallback(
     async (domain: Domain) => {
       setIsUpdating(true);
+      setIsUpdatingId(domain.id);
 
       try {
         const isVerified = await onVerifyDomain(domain);
@@ -336,6 +357,7 @@ export function useSsoDomainTab(
         });
       } finally {
         setIsUpdating(false);
+        setIsUpdatingId(null);
       }
     },
     [onVerifyDomain, t],
@@ -344,6 +366,7 @@ export function useSsoDomainTab(
   const handleToggleSwitch = useCallback(
     async (domain: Domain, newCheckedValue: boolean) => {
       setIsUpdating(true);
+      setIsUpdatingId(domain.id);
 
       if (newCheckedValue) {
         try {
@@ -362,6 +385,7 @@ export function useSsoDomainTab(
           });
         } finally {
           setIsUpdating(false);
+          setIsUpdatingId(null);
         }
       } else {
         try {
@@ -380,6 +404,7 @@ export function useSsoDomainTab(
           });
         } finally {
           setIsUpdating(false);
+          setIsUpdatingId(null);
         }
       }
     },
@@ -387,13 +412,13 @@ export function useSsoDomainTab(
   );
 
   useEffect(() => {
-    if (!coreClient || !idpId) return;
+    if (!idpId) return;
 
     setIsLoading(true);
     Promise.allSettled([listDomains()]).finally(() => {
       setIsLoading(false);
     });
-  }, [coreClient, idpId]);
+  }, [idpId]);
 
   return {
     isLoading,
@@ -416,6 +441,7 @@ export function useSsoDomainTab(
     idpDomains,
     handleVerifyActionColumn,
     isUpdating,
+    isUpdatingId,
     handleToggleSwitch,
   };
 }

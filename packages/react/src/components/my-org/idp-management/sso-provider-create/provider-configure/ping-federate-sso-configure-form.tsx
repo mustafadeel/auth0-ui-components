@@ -207,6 +207,7 @@ export const PingFederateProviderForm = React.forwardRef<
                               components: {
                                 link: (children: string) => (
                                   <Link
+                                    key="ping-federate-sign-request-link"
                                     href={PING_FEDERATE_HELP_LINKS.sign_request}
                                     target="_blank"
                                     rel="noopener noreferrer"
