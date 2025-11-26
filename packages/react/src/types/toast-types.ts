@@ -66,6 +66,33 @@ export interface ToastSettings {
   dismissible?: boolean;
   /** Whether to show close button on toasts (used for individual toasts) */
   closeButton?: boolean;
+  /**
+   * Custom render function for complete control over toast provider setup.
+   * Useful for libraries like Chakra UI that need provider wrappers or
+   * when you need to customize the toast container placement/configuration.
+   *
+   * @param children - The app content to wrap
+   * @returns The wrapped content with your toast provider setup
+   *
+   * @example
+   * ```tsx
+   * // Chakra UI setup
+   * renderToastProvider: (children) => (
+   *   <ChakraProvider>
+   *     {children}
+   *   </ChakraProvider>
+   * )
+   *
+   * // React Hot Toast setup
+   * renderToastProvider: (children) => (
+   *   <>
+   *     {children}
+   *     <Toaster position="top-right" />
+   *   </>
+   * )
+   * ```
+   */
+  renderToastProvider?: (children: ReactNode) => ReactNode;
 }
 
 /**

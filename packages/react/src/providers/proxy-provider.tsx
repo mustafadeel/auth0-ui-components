@@ -17,14 +17,46 @@ import { ThemeProvider } from './theme-provider';
  *
  * Use this when you have a backend proxy that handles Auth0 authentication.
  *
+ * Toast Configuration Options:
+ * 1. Default Sonner: No configuration needed
+ * 2. Custom Library: Use renderToastProvider for complete control
+ *
  * @example
  * ```tsx
+ * // Default Sonner toasts
+ * <Auth0ProxyProvider>
+ *   <App />
+ * </Auth0ProxyProvider>
+ *
+ * // Chakra UI toasts
  * <Auth0ProxyProvider
- *   authDetails={{ authProxyUrl: '/api/auth' }}
- *   themeSettings={{ mode: 'dark', theme: 'rounded' }}
- *   toastSettings={{ provider: 'custom', customMethods: {...} }}
+ *   toastSettings={{
+ *     provider: 'custom',
+ *     customMethods: { success: toast.success, error: toast.error },
+ *     renderToastProvider: (children) => (
+ *       <ChakraProvider>
+ *         {children}
+ *       </ChakraProvider>
+ *     )
+ *   }}
  * >
- *   <YourApp />
+ *   <App />
+ * </Auth0ProxyProvider>
+ *
+ * // React Hot Toast
+ * <Auth0ProxyProvider
+ *   toastSettings={{
+ *     provider: 'custom',
+ *     customMethods: { success: toast.success, error: toast.error },
+ *     renderToastProvider: (children) => (
+ *       <>
+ *         {children}
+ *         <Toaster position="top-right" />
+ *       </>
+ *     )
+ *   }}
+ * >
+ *   <App />
  * </Auth0ProxyProvider>
  * ```
  */
@@ -67,19 +99,25 @@ export const Auth0ComponentProvider = ({
     [coreClient],
   );
 
-  return (
-    <ThemeProvider
-      themeSettings={{
-        mode: themeSettings.mode,
-        variables: themeSettings.variables,
-        loader,
-        theme: themeSettings.theme,
-      }}
-    >
-      {/* Render Toaster only for Sonner provider */}
-      {mergedToastSettings.provider === 'sonner' && (
+  // Memoize theme settings
+  const memoizedThemeSettings = React.useMemo(
+    () => ({
+      mode: themeSettings.mode,
+      variables: themeSettings.variables,
+      loader,
+      theme: themeSettings.theme,
+    }),
+    [themeSettings.mode, themeSettings.variables, themeSettings.theme, loader],
+  );
+
+  // Core app content
+  const appContent = (
+    <ThemeProvider themeSettings={memoizedThemeSettings}>
+      {/* Default Sonner support - only render when no custom provider and using sonner */}
+      {!mergedToastSettings.renderToastProvider && mergedToastSettings.provider === 'sonner' && (
         <Toaster position={mergedToastSettings.position} />
       )}
+
       <React.Suspense
         fallback={
           loader || (
@@ -95,6 +133,14 @@ export const Auth0ComponentProvider = ({
       </React.Suspense>
     </ThemeProvider>
   );
+
+  // If user provided custom render function, use it
+  if (mergedToastSettings.renderToastProvider) {
+    return <>{mergedToastSettings.renderToastProvider(appContent)}</>;
+  }
+
+  // Otherwise, render normally with default Sonner support
+  return appContent;
 };
 
 export default Auth0ComponentProvider;
