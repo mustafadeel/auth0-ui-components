@@ -305,14 +305,14 @@ export const SamlpProviderForm = React.forwardRef<
                   <FormField
                     control={form.control}
                     name="signatureAlgorithm"
-                    render={({ field, fieldState }) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium text-(length:--font-size-label)">
                           {t('fields.samlp.advanced_settings.sign_request_algorithm.label')}
                         </FormLabel>
                         <Select onValueChange={field.onChange} value={field.value || ''}>
                           <FormControl>
-                            <SelectTrigger error={Boolean(fieldState.error)}>
+                            <SelectTrigger>
                               <SelectValue
                                 placeholder={t(
                                   'fields.samlp.advanced_settings.sign_request_algorithm.placeholder',
@@ -339,14 +339,14 @@ export const SamlpProviderForm = React.forwardRef<
                   <FormField
                     control={form.control}
                     name="digestAlgorithm"
-                    render={({ field, fieldState }) => (
+                    render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium text-(length:--font-size-label)">
                           {t('fields.samlp.advanced_settings.sign_request_algorithm_digest.label')}
                         </FormLabel>
                         <Select onValueChange={field.onChange} value={field.value || ''}>
                           <FormControl>
-                            <SelectTrigger error={Boolean(fieldState.error)}>
+                            <SelectTrigger>
                               <SelectValue
                                 placeholder={t(
                                   'fields.samlp.advanced_settings.sign_request_algorithm_digest.placeholder',

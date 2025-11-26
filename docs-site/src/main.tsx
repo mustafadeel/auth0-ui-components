@@ -13,8 +13,10 @@ const auth0Config = {
     redirect_uri: window.location.origin,
   },
   onRedirectCallback: (appState?: { returnTo?: string }) => {
-    // Redirect to the page the user was on before authentication
-    const returnTo = appState?.returnTo || window.location.pathname;
+    let returnTo = appState?.returnTo || window.location.pathname;
+    if (typeof returnTo !== 'string' || !returnTo.startsWith('/') || returnTo.startsWith('//')) {
+      returnTo = '/';
+    }
     window.location.href = returnTo;
   },
 };
