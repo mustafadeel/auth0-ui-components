@@ -154,8 +154,11 @@ jobs:
           fi
 
           # Assign final tag values into environment variables
+          echo "CORE_VER=${CORE_VER}" >> $GITHUB_ENV
+          echo "REACT_VER=${REACT_VER}" >> $GITHUB_ENV
           echo "CORE_TAG=${CORE_TAG}" >> $GITHUB_ENV
           echo "REACT_TAG=${REACT_TAG}" >> $GITHUB_ENV
+          echo "PACKAGES_INPUT=${PACKAGES_INPUT}" >> $GITHUB_ENV
 
           echo "Publishing:"
           echo "Core: ${CORE_VER} @ ${CORE_TAG}"
