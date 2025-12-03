@@ -4,3 +4,4 @@ export { SsoProviderTable } from './my-org/idp-management/sso-provider-table';
 export { SsoProviderCreate } from './my-org/idp-management/sso-provider-create';
 export { SsoProviderEdit } from './my-org/idp-management/sso-provider-edit';
 export { DomainTable } from './my-org/domain-management/domain-table';
+export { OrganizationMemberManagement } from './my-org/member-management/organization-member-management';
