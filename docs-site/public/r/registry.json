@@ -1119,6 +1119,11 @@
           "target": "auth0-ui-components/hooks/my-org/config/use-config.tsx"
         },
         {
+          "path": "src/hooks/my-org/config/use-idp-config.tsx",
+          "type": "registry:hook",
+          "target": "auth0-ui-components/hooks/my-org/config/use-idp-config.tsx"
+        },
+        {
           "path": "src/types/my-org/idp-management/sso-provider/sso-provider-table-types.ts",
           "type": "registry:file",
           "target": "auth0-ui-components/types/my-org/idp-management/sso-provider/sso-provider-table-types.ts"
