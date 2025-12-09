@@ -3,7 +3,7 @@ import type {
   Domain,
   IdentityProvider,
   IdentityProviderAssociatedWithDomain,
-} from '@auth0/web-ui-components-core';
+} from '@auth0/universal-components-core';
 import { vi } from 'vitest';
 
 import type { DomainTableProps } from '../../../../types/my-org/domain-management/domain-table-types';
