@@ -1,4 +1,4 @@
-import { FACTOR_TYPE_EMAIL, FACTOR_TYPE_PHONE } from '@auth0/web-ui-components-core';
+import { FACTOR_TYPE_EMAIL, FACTOR_TYPE_PHONE } from '@auth0/universal-components-core';
 import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 

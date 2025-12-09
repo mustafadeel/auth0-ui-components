@@ -48,7 +48,7 @@ export const mockCreateCoreClient = () => {
     createCoreClient: vi.fn(),
   }));
 
-  vi.mock('@auth0/web-ui-components-core', async (importOriginal) => {
+  vi.mock('@auth0/universal-components-core', async (importOriginal) => {
     const actual = await importOriginal();
 
     return {

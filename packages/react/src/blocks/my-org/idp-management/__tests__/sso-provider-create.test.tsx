@@ -2,7 +2,7 @@ import type {
   ComponentAction,
   IdentityProvider,
   CreateIdentityProviderRequestContentPrivate,
-} from '@auth0/web-ui-components-core';
+} from '@auth0/universal-components-core';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';

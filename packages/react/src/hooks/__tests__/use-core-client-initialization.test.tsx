@@ -1,4 +1,4 @@
-import type { CoreClientInterface } from '@auth0/web-ui-components-core';
+import type { CoreClientInterface } from '@auth0/universal-components-core';
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
