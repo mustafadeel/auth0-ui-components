@@ -8,6 +8,7 @@ import type {
   User,
   Auth0ContextInterface,
   GetTokenSilentlyVerboseResponse,
+  GetTokenSilentlyOptions,
 } from '../auth-types';
 
 /**
@@ -45,7 +46,7 @@ export const createMockBasicAuth0Context = (
 ): BasicAuth0ContextInterface => ({
   isAuthenticated: true,
   user: createMockUser(),
-  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: any) => {
+  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: GetTokenSilentlyOptions) => {
     if (options?.detailedResponse) {
       return createMockVerboseTokenResponse();
     }
@@ -65,7 +66,7 @@ export const createMockAuth0Context = (
   isAuthenticated: true,
   isLoading: false,
   user: createMockUser(),
-  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: any) => {
+  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: GetTokenSilentlyOptions) => {
     if (options?.detailedResponse) {
       return createMockVerboseTokenResponse();
     }

@@ -1,6 +1,10 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-import type { AuthDetails, BasicAuth0ContextInterface } from '../auth-types';
+import type {
+  AuthDetails,
+  BasicAuth0ContextInterface,
+  GetTokenSilentlyVerboseResponse,
+} from '../auth-types';
 import { createTokenManager } from '../token-manager';
 
 describe('token-manager', () => {
@@ -198,7 +202,7 @@ describe('token-manager', () => {
         });
 
         vi.mocked(mockContextInterface.getAccessTokenSilently).mockReturnValue(
-          delayedPromise as Promise<any>,
+          delayedPromise as Promise<GetTokenSilentlyVerboseResponse>,
         );
 
         const auth = createAuthConfig();
@@ -293,7 +297,7 @@ describe('token-manager', () => {
         });
 
         vi.mocked(mockContextInterface.getAccessTokenSilently)
-          .mockReturnValueOnce(firstPromise as Promise<any>)
+          .mockReturnValueOnce(firstPromise as Promise<GetTokenSilentlyVerboseResponse>)
           .mockResolvedValueOnce({
             access_token: mockToken2,
             id_token: 'mock-id-token',

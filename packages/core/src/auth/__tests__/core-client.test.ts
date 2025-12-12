@@ -1,3 +1,5 @@
+import type { MyAccountClient } from '@auth0/myaccount-js';
+import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrgClient } from '@core/services/my-org/my-org-api-service';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -278,7 +280,7 @@ describe('createCoreClient', () => {
 
     it('throws when myAccountApiClient is not available', async () => {
       initializeMyAccountClientMock.mockReturnValueOnce({
-        client: undefined as any,
+        client: undefined as unknown as MyAccountClient,
         setLatestScopes: vi.fn(),
       });
 
@@ -292,7 +294,7 @@ describe('createCoreClient', () => {
 
     it('throws when myOrgApiClient is not available', async () => {
       initializeMyOrgClientMock.mockReturnValueOnce({
-        client: undefined as any,
+        client: undefined as unknown as MyOrganizationClient,
         setLatestScopes: vi.fn(),
       });
       const authDetails = createAuthDetails();
