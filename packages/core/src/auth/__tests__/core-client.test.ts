@@ -7,7 +7,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createI18nService } from '../../i18n';
 import { createMockI18nService } from '../../i18n/__mocks__/i18n-service.mocks';
 import { createMockMyAccountClient } from '../../services/my-account/__tests__/__mocks__/my-account-api-service.mocks';
-import { createMockMyOrgClient } from '../../services/my-org/__mocks__/my-org-api-service.mocks';
+import { createMockMyOrgClient } from '../../services/my-org/__tests__/__mocks__/my-org-api-service.mocks';
 import { createMockTokenManager } from '../__mocks__/token-manager.mocks';
 import type { AuthDetails } from '../auth-types';
 import { createCoreClient } from '../core-client';

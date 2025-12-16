@@ -1,7 +1,9 @@
+import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import { vi } from 'vitest';
 
 import type { AuthDetails } from '../../../../auth/auth-types';
 import type { createTokenManager } from '../../../../auth/token-manager';
+import type { initializeMyOrgClient } from '../../my-org-api-service';
 
 /**
  * Mock data for testing my-org-api-service
@@ -220,3 +222,13 @@ export function checkHeaders(
   const actualHeaders = extractHeaders(init);
   return Object.entries(expectedHeaders).every(([key, value]) => actualHeaders[key] === value);
 }
+
+/**
+ * Creates a mock MyOrg API client
+ */
+export const createMockMyOrgClient = (): ReturnType<typeof initializeMyOrgClient> => {
+  return {
+    client: {} as MyOrganizationClient,
+    setLatestScopes: vi.fn(),
+  };
+};
