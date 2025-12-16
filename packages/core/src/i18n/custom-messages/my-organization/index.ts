@@ -1,3 +1,3 @@
 export * from './idp-management';
-export * from './org-management';
+export * from './organization-management';
 export * from './domain-management';
