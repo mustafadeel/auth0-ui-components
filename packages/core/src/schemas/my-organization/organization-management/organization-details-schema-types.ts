@@ -1,7 +1,7 @@
 /**
  * Schemas that can be used to override default schemas.
  */
-export interface OrgDetailsSchemas {
+export interface OrganizationDetailsSchemas {
   name?: {
     errorMessage?: string;
   };

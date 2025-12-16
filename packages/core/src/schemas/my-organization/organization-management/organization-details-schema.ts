@@ -1,14 +1,14 @@
 import { createStringSchema, createLogoSchema } from '@core/schemas/common';
 import { z } from 'zod';
 
-import { type OrgDetailsSchemas } from './organization-details-schema-types';
+import { type OrganizationDetailsSchemas } from './organization-details-schema-types';
 
 /**
  * Creates a schema for organization detail form validation
  * @param options - Configuration options for schema validation
  * @returns Zod schema for organization detail validation
  */
-export const createOrganizationDetailSchema = (options: OrgDetailsSchemas = {}) => {
+export const createOrganizationDetailSchema = (options: OrganizationDetailsSchemas = {}) => {
   const {
     name = {},
     displayName = {},

@@ -7,7 +7,7 @@ import {
 } from '../organization-details-schema';
 
 describe('Organization Details Schema', () => {
-  const validOrgDetails: InternalOrganizationDetailsFormValues = {
+  const validOrganizationDetails: InternalOrganizationDetailsFormValues = {
     name: 'my-test-components-org',
     display_name: 'My Test Components Org',
     branding: {
@@ -22,20 +22,20 @@ describe('Organization Details Schema', () => {
   describe('default schema', () => {
     describe('name field', () => {
       it('should accept valid organization name', () => {
-        const result = organizationDetailSchema.safeParse(validOrgDetails);
+        const result = organizationDetailSchema.safeParse(validOrganizationDetails);
         expect(result.success).toBe(true);
       });
 
       it('should reject empty name', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           name: '',
         });
         expect(result.success).toBe(false);
       });
 
       it('should reject missing name field', () => {
-        const { name, ...withoutName } = validOrgDetails;
+        const { name, ...withoutName } = validOrganizationDetails;
         const result = organizationDetailSchema.safeParse(withoutName);
         expect(result.success).toBe(false);
       });
@@ -54,7 +54,7 @@ describe('Organization Details Schema', () => {
       ])('when name is "$input" ($description)', ({ input, shouldPass }) => {
         it(`should ${shouldPass ? 'accept' : 'reject'}`, () => {
           const result = organizationDetailSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             name: input,
           });
           expect(result.success).toBe(shouldPass);
@@ -64,13 +64,13 @@ describe('Organization Details Schema', () => {
 
     describe('display_name field', () => {
       it('should accept valid display name', () => {
-        const result = organizationDetailSchema.safeParse(validOrgDetails);
+        const result = organizationDetailSchema.safeParse(validOrganizationDetails);
         expect(result.success).toBe(true);
       });
 
       it('should reject empty display_name when required', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           display_name: '',
         });
         expect(result.success).toBe(false);
@@ -86,7 +86,7 @@ describe('Organization Details Schema', () => {
       ])('when display_name is "$input" ($description)', ({ input, shouldPass }) => {
         it(`should ${shouldPass ? 'accept' : 'reject'}`, () => {
           const result = organizationDetailSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: input,
           });
           expect(result.success).toBe(shouldPass);
@@ -96,15 +96,15 @@ describe('Organization Details Schema', () => {
 
     describe('branding.logo_url field', () => {
       it('should accept valid https logo URL', () => {
-        const result = organizationDetailSchema.safeParse(validOrgDetails);
+        const result = organizationDetailSchema.safeParse(validOrganizationDetails);
         expect(result.success).toBe(true);
       });
 
       it('should accept valid http logo URL', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             logo_url: 'http://example.com/logo.png',
           },
         });
@@ -113,9 +113,9 @@ describe('Organization Details Schema', () => {
 
       it('should accept empty logo_url (optional field)', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             logo_url: '',
           },
         });
@@ -124,9 +124,9 @@ describe('Organization Details Schema', () => {
 
       it('should accept undefined logo_url (optional field)', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             logo_url: undefined,
           },
         });
@@ -167,9 +167,9 @@ describe('Organization Details Schema', () => {
       ])('when logo_url is "$input" ($description)', ({ input, shouldPass }) => {
         it(`should ${shouldPass ? 'accept' : 'reject'}`, () => {
           const result = organizationDetailSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               logo_url: input,
             },
           });
@@ -196,11 +196,11 @@ describe('Organization Details Schema', () => {
       ])('when primary color is "$input" ($description)', ({ input, shouldPass }) => {
         it(`should ${shouldPass ? 'accept' : 'reject'}`, () => {
           const result = organizationDetailSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 primary: input,
               },
             },
@@ -211,11 +211,11 @@ describe('Organization Details Schema', () => {
 
       it('should return correct error message for invalid primary color', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             colors: {
-              ...validOrgDetails.branding.colors,
+              ...validOrganizationDetails.branding.colors,
               primary: 'invalid',
             },
           },
@@ -240,11 +240,11 @@ describe('Organization Details Schema', () => {
       ])('when page_background is "$input" ($description)', ({ input, shouldPass }) => {
         it(`should ${shouldPass ? 'accept' : 'reject'}`, () => {
           const result = organizationDetailSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 page_background: input,
               },
             },
@@ -255,11 +255,11 @@ describe('Organization Details Schema', () => {
 
       it('should return correct error message for invalid background color', () => {
         const result = organizationDetailSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             colors: {
-              ...validOrgDetails.branding.colors,
+              ...validOrganizationDetails.branding.colors,
               page_background: 'invalid',
             },
           },
@@ -281,7 +281,7 @@ describe('Organization Details Schema', () => {
           name: { errorMessage: customMessage },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           name: '',
         });
 
@@ -298,7 +298,7 @@ describe('Organization Details Schema', () => {
           displayName: { required: false },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           display_name: '',
         });
 
@@ -311,7 +311,7 @@ describe('Organization Details Schema', () => {
           displayName: { errorMessage: customMessage },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           display_name: '',
         });
 
@@ -328,14 +328,14 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'ABC',
           }).success,
         ).toBe(false);
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'ABCDE',
           }).success,
         ).toBe(true);
@@ -348,14 +348,14 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'Short',
           }).success,
         ).toBe(true);
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'This is way too long',
           }).success,
         ).toBe(false);
@@ -371,14 +371,14 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'Valid',
           }).success,
         ).toBe(true);
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             display_name: 'invalid',
           }).success,
         ).toBe(false);
@@ -397,11 +397,11 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 primary: '#FF0000',
               },
             },
@@ -410,11 +410,11 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 primary: '#FFFF00',
               },
             },
@@ -428,11 +428,11 @@ describe('Organization Details Schema', () => {
           primaryColor: { errorMessage: customMessage },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             colors: {
-              ...validOrgDetails.branding.colors,
+              ...validOrganizationDetails.branding.colors,
               primary: 'invalid',
             },
           },
@@ -457,11 +457,11 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 page_background: '#FFFFFF',
               },
             },
@@ -470,11 +470,11 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               colors: {
-                ...validOrgDetails.branding.colors,
+                ...validOrganizationDetails.branding.colors,
                 page_background: '#000000',
               },
             },
@@ -488,11 +488,11 @@ describe('Organization Details Schema', () => {
           backgroundColor: { errorMessage: customMessage },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             colors: {
-              ...validOrgDetails.branding.colors,
+              ...validOrganizationDetails.branding.colors,
               page_background: 'invalid',
             },
           },
@@ -517,9 +517,9 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               logo_url: 'https://example.com/logo.png',
             },
           }).success,
@@ -527,9 +527,9 @@ describe('Organization Details Schema', () => {
 
         expect(
           customSchema.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             branding: {
-              ...validOrgDetails.branding,
+              ...validOrganizationDetails.branding,
               logo_url: 'https://example.com/logo.jpg',
             },
           }).success,
@@ -542,9 +542,9 @@ describe('Organization Details Schema', () => {
           logoURL: { errorMessage: customMessage },
         });
         const result = customSchema.safeParse({
-          ...validOrgDetails,
+          ...validOrganizationDetails,
           branding: {
-            ...validOrgDetails.branding,
+            ...validOrganizationDetails.branding,
             logo_url: 'invalid-url',
           },
         });
@@ -560,10 +560,10 @@ describe('Organization Details Schema', () => {
       it('should behave like the default schema', () => {
         const schemaWithEmptyOptions = createOrganizationDetailSchema({});
 
-        expect(schemaWithEmptyOptions.safeParse(validOrgDetails).success).toBe(true);
+        expect(schemaWithEmptyOptions.safeParse(validOrganizationDetails).success).toBe(true);
         expect(
           schemaWithEmptyOptions.safeParse({
-            ...validOrgDetails,
+            ...validOrganizationDetails,
             name: '',
           }).success,
         ).toBe(false);
@@ -574,7 +574,7 @@ describe('Organization Details Schema', () => {
       it('should behave like the default schema', () => {
         const schemaWithUndefinedOptions = createOrganizationDetailSchema(undefined);
 
-        expect(schemaWithUndefinedOptions.safeParse(validOrgDetails).success).toBe(true);
+        expect(schemaWithUndefinedOptions.safeParse(validOrganizationDetails).success).toBe(true);
       });
     });
 
@@ -588,7 +588,7 @@ describe('Organization Details Schema', () => {
           logoURL: { errorMessage: 'Custom logo error' },
         });
 
-        expect(customSchema.safeParse(validOrgDetails).success).toBe(true);
+        expect(customSchema.safeParse(validOrganizationDetails).success).toBe(true);
       });
     });
   });
@@ -619,14 +619,14 @@ describe('Organization Details Schema', () => {
 
   describe('edge cases', () => {
     it('should reject missing branding object', () => {
-      const { branding, ...withoutBranding } = validOrgDetails;
+      const { branding, ...withoutBranding } = validOrganizationDetails;
       const result = organizationDetailSchema.safeParse(withoutBranding);
       expect(result.success).toBe(false);
     });
 
     it('should reject missing colors object', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         branding: {
           logo_url: 'https://example.com/logo.png',
         },
@@ -636,9 +636,9 @@ describe('Organization Details Schema', () => {
 
     it('should reject missing primary color', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         branding: {
-          ...validOrgDetails.branding,
+          ...validOrganizationDetails.branding,
           colors: {
             page_background: '#FFFFFF',
           },
@@ -649,9 +649,9 @@ describe('Organization Details Schema', () => {
 
     it('should reject missing page_background color', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         branding: {
-          ...validOrgDetails.branding,
+          ...validOrganizationDetails.branding,
           colors: {
             primary: '#FF5733',
           },
@@ -662,7 +662,7 @@ describe('Organization Details Schema', () => {
 
     it('should reject null values', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         name: null,
       });
       expect(result.success).toBe(false);
@@ -670,7 +670,7 @@ describe('Organization Details Schema', () => {
 
     it('should reject non-string name', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         name: 12345,
       });
       expect(result.success).toBe(false);
@@ -678,7 +678,7 @@ describe('Organization Details Schema', () => {
 
     it('should handle special characters in name', () => {
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         name: 'org-name_123',
       });
       expect(result.success).toBe(true);
@@ -687,9 +687,9 @@ describe('Organization Details Schema', () => {
     it('should handle very long URLs', () => {
       const longUrl = `https://example.com/${'path/'.repeat(100)}logo.png`;
       const result = organizationDetailSchema.safeParse({
-        ...validOrgDetails,
+        ...validOrganizationDetails,
         branding: {
-          ...validOrgDetails.branding,
+          ...validOrganizationDetails.branding,
           logo_url: longUrl,
         },
       });
