@@ -58,8 +58,10 @@ jobs:
 
           if [[ "$CI_RESULT" == "success" ]]; then
             STATUS="✅ SUCCESS: CI/CD Pipeline passed"
+            MESSAGE="All checks passed successfully"
           else
             STATUS="❌ FAILED: CI/CD Pipeline failed"
+            MESSAGE="One or more CI steps failed. Check the workflow run for details."
           fi
 
           # Output summary for GitHub logs
@@ -77,10 +79,14 @@ jobs:
               -o /tmp/slack_response.txt \
               -d "{
                 \"status\": \"$STATUS\",
+                \"message\": \"$MESSAGE\",
                 \"repository\": \"${{ github.repository }}\",
                 \"branch\": \"${{ github.head_ref || github.ref_name }}\",
                 \"ci_result\": \"$CI_RESULT\",
                 \"actor\": \"${{ github.actor }}\",
+                \"workflow\": \"${{ github.workflow }}\",
+                \"commit_message\": \"${{ github.event.head_commit.message }}\",
+                \"commit_sha\": \"${{ github.sha }}\",
                 \"action_url\": \"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
               }")
             
