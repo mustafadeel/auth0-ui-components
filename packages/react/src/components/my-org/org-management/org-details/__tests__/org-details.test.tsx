@@ -13,7 +13,7 @@ import type {
   OrganizationDetailsFormActions,
   OrganizationDetailsProps,
 } from '../../../../../types/my-org/org-management';
-import { OrgDetails } from '../org-details';
+import { OrganizationDetails } from '../org-details';
 
 // ===== Mock packages =====
 
@@ -76,14 +76,18 @@ describe('OrgDetails', () => {
 
   describe('when loading', () => {
     it('should display spinner when isLoading is true', () => {
-      renderWithProviders(<OrgDetails {...createMockOrgDetailsProps({ isLoading: true })} />);
+      renderWithProviders(
+        <OrganizationDetails {...createMockOrgDetailsProps({ isLoading: true })} />,
+      );
 
       expect(screen.getByText('Loading...')).toBeInTheDocument();
       expect(screen.queryByLabelText(/display_name\.label/i)).not.toBeInTheDocument();
     });
 
     it('should display form when isLoading is false', () => {
-      renderWithProviders(<OrgDetails {...createMockOrgDetailsProps({ isLoading: false })} />);
+      renderWithProviders(
+        <OrganizationDetails {...createMockOrgDetailsProps({ isLoading: false })} />,
+      );
 
       expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
       expect(screen.getByLabelText(/display_name\.label/i)).toBeInTheDocument();
@@ -103,7 +107,7 @@ describe('OrgDetails', () => {
         };
 
         renderWithProviders(
-          <OrgDetails {...createMockOrgDetailsProps({ schema: customSchema })} />,
+          <OrganizationDetails {...createMockOrgDetailsProps({ schema: customSchema })} />,
         );
 
         const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -125,7 +129,9 @@ describe('OrgDetails', () => {
           submit_button_label: 'Custom Save',
         };
 
-        renderWithProviders(<OrgDetails {...createMockOrgDetailsProps({ customMessages })} />);
+        renderWithProviders(
+          <OrganizationDetails {...createMockOrgDetailsProps({ customMessages })} />,
+        );
 
         expect(screen.getByRole('button', { name: 'Custom Save' })).toBeInTheDocument();
       });
@@ -143,7 +149,7 @@ describe('OrgDetails', () => {
         };
 
         renderWithProviders(
-          <OrgDetails {...createMockOrgDetailsProps({ styling: customStyling })} />,
+          <OrganizationDetails {...createMockOrgDetailsProps({ styling: customStyling })} />,
         );
 
         const cardElement = screen.getByTestId('org-details-card');
@@ -159,7 +165,9 @@ describe('OrgDetails', () => {
           const mockFormActions = createMockFormActions({ isLoading: true });
 
           renderWithProviders(
-            <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+            <OrganizationDetails
+              {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+            />,
           );
 
           const buttons = screen.getAllByRole('button');
@@ -185,7 +193,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -206,7 +216,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -229,7 +241,9 @@ describe('OrgDetails', () => {
             const mockFormActions = createMockFormActions();
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -256,7 +270,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -290,7 +306,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -319,7 +337,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const cancelButton = screen.getByRole('button', { name: /cancel_button_label/i });
@@ -334,7 +354,9 @@ describe('OrgDetails', () => {
             });
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const cancelButton = screen.getByRole('button', { name: /cancel_button_label/i });
@@ -351,7 +373,9 @@ describe('OrgDetails', () => {
             const mockFormActions = createMockFormActions();
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const cancelButton = screen.getByRole('button', { name: /cancel_button_label/i });
@@ -366,7 +390,9 @@ describe('OrgDetails', () => {
             const mockFormActions = createMockFormActions();
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -389,7 +415,9 @@ describe('OrgDetails', () => {
             const mockFormActions = createMockFormActions();
 
             renderWithProviders(
-              <OrgDetails {...createMockOrgDetailsProps({ formActions: mockFormActions })} />,
+              <OrganizationDetails
+                {...createMockOrgDetailsProps({ formActions: mockFormActions })}
+              />,
             );
 
             const displayNameInput = screen.getByLabelText(/display_name\.label/i);
@@ -415,7 +443,7 @@ describe('OrgDetails', () => {
       it('should display all organization fields', () => {
         const mockOrg = createMockOrganization();
         const { container } = renderWithProviders(
-          <OrgDetails {...createMockOrgDetailsProps({ organization: mockOrg })} />,
+          <OrganizationDetails {...createMockOrgDetailsProps({ organization: mockOrg })} />,
         );
 
         expect(screen.getByLabelText(/display_name\.label/i)).toHaveValue(
@@ -448,13 +476,13 @@ describe('OrgDetails', () => {
         const mockCoreClient = createMockCoreClient();
 
         const { rerender, container } = renderWithProviders(
-          <OrgDetails {...createMockOrgDetailsProps({ organization: mockOrg1 })} />,
+          <OrganizationDetails {...createMockOrgDetailsProps({ organization: mockOrg1 })} />,
           { coreClient: mockCoreClient },
         );
 
         rerender(
           <TestProvider coreClient={mockCoreClient}>
-            <OrgDetails {...createMockOrgDetailsProps({ organization: mockOrg2 })} />
+            <OrganizationDetails {...createMockOrgDetailsProps({ organization: mockOrg2 })} />
           </TestProvider>,
         );
 
@@ -476,7 +504,7 @@ describe('OrgDetails', () => {
       it('should show unsaved changes message', async () => {
         const user = userEvent.setup();
 
-        renderWithProviders(<OrgDetails {...createMockOrgDetailsProps()} />);
+        renderWithProviders(<OrganizationDetails {...createMockOrgDetailsProps()} />);
 
         expect(screen.queryByText(/unsaved_changes_text/i)).not.toBeInTheDocument();
 
@@ -490,7 +518,7 @@ describe('OrgDetails', () => {
       it('should enable save button when there are unsaved changes', async () => {
         const user = userEvent.setup();
 
-        renderWithProviders(<OrgDetails {...createMockOrgDetailsProps()} />);
+        renderWithProviders(<OrganizationDetails {...createMockOrgDetailsProps()} />);
 
         const saveButton = screen.getByRole('button', { name: /submit_button_label/i });
 
@@ -508,13 +536,13 @@ describe('OrgDetails', () => {
 
     describe('when user has not made changes', () => {
       it('should not show unsaved changes message', () => {
-        renderWithProviders(<OrgDetails {...createMockOrgDetailsProps()} />);
+        renderWithProviders(<OrganizationDetails {...createMockOrgDetailsProps()} />);
 
         expect(screen.queryByText(/unsaved_changes_text/i)).not.toBeInTheDocument();
       });
 
       it('should disable save button', () => {
-        renderWithProviders(<OrgDetails {...createMockOrgDetailsProps()} />);
+        renderWithProviders(<OrganizationDetails {...createMockOrgDetailsProps()} />);
 
         const saveButton = screen.getByRole('button', { name: /submit_button_label/i });
         expect(saveButton).toBeDisabled();

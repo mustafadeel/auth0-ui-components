@@ -4,7 +4,7 @@ import {
 } from '@auth0/universal-components-core';
 import * as React from 'react';
 
-import { OrgDetails } from '../../../components/my-org/org-management/org-details/org-details';
+import { OrganizationDetails } from '../../../components/my-org/org-management/org-details/org-details';
 import { Header } from '../../../components/ui/header';
 import { Spinner } from '../../../components/ui/spinner';
 import { withMyOrganizationService } from '../../../hoc/with-services';
@@ -82,7 +82,7 @@ function OrgDetailsEditComponent({
       )}
 
       <div className="mb-8">
-        <OrgDetails
+        <OrganizationDetails
           organization={organization}
           schema={schema?.details}
           customMessages={customMessages.details}

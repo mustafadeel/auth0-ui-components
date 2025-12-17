@@ -23,7 +23,7 @@ import type {
 export interface SsoProviderTabEditProps {
   updateAction?: ComponentAction<IdentityProvider, IdentityProvider>;
   deleteAction: ComponentAction<IdentityProvider, void>;
-  deleteFromOrgAction: ComponentAction<IdentityProvider, void>;
+  deleteFromOrganizationAction: ComponentAction<IdentityProvider, void>;
 }
 
 export interface SsoProviderTabClasses

@@ -403,8 +403,8 @@ export function useSsoProviderEdit(
     try {
       setIsRemoving(true);
 
-      if (sso?.deleteFromOrgAction?.onBefore) {
-        const canProceed = sso.deleteFromOrgAction.onBefore(provider);
+      if (sso?.deleteFromOrganizationAction?.onBefore) {
+        const canProceed = sso.deleteFromOrganizationAction.onBefore(provider);
         if (!canProceed) {
           return;
         }
@@ -423,8 +423,8 @@ export function useSsoProviderEdit(
           organizationName: organization?.display_name,
         }),
       });
-      if (sso?.deleteFromOrgAction?.onAfter) {
-        await sso.deleteFromOrgAction.onAfter(provider);
+      if (sso?.deleteFromOrganizationAction?.onAfter) {
+        await sso.deleteFromOrganizationAction.onAfter(provider);
       }
     } catch (error) {
       showToast({

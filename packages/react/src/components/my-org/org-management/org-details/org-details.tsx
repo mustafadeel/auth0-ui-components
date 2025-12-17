@@ -25,14 +25,14 @@ import { BrandingDetails } from './branding-details';
 import { SettingsDetails } from './settings-details';
 
 /**
- * OrgDetails Component
+ * OrganizationDetails Component
  *
  * A presentation component that displays organization details including settings and branding fields.
  * This component renders form fields for organization configuration in a structured layout with sections.
  * All data, validation, and business logic are handled via props passed from parent components.
  *
  */
-export function OrgDetails({
+export function OrganizationDetails({
   organization,
   isLoading = false,
   schema,
@@ -145,14 +145,14 @@ export function OrgDetails({
         <form onSubmit={form.handleSubmit(onValid)} className="space-y-6">
           <Card
             data-testid="org-details-card"
-            className={cn('p-6', currentStyles.classes?.OrgDetails_Card)}
+            className={cn('p-6', currentStyles.classes?.OrganizationDetails_Card)}
           >
             <div className="space-y-6">
               <SettingsDetails
                 form={form}
                 readOnly={readOnly}
                 customMessages={customMessages}
-                className={currentStyles.classes?.OrgDetails_SettingsDetails}
+                className={currentStyles.classes?.OrganizationDetails_SettingsDetails}
               />
 
               <Separator />
@@ -161,7 +161,7 @@ export function OrgDetails({
                 form={form}
                 readOnly={readOnly}
                 customMessages={customMessages}
-                className={currentStyles.classes?.OrgDetails_BrandingDetails}
+                className={currentStyles.classes?.OrganizationDetails_BrandingDetails}
               />
 
               <FormActions
@@ -186,7 +186,7 @@ export function OrgDetails({
                 unsavedChangesText={t('unsaved_changes_text')}
                 showUnsavedChanges={formActions?.showUnsavedChanges}
                 align={formActions?.align}
-                className={currentStyles.classes?.OrgDetails_FormActions}
+                className={currentStyles.classes?.OrganizationDetails_FormActions}
               />
             </div>
           </Card>
