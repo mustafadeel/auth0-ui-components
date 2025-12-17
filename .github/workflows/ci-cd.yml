@@ -10,7 +10,7 @@ jobs:
   ci:
     name: 🔄 Continuous Integration
     runs-on:
-      labels: ubuntu-22.04-2cpu-8ram-75ssd
+      labels: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
@@ -42,11 +42,11 @@ jobs:
       - name: Build packages
         run: pnpm build
   notify:
-    name: 📢 Slack Notification
+    name: Slack Notification
     needs: [ci]
     if: always()
     runs-on:
-      labels: ubuntu-22.04-2cpu-8ram-75ssd
+      labels: ubuntu-latest
     steps:
       - name: Send Slack notification
         env:
