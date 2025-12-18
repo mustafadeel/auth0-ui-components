@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import * as useConfigModule from '../../../../hooks/my-org/config/use-config';
+import * as useConfigModule from '../../../../hooks/my-organization/config/use-config';
 import * as useCoreClientModule from '../../../../hooks/use-core-client';
 import { createMockIdentityProvider } from '../../../../internals/__mocks__/my-org/domain-management/domain.mocks';
 import { renderWithProviders } from '../../../../internals/test-provider';

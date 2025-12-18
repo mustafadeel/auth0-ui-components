@@ -6,17 +6,17 @@ import {
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
-import { DomainConfigureProvidersModal } from '../../../components/my-org/domain-management/domain-configure/domain-configure-providers-modal';
-import { DomainCreateModal } from '../../../components/my-org/domain-management/domain-create/domain-create-modal';
-import { DomainDeleteModal } from '../../../components/my-org/domain-management/domain-delete/domain-delete-modal';
-import { DomainTableActionsColumn } from '../../../components/my-org/domain-management/domain-table/domain-table-actions-column';
-import { DomainVerifyModal } from '../../../components/my-org/domain-management/domain-verify/domain-verify-modal';
+import { DomainConfigureProvidersModal } from '../../../components/my-organization/domain-management/domain-configure/domain-configure-providers-modal';
+import { DomainCreateModal } from '../../../components/my-organization/domain-management/domain-create/domain-create-modal';
+import { DomainDeleteModal } from '../../../components/my-organization/domain-management/domain-delete/domain-delete-modal';
+import { DomainTableActionsColumn } from '../../../components/my-organization/domain-management/domain-table/domain-table-actions-column';
+import { DomainVerifyModal } from '../../../components/my-organization/domain-management/domain-verify/domain-verify-modal';
 import { Badge } from '../../../components/ui/badge';
 import { DataTable, type Column } from '../../../components/ui/data-table';
 import { Header } from '../../../components/ui/header';
 import { withMyOrganizationService } from '../../../hoc/with-services';
-import { useDomainTable } from '../../../hooks/my-org/domain-management/use-domain-table';
-import { useDomainTableLogic } from '../../../hooks/my-org/domain-management/use-domain-table-logic';
+import { useDomainTable } from '../../../hooks/my-organization/domain-management/use-domain-table';
+import { useDomainTableLogic } from '../../../hooks/my-organization/domain-management/use-domain-table-logic';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { getStatusBadgeVariant } from '../../../lib/my-org/domain-management';

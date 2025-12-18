@@ -7,15 +7,15 @@ import {
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
-import { SsoProviderDeleteModal } from '../../../components/my-org/idp-management/sso-provider-delete/provider-delete-modal';
-import { SsoProviderRemoveFromOrgModal } from '../../../components/my-org/idp-management/sso-provider-remove/provider-remove-modal';
-import { SsoProviderTableActionsColumn } from '../../../components/my-org/idp-management/sso-provider-table/sso-provider-table-action';
+import { SsoProviderDeleteModal } from '../../../components/my-organization/idp-management/sso-provider-delete/provider-delete-modal';
+import { SsoProviderRemoveFromOrgModal } from '../../../components/my-organization/idp-management/sso-provider-remove/provider-remove-modal';
+import { SsoProviderTableActionsColumn } from '../../../components/my-organization/idp-management/sso-provider-table/sso-provider-table-action';
 import { DataTable, type Column } from '../../../components/ui/data-table';
 import { Header } from '../../../components/ui/header';
 import { withMyOrganizationService } from '../../../hoc/with-services';
-import { useConfig } from '../../../hooks/my-org/config/use-config';
-import { useIdpConfig } from '../../../hooks/my-org/config/use-idp-config';
-import { useSsoProviderTable } from '../../../hooks/my-org/idp-management/use-sso-provider-table';
+import { useConfig } from '../../../hooks/my-organization/config/use-config';
+import { useIdpConfig } from '../../../hooks/my-organization/config/use-idp-config';
+import { useSsoProviderTable } from '../../../hooks/my-organization/idp-management/use-sso-provider-table';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import type { SsoProviderTableProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';

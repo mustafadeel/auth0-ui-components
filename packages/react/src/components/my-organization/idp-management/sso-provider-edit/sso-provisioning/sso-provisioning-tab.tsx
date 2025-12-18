@@ -1,7 +1,7 @@
 import { getComponentStyles } from '@auth0/universal-components-core';
 import * as React from 'react';
 
-import { useSsoProviderEdit } from '../../../../../hooks/my-org/idp-management/use-sso-provider-edit';
+import { useSsoProviderEdit } from '../../../../../hooks/my-organization/idp-management/use-sso-provider-edit';
 import { useTheme } from '../../../../../hooks/use-theme';
 import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';

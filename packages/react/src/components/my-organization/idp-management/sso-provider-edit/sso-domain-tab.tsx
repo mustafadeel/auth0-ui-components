@@ -6,7 +6,7 @@ import React from 'react';
 import { Badge } from '../../../../components/ui/badge';
 import { DataTable, type Column } from '../../../../components/ui/data-table';
 import { Header } from '../../../../components/ui/header';
-import { useSsoDomainTab } from '../../../../hooks/my-org/idp-management/use-sso-domain-tab';
+import { useSsoDomainTab } from '../../../../hooks/my-organization/idp-management/use-sso-domain-tab';
 import { useTheme } from '../../../../hooks/use-theme';
 import { useTranslator } from '../../../../hooks/use-translator';
 import { getStatusBadgeVariant } from '../../../../lib/my-org/domain-management';
