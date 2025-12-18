@@ -454,18 +454,6 @@ const authDetails = {
   domain: import.meta.env.VITE_AUTH0_DOMAIN,
 };
 
-// Optional: Configure toast notifications
-const toastSettings = {
-  provider: 'sonner', // default provider (can be omitted)
-  settings: {
-    position: 'top-right', // default position
-    duration: 4000,        // auto-dismiss after 4 seconds
-  }
-  // Or use custom provider:
-  // provider: 'custom',
-  // methods: { ... } // provide your custom toast methods
-};
-
 function App() {
   return (
     <Auth0Provider
@@ -477,7 +465,6 @@ function App() {
     >
       <Auth0ComponentProvider 
         authDetails={authDetails}
-        toastSettings={toastSettings}
       >
         {/* Your app components */}
       </Auth0ComponentProvider>
