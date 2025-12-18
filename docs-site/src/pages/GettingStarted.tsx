@@ -1256,14 +1256,6 @@ export default function OrganizationManagementPage() {
 };`}</pre>
               </div>
 
-              <div className="bg-purple-100 border border-purple-300 rounded p-3">
-                <p className="font-medium text-purple-900 mb-1">Type Safety Benefits:</p>
-                <ul className="list-disc ml-4 text-purple-800 space-y-1">
-                  <li>TypeScript prevents mixing provider-specific properties</li>
-                  <li>Clear separation between Sonner settings and custom methods</li>
-                  <li>IntelliSense shows only relevant properties for each provider</li>
-                </ul>
-              </div>
 
               <p>
                 <strong>Note:</strong> Custom methods only receive the message text. Your custom
