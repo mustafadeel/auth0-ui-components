@@ -1255,8 +1255,6 @@ export default function OrganizationManagementPage() {
   }
 };`}</pre>
               </div>
-
-
               <p>
                 <strong>Note:</strong> Custom methods only receive the message text. Your custom
                 implementation handles all styling, positioning, and timing.
