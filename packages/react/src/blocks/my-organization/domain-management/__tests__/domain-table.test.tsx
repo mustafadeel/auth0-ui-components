@@ -12,7 +12,7 @@ import {
   createMockCreateAction,
   createMockVerifyAction,
   createMockDeleteAction,
-} from '../../../../internals/__mocks__/my-org/domain-management/domain.mocks';
+} from '../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
 import { renderWithProviders } from '../../../../internals/test-provider';
 import { mockCore, mockToast } from '../../../../internals/test-setup';
 import { DomainTable } from '../domain-table';

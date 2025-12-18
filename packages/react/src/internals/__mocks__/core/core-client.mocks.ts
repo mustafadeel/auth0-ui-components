@@ -5,8 +5,8 @@ import {
   createMockAvailableFactors,
   createMockEmptyAuthenticationMethods,
 } from '../my-account/mfa/mfa.mocks';
-import { createMockIdentityProvider } from '../my-org/domain-management/domain.mocks';
-import { createMockOrganization } from '../my-org/org-management/org-details.mocks';
+import { createMockIdentityProvider } from '../my-organization/domain-management/domain.mocks';
+import { createMockOrganization } from '../my-organization/organization-management/organization-details.mocks';
 
 import { createMockAuth } from './auth.mocks';
 import { createMockI18nService } from './i18n-service.mocks';

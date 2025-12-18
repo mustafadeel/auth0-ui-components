@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, afterEach } from 'vitest';
 
 import { renderWithProviders } from '../../../../../internals';
-import { createMockDomain } from '../../../../../internals/__mocks__/my-org/domain-management/domain.mocks';
+import { createMockDomain } from '../../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
 import type { DomainDeleteModalProps } from '../../../../../types/my-org/domain-management/domain-delete-types';
 import { DomainDeleteModal } from '../domain-delete-modal';
 

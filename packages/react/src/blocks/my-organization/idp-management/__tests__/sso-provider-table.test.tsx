@@ -5,7 +5,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import * as useConfigModule from '../../../../hooks/my-organization/config/use-config';
 import * as useCoreClientModule from '../../../../hooks/use-core-client';
-import { createMockIdentityProvider } from '../../../../internals/__mocks__/my-org/domain-management/domain.mocks';
+import { createMockIdentityProvider } from '../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
 import { renderWithProviders } from '../../../../internals/test-provider';
 import { mockCore, mockToast } from '../../../../internals/test-setup';
 import type { SsoProviderTableProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';
