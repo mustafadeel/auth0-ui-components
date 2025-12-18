@@ -505,9 +505,9 @@ interface ComponentAction<T> {
                 <div>
                   <strong>root level</strong> - API responses
                   <ul className="ml-4 list-disc">
-                    <li>save_org_changes_message</li>
-                    <li>org_changes_error_message</li>
-                    <li>org_changes_error_message_generic</li>
+                    <li>save_organization_changes_message</li>
+                    <li>organization_changes_error_message</li>
+                    <li>organization_changes_error_message_generic</li>
                   </ul>
                 </div>
               </div>
@@ -534,7 +534,7 @@ interface ComponentAction<T> {
       },
       submit_button_label: 'Update Organization'
     },
-    save_org_changes_message: 'Company settings updated successfully!'
+    save_organization_changes_message: 'Company settings updated successfully!'
   }}
 />`}
               language="tsx"
@@ -773,8 +773,8 @@ function OrganizationEditPage() {
           header: {
             title: 'Edit Organization: {orgName}'
           },
-          save_org_changes_message: 'Organization details updated successfully!',
-          org_changes_error_message: 'Failed to update organization. Please try again.'
+          save_organization_changes_message: 'Organization details updated successfully!',
+          organization_changes_error_message: 'Failed to update organization. Please try again.'
         }}
         styling={{
           variables: {

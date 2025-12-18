@@ -25,7 +25,7 @@ export function SettingsDetails({
   customMessages = {},
   className,
 }: SettingsDetailsProps): React.JSX.Element {
-  const { t } = useTranslator('org_management.org_details', customMessages);
+  const { t } = useTranslator('organization_management.organization_details', customMessages);
 
   return (
     <div className={className}>

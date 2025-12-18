@@ -23,7 +23,7 @@ export function useOrganizationDetailsEdit({
   readOnly = false,
   customMessages = {},
 }: UseOrganizationDetailsEditOptions): UseOrganizationDetailsEditResult {
-  const { t } = useTranslator('org_management.org_details_edit', customMessages);
+  const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
   const { coreClient } = useCoreClient();
 
   const [organization, setOrganization] = useState<OrganizationPrivate>(
@@ -50,8 +50,8 @@ export function useOrganizationDetailsEdit({
     } catch (error) {
       const errorMessage =
         error instanceof Error
-          ? t('org_changes_error_message', { message: error.message })
-          : t('org_changes_error_message_generic');
+          ? t('organization_changes_error_message', { message: error.message })
+          : t('organization_changes_error_message_generic');
 
       showToast({
         type: 'error',
@@ -90,7 +90,7 @@ export function useOrganizationDetailsEdit({
 
         showToast({
           type: 'success',
-          message: t('save_org_changes_message', {
+          message: t('save_organization_changes_message', {
             orgName: data.display_name || data.name,
           }),
         });
@@ -103,8 +103,8 @@ export function useOrganizationDetailsEdit({
       } catch (error) {
         const errorMessage =
           error instanceof Error
-            ? t('org_changes_error_message', { message: error.message })
-            : t('org_changes_error_message_generic');
+            ? t('organization_changes_error_message', { message: error.message })
+            : t('organization_changes_error_message_generic');
 
         showToast({
           type: 'error',

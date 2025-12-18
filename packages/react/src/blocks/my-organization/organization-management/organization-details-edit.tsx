@@ -33,7 +33,7 @@ function OrganizationDetailsEditComponent({
   hideHeader = false,
   backButton,
 }: OrganizationDetailsEditProps): React.JSX.Element {
-  const { t } = useTranslator('org_management.org_details_edit', customMessages);
+  const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
   const { isDarkMode } = useTheme();
 
   const {
