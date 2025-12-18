@@ -10,7 +10,7 @@ import { useSsoDomainTab } from '../../../../hooks/my-organization/idp-managemen
 import { useTheme } from '../../../../hooks/use-theme';
 import { useTranslator } from '../../../../hooks/use-translator';
 import { getStatusBadgeVariant } from '../../../../lib/my-organization/domain-management';
-import type { SsoDomainsTabProps } from '../../../../types/my-org/idp-management/sso-domain/sso-domain-tab-types';
+import type { SsoDomainsTabProps } from '../../../../types/my-organization/idp-management/sso-domain/sso-domain-tab-types';
 import { DomainCreateModal } from '../../domain-management/domain-create/domain-create-modal';
 import { DomainDeleteModal } from '../../domain-management/domain-delete/domain-delete-modal';
 import { DomainVerifyModal } from '../../domain-management/domain-verify/domain-verify-modal';

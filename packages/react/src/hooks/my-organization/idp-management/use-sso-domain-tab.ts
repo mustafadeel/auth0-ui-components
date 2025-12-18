@@ -7,7 +7,7 @@ import { useErrorHandler } from '../../../hooks/use-error-handler';
 import type {
   UseSsoDomainTabOptions,
   UseSsoDomainTabReturn,
-} from '../../../types/my-org/idp-management/sso-domain/sso-domain-tab-types';
+} from '../../../types/my-organization/idp-management/sso-domain/sso-domain-tab-types';
 import { useCoreClient } from '../../use-core-client';
 import { useTranslator } from '../../use-translator';
 

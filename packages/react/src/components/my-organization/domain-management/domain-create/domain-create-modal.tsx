@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { DomainCreateModalProps } from '../../../../types/my-org/domain-management/domain-create-types';
+import type { DomainCreateModalProps } from '../../../../types/my-organization/domain-management/domain-create-types';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../../../ui/form';
 import { Label } from '../../../ui/label';
 import { Modal } from '../../../ui/modal';

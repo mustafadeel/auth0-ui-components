@@ -2,7 +2,7 @@ import { STRATEGY_DISPLAY_NAMES } from '@auth0/universal-components-core';
 import { Info } from 'lucide-react';
 
 import { useTranslator } from '../../../../../hooks/use-translator';
-import type { ProvisioningFieldMappingsProps } from '../../../../../types/my-org/idp-management/sso-provisioning/sso-provisioning-tab-types';
+import type { ProvisioningFieldMappingsProps } from '../../../../../types/my-organization/idp-management/sso-provisioning/sso-provisioning-tab-types';
 import { CopyableTextField } from '../../../../ui/copyable-text-field';
 import type { Column } from '../../../../ui/data-table';
 import { Label } from '../../../../ui/label';

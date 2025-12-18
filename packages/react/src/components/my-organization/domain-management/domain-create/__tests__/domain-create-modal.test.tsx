@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, afterEach } from 'vitest';
 
 import { renderWithProviders } from '../../../../../internals';
-import type { DomainCreateModalProps } from '../../../../../types/my-org/domain-management/domain-create-types';
+import type { DomainCreateModalProps } from '../../../../../types/my-organization/domain-management/domain-create-types';
 import { DomainCreateModal } from '../domain-create-modal';
 
 // ===== Test Data Setup =====

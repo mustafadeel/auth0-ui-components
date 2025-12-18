@@ -2,7 +2,7 @@ import { MoreHorizontal, Trash2, PencilLine, Eye, RefreshCcw } from 'lucide-reac
 import * as React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { DomainTableActionsColumnProps } from '../../../../types/my-org/domain-management/domain-table-types';
+import type { DomainTableActionsColumnProps } from '../../../../types/my-organization/domain-management/domain-table-types';
 import {
   DropdownMenu,
   DropdownMenuContent,

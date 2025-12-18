@@ -19,7 +19,7 @@ import { useSsoProviderEdit } from '../../../hooks/my-organization/idp-managemen
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { cn } from '../../../lib/theme-utils';
-import type { SsoProviderEditProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
+import type { SsoProviderEditProps } from '../../../types/my-organization/idp-management/sso-provider/sso-provider-edit-types';
 
 export function SsoProviderEditComponent({
   providerId,

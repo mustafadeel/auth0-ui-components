@@ -10,7 +10,7 @@ import type {
   OrganizationDetailsFormActions,
   UseOrganizationDetailsEditOptions,
   UseOrganizationDetailsEditResult,
-} from '../../../types/my-org/org-management';
+} from '../../../types/my-organization/organization-management';
 import { useCoreClient } from '../../use-core-client';
 import { useTranslator } from '../../use-translator';
 

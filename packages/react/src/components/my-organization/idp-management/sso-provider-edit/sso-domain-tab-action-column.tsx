@@ -1,5 +1,5 @@
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { SsoDomainTabActionColumn } from '../../../../types/my-org/idp-management/sso-domain/sso-domain-tab-types';
+import type { SsoDomainTabActionColumn } from '../../../../types/my-organization/idp-management/sso-domain/sso-domain-tab-types';
 import { Button } from '../../../ui/button';
 import { Spinner } from '../../../ui/spinner';
 import { Switch } from '../../../ui/switch';

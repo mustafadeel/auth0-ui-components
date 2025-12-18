@@ -12,7 +12,7 @@ import type React from 'react';
 import type {
   OrganizationDetailsClasses,
   OrganizationDetailsFormActions,
-} from './org-details-types';
+} from './organization-details-types';
 
 export type OrganizationEditClasses = OrganizationDetailsClasses;
 

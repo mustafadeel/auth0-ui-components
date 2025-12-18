@@ -7,7 +7,7 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { ProviderDetailsProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { ProviderDetailsProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 import {
   Form,
   FormControl,

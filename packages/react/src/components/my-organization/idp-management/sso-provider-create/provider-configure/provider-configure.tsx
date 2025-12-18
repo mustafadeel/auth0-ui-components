@@ -2,7 +2,7 @@ import type { ProviderConfigureFormValues } from '@auth0/universal-components-co
 import * as React from 'react';
 
 import { useTranslator } from '../../../../../hooks/use-translator';
-import type { ProviderConfigureProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { ProviderConfigureProps } from '../../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 import { Section } from '../../../../ui/section';
 import { Spinner } from '../../../../ui/spinner';
 

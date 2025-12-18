@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { DomainConfigureProvidersModalProps } from '../../../../types/my-org/domain-management/domain-configure-types';
+import type { DomainConfigureProvidersModalProps } from '../../../../types/my-organization/domain-management/domain-configure-types';
 import { Button } from '../../../ui/button';
 import { type Column, DataTable } from '../../../ui/data-table';
 import { Modal } from '../../../ui/modal';

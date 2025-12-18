@@ -4,7 +4,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { mockToast, renderWithProviders } from '../../../../../internals';
 import { createMockDomain } from '../../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
-import type { DomainVerifyModalProps } from '../../../../../types/my-org/domain-management/domain-verify-types';
+import type { DomainVerifyModalProps } from '../../../../../types/my-organization/domain-management/domain-verify-types';
 import { DomainVerifyModal } from '../domain-verify-modal';
 
 // ===== Mock packages =====

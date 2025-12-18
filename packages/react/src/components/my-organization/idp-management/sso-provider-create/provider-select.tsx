@@ -13,7 +13,7 @@ import { Button } from '../../../../components/ui/button';
 import { Section } from '../../../../components/ui/section';
 import { Spinner } from '../../../../components/ui/spinner';
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { ProviderSelectProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { ProviderSelectProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 const STRATEGY_ICONS: Record<IdpStrategy, React.FC<{ className?: string }>> = {
   [STRATEGIES.OKTA]: OktaLogo,

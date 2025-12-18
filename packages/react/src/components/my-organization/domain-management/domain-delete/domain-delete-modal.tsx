@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { DomainDeleteModalProps } from '../../../../types/my-org/domain-management/domain-delete-types';
+import type { DomainDeleteModalProps } from '../../../../types/my-organization/domain-management/domain-delete-types';
 import { Modal } from '../../../ui/modal';
 
 const getDescriptionKey = (domain: Domain | null) => {

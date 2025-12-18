@@ -6,7 +6,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import * as useCoreClientModule from '../../../../../hooks/use-core-client';
 import { mockCore, renderWithFormProvider } from '../../../../../internals';
-import type { SettingsDetailsProps } from '../../../../../types/my-org/org-management/org-details-types';
+import type { SettingsDetailsProps } from '../../../../../types/my-organization/organization-management/organization-details-types';
 import { SettingsDetails } from '../settings-details';
 
 // ===== Mock packages =====

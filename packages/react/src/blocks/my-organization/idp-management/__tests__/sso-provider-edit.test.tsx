@@ -9,7 +9,7 @@ import {
 } from '../../../../internals/__mocks__';
 import { renderWithProviders } from '../../../../internals/test-provider';
 import { mockCore, mockToast } from '../../../../internals/test-setup';
-import type { SsoProviderEditProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
+import type { SsoProviderEditProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-edit-types';
 import { SsoProviderEdit } from '../sso-provider-edit';
 
 // ===== Mock packages =====

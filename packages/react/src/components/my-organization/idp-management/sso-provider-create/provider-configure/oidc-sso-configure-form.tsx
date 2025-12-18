@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useProviderFormMode } from '../../../../../hooks/my-organization/idp-management/use-provider-form-mode';
 import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
-import type { ProviderConfigureFieldsProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { ProviderConfigureFieldsProps } from '../../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 import { CopyableTextField } from '../../../../ui/copyable-text-field';
 import {
   Form,

@@ -1,4 +1,4 @@
-import type { Domain } from '../../types/my-org/domain-management/domain-table-types';
+import type { Domain } from '../../types/my-organization/domain-management/domain-table-types';
 
 export function getStatusBadgeVariant(
   status: Domain['status'],

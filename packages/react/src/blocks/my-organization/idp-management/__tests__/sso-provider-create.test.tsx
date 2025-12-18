@@ -10,7 +10,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as useCoreClientModule from '../../../../hooks/use-core-client';
 import { renderWithProviders } from '../../../../internals/test-provider';
 import { mockCore, mockToast } from '../../../../internals/test-setup';
-import type { SsoProviderCreateProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { SsoProviderCreateProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 import { SsoProviderCreate } from '../sso-provider-create';
 
 // ===== Mock packages =====

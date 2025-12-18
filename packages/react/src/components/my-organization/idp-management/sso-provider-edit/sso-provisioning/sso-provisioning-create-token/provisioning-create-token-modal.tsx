@@ -2,7 +2,7 @@ import { Copy } from 'lucide-react';
 import * as React from 'react';
 
 import { useTranslator } from '../../../../../../hooks/use-translator';
-import type { ProvisioningCreateTokenModalProps } from '../../../../../../types/my-org/idp-management/sso-provisioning/provisioning-manage-token-types';
+import type { ProvisioningCreateTokenModalProps } from '../../../../../../types/my-organization/idp-management/sso-provisioning/provisioning-manage-token-types';
 import { Modal } from '../../../../../ui/modal';
 
 import { ProvisioningCreateTokenModalContent } from './provisioning-create-token-modal-content';

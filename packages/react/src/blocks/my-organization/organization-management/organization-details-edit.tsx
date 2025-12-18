@@ -11,7 +11,7 @@ import { withMyOrganizationService } from '../../../hoc/with-services';
 import { useOrganizationDetailsEdit } from '../../../hooks/my-organization/organization-management/use-organization-details-edit';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
-import type { OrganizationDetailsEditProps } from '../../../types/my-org/org-management/org-details-edit-types';
+import type { OrganizationDetailsEditProps } from '../../../types/my-organization/organization-management/organization-details-edit-types';
 
 /**
  * OrgDetailsEdit Component

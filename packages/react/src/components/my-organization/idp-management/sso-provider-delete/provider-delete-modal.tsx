@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Modal } from '../../../../components/ui/modal';
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { SsoProviderDeleteModalProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-delete-types';
+import type { SsoProviderDeleteModalProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-delete-types';
 
 import { SsoProviderDeleteModalContent } from './provider-delete-modal-content';
 

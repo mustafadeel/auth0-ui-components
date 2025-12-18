@@ -1,4 +1,4 @@
-import type { SsoProvisioningDetailsProps } from '@react/types/my-org/idp-management/sso-provisioning/sso-provisioning-tab-types';
+import type { SsoProvisioningDetailsProps } from '@react/types/my-organization/idp-management/sso-provisioning/sso-provisioning-tab-types';
 import { vi } from 'vitest';
 
 export const mockProps = {

@@ -10,7 +10,7 @@ import { mockCore, mockToast } from '../../../../internals/test-setup';
 import type {
   OrganizationDetailsEditProps,
   OrganizationEditBackButton,
-} from '../../../../types/my-org/org-management';
+} from '../../../../types/my-organization/organization-management';
 import { OrganizationDetailsEdit } from '../organization-details-edit';
 
 // ===== Mock packages =====

@@ -2,7 +2,7 @@ import { LinkIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
-import type { BrandingDetailsProps } from '../../../../types/my-org/org-management/org-details-types';
+import type { BrandingDetailsProps } from '../../../../types/my-organization/organization-management/organization-details-types';
 import { ColorPickerInput } from '../../../ui/color-picker';
 import {
   FormControl,

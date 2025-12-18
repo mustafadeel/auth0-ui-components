@@ -20,7 +20,7 @@ import { useDomainTableLogic } from '../../../hooks/my-organization/domain-manag
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
 import { getStatusBadgeVariant } from '../../../lib/my-organization/domain-management';
-import type { DomainTableProps } from '../../../types/my-org/domain-management/domain-table-types';
+import type { DomainTableProps } from '../../../types/my-organization/domain-management/domain-table-types';
 
 /**
  * DomainTable Component

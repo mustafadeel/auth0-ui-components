@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 import { showToast } from '../../../components/ui/toast';
 import { useCoreClient } from '../../../hooks/use-core-client';
 import { useTranslator } from '../../../hooks/use-translator';
-import type { UseSsoProviderCreateOptions } from '../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { UseSsoProviderCreateOptions } from '../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 export interface UseSsoProviderCreateReturn {
   createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;

@@ -10,7 +10,7 @@ import { useCallback, useState } from 'react';
 import type {
   UseDomainTableOptions,
   UseDomainTableResult,
-} from '../../../types/my-org/domain-management/domain-table-types';
+} from '../../../types/my-organization/domain-management/domain-table-types';
 import { useCoreClient } from '../../use-core-client';
 import { useTranslator } from '../../use-translator';
 

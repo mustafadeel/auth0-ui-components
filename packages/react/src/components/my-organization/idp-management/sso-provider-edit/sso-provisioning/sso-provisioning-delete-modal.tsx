@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslator } from '../../../../../hooks/use-translator';
 import { cn } from '../../../../../lib/theme-utils';
-import type { SsoProvisioningDeleteModalProps } from '../../../../../types/my-org/idp-management/sso-provisioning/sso-provisioning-tab-types';
+import type { SsoProvisioningDeleteModalProps } from '../../../../../types/my-organization/idp-management/sso-provisioning/sso-provisioning-tab-types';
 import { Modal } from '../../../../ui/modal';
 
 export function SsoProvisioningDeleteModal({

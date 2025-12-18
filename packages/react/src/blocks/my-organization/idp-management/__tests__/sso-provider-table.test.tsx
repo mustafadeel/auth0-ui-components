@@ -8,7 +8,7 @@ import * as useCoreClientModule from '../../../../hooks/use-core-client';
 import { createMockIdentityProvider } from '../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
 import { renderWithProviders } from '../../../../internals/test-provider';
 import { mockCore, mockToast } from '../../../../internals/test-setup';
-import type { SsoProviderTableProps } from '../../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';
+import type { SsoProviderTableProps } from '../../../../types/my-organization/idp-management/sso-provider/sso-provider-table-types';
 import { SsoProviderTable } from '../sso-provider-table';
 
 // ===== Mock packages =====

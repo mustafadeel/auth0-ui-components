@@ -24,7 +24,7 @@ import { useIdpConfig } from '../../../hooks/my-organization/config/use-idp-conf
 import { useSsoProviderCreate } from '../../../hooks/my-organization/idp-management/use-sso-provider-create';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
-import type { SsoProviderCreateProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { SsoProviderCreateProps } from '../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 type FormState = {
   strategy?: IdpStrategy;

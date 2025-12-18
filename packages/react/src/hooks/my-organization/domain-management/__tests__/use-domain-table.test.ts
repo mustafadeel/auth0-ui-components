@@ -12,7 +12,7 @@ import {
   createMockIdentityProvider,
   createMockI18nService,
 } from '../../../../internals';
-import type { UseDomainTableOptions } from '../../../../types/my-org/domain-management/domain-table-types';
+import type { UseDomainTableOptions } from '../../../../types/my-organization/domain-management/domain-table-types';
 import * as useCoreClientModule from '../../../use-core-client';
 import * as useTranslatorModule from '../../../use-translator';
 import { useDomainTable } from '../use-domain-table';

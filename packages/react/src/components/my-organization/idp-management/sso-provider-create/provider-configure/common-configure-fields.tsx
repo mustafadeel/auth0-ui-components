@@ -1,7 +1,7 @@
 import { useFormContext } from 'react-hook-form';
 
 import { useTranslator } from '../../../../../hooks/use-translator';
-import type { IdpConfig } from '../../../../../types/my-org/config/config-idp-types';
+import type { IdpConfig } from '../../../../../types/my-organization/config/config-idp-types';
 import { Checkbox } from '../../../../ui/checkbox';
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from '../../../../ui/form';
 

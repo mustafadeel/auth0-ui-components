@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 
 import { renderWithProviders } from '../../../../../internals';
-import type { SsoProviderTabProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-tab-types';
+import type { SsoProviderTabProps } from '../../../../../types/my-organization/idp-management/sso-provider/sso-provider-tab-types';
 import { SsoProviderTab } from '../sso-provider-tab';
 
 // Mock hooks

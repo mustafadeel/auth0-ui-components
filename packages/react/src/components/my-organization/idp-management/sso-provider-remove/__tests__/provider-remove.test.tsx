@@ -4,7 +4,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import * as useCoreClientModule from '../../../../../hooks/use-core-client';
 import { createMockSsoProvider, mockCore, renderWithProviders } from '../../../../../internals';
-import type { SsoProviderRemoveFromOrgProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-delete-types';
+import type { SsoProviderRemoveFromOrgProps } from '../../../../../types/my-organization/idp-management/sso-provider/sso-provider-delete-types';
 import { SsoProviderRemoveFromOrg } from '../provider-remove';
 
 // ===== Mock packages =====

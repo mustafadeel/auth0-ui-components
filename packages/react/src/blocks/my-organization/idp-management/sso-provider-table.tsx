@@ -18,7 +18,7 @@ import { useIdpConfig } from '../../../hooks/my-organization/config/use-idp-conf
 import { useSsoProviderTable } from '../../../hooks/my-organization/idp-management/use-sso-provider-table';
 import { useTheme } from '../../../hooks/use-theme';
 import { useTranslator } from '../../../hooks/use-translator';
-import type { SsoProviderTableProps } from '../../../types/my-org/idp-management/sso-provider/sso-provider-table-types';
+import type { SsoProviderTableProps } from '../../../types/my-organization/idp-management/sso-provider/sso-provider-table-types';
 
 /**
  * SsoProviderTable Component

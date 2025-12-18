@@ -6,7 +6,7 @@ import type {
 } from '@auth0/universal-components-core';
 import { vi } from 'vitest';
 
-import type { DomainTableProps } from '../../../../types/my-org/domain-management/domain-table-types';
+import type { DomainTableProps } from '../../../../types/my-organization/domain-management/domain-table-types';
 
 export const createMockDomain = (overrides?: Partial<Domain>): Domain => ({
   id: 'domain_abc123xyz456',

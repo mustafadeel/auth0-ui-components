@@ -2,7 +2,7 @@ import { STRATEGIES } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { cn } from '../../../../../lib/theme-utils';
-import type { ProviderConfigureFieldsProps } from '../../../../../types/my-org/idp-management/sso-provider/sso-provider-create-types';
+import type { ProviderConfigureFieldsProps } from '../../../../../types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 import { AdfsProviderForm, type AdfsConfigureFormHandle } from './adfs-sso-configure-form';
 import {

@@ -12,7 +12,7 @@ import {
 import type {
   OrganizationDetailsFormActions,
   OrganizationDetailsProps,
-} from '../../../../../types/my-org/org-management';
+} from '../../../../../types/my-organization/organization-management';
 import { OrganizationDetails } from '../organization-details';
 
 // ===== Mock packages =====

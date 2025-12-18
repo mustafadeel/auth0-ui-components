@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import type { DomainVerifyModalProps } from '../../../../types/my-org/domain-management/domain-verify-types';
+import type { DomainVerifyModalProps } from '../../../../types/my-organization/domain-management/domain-verify-types';
 import { Alert, AlertDescription } from '../../../ui/alert';
 import { Badge } from '../../../ui/badge';
 import { Button } from '../../../ui/button';

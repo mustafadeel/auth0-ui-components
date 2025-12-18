@@ -5,7 +5,7 @@ import { showToast } from '../../../components/ui/toast';
 import type {
   UseDomainTableLogicOptions,
   UseDomainTableLogicResult,
-} from '../../../types/my-org/domain-management/domain-table-types';
+} from '../../../types/my-organization/domain-management/domain-table-types';
 import { useErrorHandler } from '../../use-error-handler';
 
 export function useDomainTableLogic({

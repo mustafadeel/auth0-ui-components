@@ -1,4 +1,4 @@
-import type { ProvisioningDeleteTokenModalContentProps } from '@react/types/my-org/idp-management/sso-provisioning/provisioning-token-types';
+import type { ProvisioningDeleteTokenModalContentProps } from '@react/types/my-organization/idp-management/sso-provisioning/provisioning-token-types';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 

@@ -8,7 +8,7 @@ import {
   createMockIdentityProvider,
   createMockI18nService,
 } from '../../../../internals';
-import type { UseDomainTableLogicOptions } from '../../../../types/my-org/domain-management/domain-table-types';
+import type { UseDomainTableLogicOptions } from '../../../../types/my-organization/domain-management/domain-table-types';
 import * as useCoreClientModule from '../../../use-core-client';
 import * as useErrorHandlerModule from '../../../use-error-handler';
 import { useDomainTableLogic } from '../use-domain-table-logic';

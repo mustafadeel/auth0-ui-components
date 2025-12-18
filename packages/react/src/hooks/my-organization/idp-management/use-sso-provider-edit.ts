@@ -16,7 +16,7 @@ import { showToast } from '../../../components/ui/toast';
 import type {
   UseSsoProviderEditOptions,
   UseSsoProviderEditReturn,
-} from '../../../types/my-org/idp-management/sso-provider/sso-provider-edit-types';
+} from '../../../types/my-organization/idp-management/sso-provider/sso-provider-edit-types';
 import { useCoreClient } from '../../use-core-client';
 import { useTranslator } from '../../use-translator';
 

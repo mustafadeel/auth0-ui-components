@@ -8,7 +8,7 @@ import {
   createMockDomain,
   createMockVerifiedDomain,
 } from '../../../../../internals/__mocks__/my-organization/domain-management/domain.mocks';
-import type { DomainTableActionsColumnProps } from '../../../../../types/my-org/domain-management/domain-table-types';
+import type { DomainTableActionsColumnProps } from '../../../../../types/my-organization/domain-management/domain-table-types';
 import { DomainTableActionsColumn } from '../domain-table-actions-column';
 
 // Create mock props helper

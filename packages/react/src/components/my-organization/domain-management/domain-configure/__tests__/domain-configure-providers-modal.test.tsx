@@ -7,7 +7,7 @@ import {
   createMockDomain,
   createMockIdentityProviderAssociatedWithDomain,
 } from '../../../../../internals';
-import type { DomainConfigureProvidersModalProps } from '../../../../../types/my-org/domain-management/domain-configure-types';
+import type { DomainConfigureProvidersModalProps } from '../../../../../types/my-organization/domain-management/domain-configure-types';
 import { DomainConfigureProvidersModal } from '../domain-configure-providers-modal';
 
 // Create mock props helper
