@@ -1,6 +1,6 @@
 import CodeBlock from '../components/CodeBlock';
 
-export default function MyOrgIntroduction() {
+export default function MyOrganizationIntroduction() {
   return (
     <div className="max-w-6xl mx-auto space-y-12">
       {/* Header */}
