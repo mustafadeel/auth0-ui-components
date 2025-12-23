@@ -129,7 +129,7 @@ pnpm run dev
 
     ```bash
     npx shadcn@latest add http://localhost:5173/r/my-account/user-mfa-management.json --overwrite
-    npx shadcn@latest add http://localhost:5173/r/my-org/org-details-edit.json --overwrite
+    npx shadcn@latest add http://localhost:5173/r/my-organization/organization-details-edit.json --overwrite
     # ... other components
     ```
 
