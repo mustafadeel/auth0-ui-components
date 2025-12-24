@@ -46,7 +46,7 @@ export default function OrganizationDetailsEdit() {
         <h2 className="text-2xl font-semibold text-gray-900">Component Preview</h2>
         <div className="max-w-none flex justify-center">
           <img
-            src="/img/my-org/org-management/org-details-edit.png"
+            src="/img/my-organization/org-management/org-details-edit.png"
             alt="OrganizationDetailsEdit"
             width={700}
             height={500}
@@ -236,7 +236,7 @@ export function OrganizationSettingsPage() {
                   styling
                 </td>
                 <td className="px-4 py-2 text-sm text-gray-500">
-                  ComponentStyling&lt;OrgEditClasses&gt;
+                  ComponentStyling&lt;OrganizationEditClasses&gt;
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                   {'{ variables: {}, classes: {} }'}
@@ -293,7 +293,7 @@ export function OrganizationSettingsPage() {
                 <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                   backButton
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-500">OrgEditBackButton</td>
+                <td className="px-4 py-2 text-sm text-gray-500">OrganizationEditBackButton</td>
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">-</td>
                 <td className="px-4 py-2 text-sm text-gray-500">
                   Configuration for back button including icon and onClick handler
@@ -393,10 +393,14 @@ interface ComponentAction<T> {
                       <code>disabled?: boolean</code> - Disable save button
                     </li>
                     <li>
-                      <code>onBefore?: (org: Organization) → boolean | Promise&lt;boolean&gt;</code>
+                      <code>
+                        onBefore?: (organization: Organization) → boolean | Promise&lt;boolean&gt;
+                      </code>
                     </li>
                     <li>
-                      <code>onAfter?: (org: Organization) → void | Promise&lt;void&gt;</code>
+                      <code>
+                        onAfter?: (organization: Organization) → void | Promise&lt;void&gt;
+                      </code>
                     </li>
                   </ul>
                 </div>
@@ -407,10 +411,14 @@ interface ComponentAction<T> {
                       <code>disabled?: boolean</code> - Disable discard button
                     </li>
                     <li>
-                      <code>onBefore?: (org: Organization) → boolean | Promise&lt;boolean&gt;</code>
+                      <code>
+                        onBefore?: (organization: Organization) → boolean | Promise&lt;boolean&gt;
+                      </code>
                     </li>
                     <li>
-                      <code>onAfter?: (org: Organization) → void | Promise&lt;void&gt;</code>
+                      <code>
+                        onAfter?: (organization: Organization) → void | Promise&lt;void&gt;
+                      </code>
                     </li>
                   </ul>
                 </div>

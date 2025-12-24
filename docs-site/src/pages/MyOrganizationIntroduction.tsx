@@ -285,7 +285,7 @@ export default function MyOrganizationIntroduction() {
               <div className="ml-9">
                 <div className="bg-white rounded-lg p-3 space-y-2">
                   <div className="text-xs text-gray-600">
-                    • Create a role or use existing (e.g. "Org Admin")
+                    • Create a role or use existing (e.g. "Organization Admin")
                   </div>
                   <div className="text-xs text-gray-600">• Add required permissions:</div>
                   <div className="ml-4 space-y-1">
@@ -476,7 +476,7 @@ VITE_AUTH0_CLIENT_ID=your-spa-client-id`}
       <section className="space-y-6 mt-12">
         <h2 className="text-2xl font-semibold text-gray-900">Start Building</h2>
         <p className="text-lg text-gray-600 mb-6">
-          Ready to add My Org components to your application? Choose your path:
+          Ready to add My Organization components to your application? Choose your path:
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">

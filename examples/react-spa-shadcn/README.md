@@ -125,7 +125,7 @@ This will:
 Use the ShadCN CLI to add the OrganizationDetailsEdit component:
 
 ```sh
-npx shadcn@latest add https://auth0-ui-components.vercel.app/r/my-org/org-details-edit.json
+npx shadcn@latest add https://auth0-ui-components.vercel.app/r/my-organization/organization-details-edit.json
 ```
 
 This will install the `OrganizationDetailsEdit` component in your `blocks/` directory.
@@ -191,14 +191,14 @@ const App = () => {
 export default App;
 ```
 
-### Step 4: Using a Component (e.g. OrgDetailsEdit Component)
+### Step 4: Using a Component (e.g. OrganizationDetailsEdit Component)
 
-Here's how to integrate the OrgDetailsEdit component in your organization management page (`src/pages/OrganizationManagement.tsx`):
+Here's how to integrate the OrganizationDetailsEdit component in your organization management page (`src/pages/OrganizationManagement.tsx`):
 
 ```tsx
 import Header from '@/components/Header';
 import { useTranslation } from 'react-i18next';
-// ========== Importing OrgDetailsEdit (choose the right folder path) ==========
+// ========== Importing OrganizationDetailsEdit (choose the right folder path) ==========
 import { OrganizationDetailsEdit } from '@/blocks/my-organization/organization-management/organization-details-edit';
 
 const OrganizationManagement = () => {

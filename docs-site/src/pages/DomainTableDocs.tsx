@@ -47,7 +47,7 @@ export default function DomainTableDocs() {
         <h2 className="text-2xl font-semibold text-gray-900">Component Preview</h2>
         <div className="max-w-none flex justify-center">
           <img
-            src="/img/my-org/domain-management/domain-table.png"
+            src="/img/my-organization/domain-management/domain-table.png"
             alt="DomainTable"
             width={700}
             height={500}

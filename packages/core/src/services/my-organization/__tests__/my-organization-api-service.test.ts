@@ -129,7 +129,7 @@ describe('initializeMyOrganizationClient', () => {
           tokenManager,
         );
 
-        expect(() => setLatestScopes(mockScopes.orgRead)).not.toThrow();
+        expect(() => setLatestScopes(mockScopes.organizationRead)).not.toThrow();
       });
 
       it('should handle empty scope string', () => {
@@ -174,11 +174,11 @@ describe('initializeMyOrganizationClient', () => {
 
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.post);
 
         const headers = getHeadersFromFetchCall(mockFetch) as Record<string, string>;
-        expect(headers['auth0-scope']).toBe(mockScopes.orgRead);
+        expect(headers['auth0-scope']).toBe(mockScopes.organizationRead);
       });
 
       it('should add Content-Type header when body is present', async () => {
@@ -190,7 +190,7 @@ describe('initializeMyOrganizationClient', () => {
 
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.post);
 
         const headers = getHeadersFromFetchCall(mockFetch) as Record<string, string>;
@@ -218,12 +218,12 @@ describe('initializeMyOrganizationClient', () => {
 
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.postWithHeaders);
 
         const headers = getHeadersFromFetchCall(mockFetch) as Record<string, string>;
         expect(headers['X-Custom-Header']).toBe('custom-value');
-        expect(headers['auth0-scope']).toBe(mockScopes.orgRead);
+        expect(headers['auth0-scope']).toBe(mockScopes.organizationRead);
       });
 
       it('should update scope header when scopes change', async () => {
@@ -236,12 +236,12 @@ describe('initializeMyOrganizationClient', () => {
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
         // First call with orgRead scope
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.post);
 
         const firstCall = mockFetch.mock.calls[0]!;
         const firstHeaders = firstCall[1]!.headers;
-        expect(firstHeaders['auth0-scope']).toBe(mockScopes.orgRead);
+        expect(firstHeaders['auth0-scope']).toBe(mockScopes.organizationRead);
 
         // Second call with complex scope
         setLatestScopes(mockScopes.complex);
@@ -391,12 +391,12 @@ describe('initializeMyOrganizationClient', () => {
 
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.post);
 
         expect(tokenManager.getToken).toHaveBeenCalledTimes(1);
         const getTokenCalls = (tokenManager.getToken as ReturnType<typeof vi.fn>).mock.calls;
-        expect(getTokenCalls[0]![0]).toBe(mockScopes.orgRead);
+        expect(getTokenCalls[0]![0]).toBe(mockScopes.organizationRead);
         expect(getTokenCalls[0]![1]).toBe('my-org');
       });
 
@@ -461,10 +461,10 @@ describe('initializeMyOrganizationClient', () => {
         const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
 
         // First call with orgRead scope
-        setLatestScopes(mockScopes.orgRead);
+        setLatestScopes(mockScopes.organizationRead);
         await fetcher!(TEST_URL, mockRequestInits.post);
 
-        expect(tokenManager.lastScope).toBe(mockScopes.orgRead);
+        expect(tokenManager.lastScope).toBe(mockScopes.organizationRead);
         expect(tokenManager.lastAudiencePath).toBe('my-org');
 
         // Second call with complex scope
@@ -839,13 +839,13 @@ describe('initializeMyOrganizationClient', () => {
       const config = calls[0]![0];
       const fetcher = config.fetcher;
 
-      setLatestScopes(mockScopes.orgRead);
+      setLatestScopes(mockScopes.organizationRead);
       await fetcher!(TEST_URL, mockRequestInits.post);
 
       expect(mockFetch).toHaveBeenCalled();
       const fetchCall = mockFetch.mock.calls[0]!;
       const headers = fetchCall[1]!.headers;
-      expect(headers['auth0-scope']).toBe(mockScopes.orgRead);
+      expect(headers['auth0-scope']).toBe(mockScopes.organizationRead);
     });
 
     it('should handle complete domain mode workflow', async () => {
