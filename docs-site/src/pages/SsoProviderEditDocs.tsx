@@ -46,7 +46,7 @@ export default function SsoProviderEditDocs() {
         <h2 className="text-2xl font-semibold text-gray-900">Component Preview</h2>
         <div className="max-w-none flex justify-center">
           <img
-            src="/img/my-org/idp-management/sso-provider-edit.png"
+            src="/img/my-organization/idp-management/sso-provider-edit.png"
             alt="SsoProviderEdit"
             width={700}
             height={500}

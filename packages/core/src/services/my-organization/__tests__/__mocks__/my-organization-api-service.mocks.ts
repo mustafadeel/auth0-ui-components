@@ -45,8 +45,8 @@ export const getExpectedProxyBaseUrl = (proxyUrl: string): string => {
 // Scope Test Data (MyOrg-specific)
 export const mockScopes = {
   empty: '',
-  orgRead: 'read:organization',
-  orgWrite: 'write:organization',
+  organizationRead: 'read:organization',
+  organizationWrite: 'write:organization',
   members: 'read:organization_members',
   complex: 'read:organization write:organization read:organization_members',
   withSpaces: '  read:organization  write:organization  ',
@@ -59,25 +59,25 @@ export const mockRequestInits = {
   },
   post: {
     method: 'POST',
-    body: JSON.stringify({ name: 'Test Org' }),
+    body: JSON.stringify({ name: 'Test Organization' }),
   },
   postWithHeaders: {
     method: 'POST',
-    body: JSON.stringify({ name: 'Test Org' }),
+    body: JSON.stringify({ name: 'Test Organization' }),
     headers: {
       'X-Custom-Header': 'custom-value',
     },
   },
   withContentType: {
     method: 'POST',
-    body: JSON.stringify({ name: 'Test Org' }),
+    body: JSON.stringify({ name: 'Test Organization' }),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   },
   patch: {
     method: 'PATCH',
-    body: JSON.stringify({ display_name: 'Updated Org' }),
+    body: JSON.stringify({ display_name: 'Updated Organization' }),
   },
 };
 
