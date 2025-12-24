@@ -46,7 +46,7 @@ export default function OrganizationDetailsEdit() {
         <h2 className="text-2xl font-semibold text-gray-900">Component Preview</h2>
         <div className="max-w-none flex justify-center">
           <img
-            src="/img/my-organization/org-management/org-details-edit.png"
+            src="/img/my-organization/organization-management/organization-details-edit.png"
             alt="OrganizationDetailsEdit"
             width={700}
             height={500}

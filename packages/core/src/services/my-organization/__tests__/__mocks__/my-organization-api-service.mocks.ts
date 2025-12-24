@@ -33,7 +33,7 @@ export {
 } from '../../../../internals/__mocks__/shared/api-service.mocks';
 
 // =============================================================================
-// MyOrg-specific Test Data
+// MyOrganization-specific Test Data
 // =============================================================================
 
 // Expected URLs
@@ -42,7 +42,7 @@ export const getExpectedProxyBaseUrl = (proxyUrl: string): string => {
   return `${cleanUrl}/my-org`;
 };
 
-// Scope Test Data (MyOrg-specific)
+// Scope Test Data (MyOrganization-specific)
 export const mockScopes = {
   empty: '',
   organizationRead: 'read:organization',
@@ -52,7 +52,7 @@ export const mockScopes = {
   withSpaces: '  read:organization  write:organization  ',
 };
 
-// Request Init Test Data (MyOrg-specific)
+// Request Init Test Data (MyOrganization-specific)
 export const mockRequestInits = {
   get: {
     method: 'GET',
@@ -81,7 +81,7 @@ export const mockRequestInits = {
   },
 };
 
-// Error Messages (MyOrg-specific)
+// Error Messages (MyOrganization-specific)
 export const expectedErrors = {
   missingDomainOrProxy: 'Missing domain or proxy URL for MyOrganizationClient',
   tokenManagerError: 'Token retrieval failed',
@@ -97,7 +97,7 @@ export const mockMyOrganizationClientMethods = {
 };
 
 /**
- * Creates a mock MyOrg API client
+ * Creates a mock MyOrganization API client
  */
 export const createMockMyOrganizationClient = (): ReturnType<
   typeof initializeMyOrganizationClient
