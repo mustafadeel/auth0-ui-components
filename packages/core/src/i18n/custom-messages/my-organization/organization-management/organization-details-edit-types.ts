@@ -7,7 +7,7 @@ export interface OrganizationDetailsEditMessages {
   };
   details?: OrganizationDetailsMessages;
   // delete?: OrganizationDeleteMessages; // TODO: Enable it when delete is enabled
-  save_org_changes_message?: string;
+  save_organization_changes_message?: string;
   organization_changes_error_message?: string;
   organization_changes_error_message_generic?: string;
 }

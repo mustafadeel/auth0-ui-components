@@ -44,7 +44,7 @@ export function OrganizationDetails({
   readOnly = false,
   formActions,
 }: OrganizationDetailsProps): React.JSX.Element {
-  const { t } = useTranslator('org_management.org_details', customMessages);
+  const { t } = useTranslator('organization_management.organization_details', customMessages);
 
   const { isDarkMode } = useTheme();
   const currentStyles = React.useMemo(

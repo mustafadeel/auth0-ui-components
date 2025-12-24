@@ -33,7 +33,7 @@ function OrganizationDetailsEditComponent({
   hideHeader = false,
   backButton,
 }: OrganizationDetailsEditProps): React.JSX.Element {
-  const { t } = useTranslator('org_management.org_details_edit', customMessages);
+  const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
   const { isDarkMode } = useTheme();
 
   const {
@@ -69,7 +69,7 @@ function OrganizationDetailsEditComponent({
         <div className="mb-8">
           <Header
             title={t('header.title', {
-              orgName: organization.display_name || organization.name || '',
+              organizationName: organization.display_name || organization.name || '',
             })}
             backButton={
               backButton && {
