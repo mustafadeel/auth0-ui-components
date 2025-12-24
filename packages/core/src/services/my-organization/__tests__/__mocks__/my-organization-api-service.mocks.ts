@@ -94,7 +94,7 @@ export const mockMyOrganizationClientMethods = {
   updateOrganization: 'updateOrganization',
   listMembers: 'listMembers',
   listRoles: 'listRoles',
-} as const;
+};
 
 /**
  * Creates a mock MyOrg API client
