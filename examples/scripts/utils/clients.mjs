@@ -83,13 +83,19 @@ export async function checkDashboardClientChanges(
       )
     )
 
+  const refreshTokenRotationNeedsUpdate =
+    clientToCheck.refresh_token?.rotation_type !== "rotating"
+
+  const refreshTokenNeedsUpdate =
+    refreshTokenPoliciesNeedUpdate || refreshTokenRotationNeedsUpdate
+
   const needsUpdate =
     missingCallbacks.length > 0 ||
     missingLogoutUrls.length > 0 ||
     checkAppType.wrongAppType ||
     myOrgConfigNeedsUpdate ||
     organizationSettingsNeedUpdate ||
-    refreshTokenPoliciesNeedUpdate
+    refreshTokenNeedsUpdate
 
   if (needsUpdate) {
     const changes = []
@@ -101,8 +107,8 @@ export async function checkDashboardClientChanges(
     if (myOrgConfigNeedsUpdate) changes.push("Update My Org configuration")
     if (organizationSettingsNeedUpdate)
       changes.push("Update organization settings")
-    if (refreshTokenPoliciesNeedUpdate)
-      changes.push("Update refresh token policies")
+    if (refreshTokenNeedsUpdate)
+      changes.push("Update refresh token settings")
 
     return createChangeItem(ChangeAction.UPDATE, {
       resource: "Universal Components Demo Client",
@@ -116,7 +122,7 @@ export async function checkDashboardClientChanges(
         organizationSettingsNeedUpdate,
         connectionProfileId,
         userAttributeProfileId,
-        refreshTokenPoliciesNeedUpdate
+        refreshTokenNeedsUpdate
       },
       summary: changes.join(", "),
     })
@@ -300,6 +306,7 @@ export async function applyDashboardClientChanges(
 
       if (updates.checkAppType.wrongAppType) {
         updateData.app_type = updates.checkAppType.requiredAppType
+        updateData.token_endpoint_auth_method = (updates.checkAppType.requiredAppType === 'regular_web') ? "client_secret_post" : "none"
       }
 
       if (updates.organizationSettingsNeedUpdate) {
@@ -324,7 +331,32 @@ export async function applyDashboardClientChanges(
         }
       }
 
-      await auth0ApiCall("patch", `clients/${existing.client_id}`, updateData)
+      if (updates.refreshTokenNeedsUpdate) {
+        const desiredPolicy = {
+          audience: `https://${domain}/my-org/`,
+          scope: myOrgApiScopes,
+        }
+
+        const existingPolicies = existing.refresh_token?.policies || []
+        const hasPolicy = existingPolicies.some(
+          (policy) =>
+            policy.audience === desiredPolicy.audience &&
+            policy.scope?.slice().sort().toString() ===
+              myOrgApiScopes.slice().sort().toString()
+        )
+
+        const newPolicies = hasPolicy
+          ? existingPolicies
+          : [...existingPolicies, desiredPolicy]
+
+        updateData.refresh_token = {
+          ...(existing.refresh_token || {}),
+          rotation_type: "rotating",
+          policies: newPolicies,
+        }
+      }
+
+      const res = await auth0ApiCall("patch", `clients/${existing.client_id}`, updateData)
       spinner.succeed(`Updated ${DASHBOARD_CLIENT_NAME} client`)
 
       // Fetch updated client with client_secret to return
